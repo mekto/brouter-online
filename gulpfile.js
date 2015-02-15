@@ -16,13 +16,14 @@ var config = {
 
 
 gulp.task('js', function(callback) {
+  var vendors = path.join(__dirname, 'js/vendors');
   return gulp.src('js/app.js')
     .pipe(webpack({
       output: { filename: 'app.js' },
       externals: { 'leaflet': 'L' },
       resolve: {
         alias: {
-          'regular': './vendors/regular.js'
+          'regular': path.join(vendors, 'regular.js')
         }
       },
       module: {
