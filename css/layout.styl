@@ -6,37 +6,29 @@
 body, html, #map { size: 100%; margin: 0; padding: 0; }
 
 
+icon-color(color) {
+  fill: color;
+  stroke: color;
+}
 .icon {
   .fill, .text { stroke: none !important; }
   .stroke { fill: none !important; }
-  & * { fill: white; stroke: white; }
+  & * { fill: #333; stroke: #333; }
 }
 
 .leaflet-control {
   .control-button {
-    display: block;
-    size: 35px;
-    line-height: 36px;
-    color: white;
     text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 18px;
-    background-color: rgba(black, .8);
     cursor: pointer;
-
-    &:hover { background-color: rgba(black, .95); }
-
-    .leaflet-right &:first-child { border-top-left-radius: 4px; }
-    .leaflet-right &:last-child { border-bottom-left-radius: 4px; }
+    line-height: 32px;
   }
-  .leaflet-right & { margin-right: 0; }
 }
+.leaflet-right .leaflet-control.mapbox-control-info { margin-right: 12px; }
 
 @keyframes locating-pulse {
-  0% { fill: gold; stroke: gold; }
-  50% { fill: white; stroke: white; }
-  100% { fill: gold; stroke: gold; }
+  0% { icon-color: orange; }
+  50% { icon-color: darkgray; }
+  100% { icon-color: orange; }
 }
-.icon-locate-on * { fill: green; stroke: green; }
+.icon-locate-on * { icon-color: orange; }
 .icon-locate-searching * { animation: locating-pulse .8s infinite ease; }

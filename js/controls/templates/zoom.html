@@ -1,18 +1,13 @@
-<div ref="el">
-  <span class="control-button" on-click={this.zoomIn($event)} title="Zoom in">
+<div class="leaflet-bar leaflet-control" ref="el">
+  <a class="control-button" on-click={this.zoomIn($event)} title="Zoom in">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="icon" viewBox="0 0 32 32">
-      <polyline points="8,16 24,16" stroke-linecap="round" stroke-width="5" class="stroke"/>
-      <polyline points="16,8 16,24" stroke-linecap="round" stroke-width="5" class="stroke"/>
+      <polyline points="8,16 24,16" stroke-linecap="round" stroke-width="5" shape-rendering="crispEdges" class="stroke"/>
+      <polyline points="16,8 16,24" stroke-linecap="round" stroke-width="5" shape-rendering="crispEdges" class="stroke"/>
     </svg>
-  </span>
-  <span class="control-button" on-click={this.zoomOut($event)} title="Zoom out">
+  </a>
+  <a class="control-button" on-click={this.zoomOut($event)} title="Zoom out">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="icon" viewBox="0 0 32 32">
-      <polyline points="8,16 24,16" stroke-linecap="round" stroke-width="5" class="stroke"/>
+      <polyline points="8,16 24,16" stroke-linecap="round" stroke-width="5" shape-rendering="crispEdges" class="stroke" />
     </svg>
-  </span>
-  <span class="control-button" on-click={this.toggleLocate()} title="Show my location">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="icon icon-locate icon-locate-{locateStatus}" viewBox="0 0 32 32">
-      <path d="m21.74984,31.91159l-5.08437,-14.70238l-16.66546,0l31.98922,-17.20923l-10.23937,31.91158l-0.00002,0.00002z" class="stoke" />
-    </svg>
-  </span>
+  </a>
 </div>
