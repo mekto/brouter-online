@@ -24,6 +24,8 @@ icon-color(color) {
   }
 }
 .leaflet-right .leaflet-control.mapbox-control-info { margin-right: 12px; }
+.leaflet-container { cursor: default; }
+#map { background-color: #333; }
 
 @keyframes locating-pulse {
   0% { icon-color: orange; }
@@ -32,3 +34,30 @@ icon-color(color) {
 }
 .icon-locate-on * { icon-color: orange; }
 .icon-locate-searching * { animation: locating-pulse .8s infinite ease; }
+
+.layers-control {
+  position: relative;
+
+  .layers-menu {
+    absolute: bottom 0 right 40px;
+    width: 334px;
+    background-color: white;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    padding: 10px 0 0 10px;
+    box-shadow: 1px 1px 1px rgba(black, .1);
+
+  }
+
+  .preview-minimap {
+    position: relative;
+    margin: 0 10px 10px 0;
+    border: 1px solid #aaa;
+    size: 150px 70px;
+    float: left;
+
+    .name { absolute: left 0 top 0; display: inline-block; padding: 1px 5px; background-color: rgba(black, .7); color: white; z-index: 10; font-size: 12px; }
+    .minimap { size: 100%; background-color: #777; }
+    &.active .minimap { outline: 4px solid aqua; }
+  }
+}

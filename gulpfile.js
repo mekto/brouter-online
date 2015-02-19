@@ -20,10 +20,10 @@ gulp.task('js', function(callback) {
   return gulp.src('js/app.js')
     .pipe(webpack({
       output: { filename: 'app.js' },
-      externals: { 'leaflet': 'L' },
+      externals: { 'leaflet': 'L', 'regular': 'Regular' },
       resolve: {
         alias: {
-          'regular': path.join(vendors, 'regular.js')
+          // 'regular': path.join(vendors, 'regular.js')
         }
       },
       module: {
