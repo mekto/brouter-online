@@ -113,8 +113,9 @@ var LayersControl = Control.extend({
     this.$update();
 
     this.map.on('click', function() {
-      this.closeMenu();
-      this.$update();
+      if (this.data.expanded) {
+        this.$update('expanded', false);
+      }
     }.bind(this));
   }
 });

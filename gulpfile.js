@@ -17,6 +17,7 @@ var config = {
 
 gulp.task('js', function(callback) {
   var vendors = path.join(__dirname, 'js/vendors');
+  var node_modules = path.join(__dirname, 'node_modules');
   return gulp.src('js/app.js')
     .pipe(webpack({
       output: { filename: 'app.js' },
@@ -24,6 +25,7 @@ gulp.task('js', function(callback) {
       resolve: {
         alias: {
           // 'regular': path.join(vendors, 'regular.js')
+          'superagent': path.join(node_modules, 'superagent')
         }
       },
       module: {

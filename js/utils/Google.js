@@ -32,7 +32,7 @@ L.Google.TileLayer = L.Class.extend({
     continuousWorld: false,
     noWrap: false,
     mapOptions: {
-      backgroundColor: '#333'
+      backgroundColor: '#fff'
     }
   },
 
