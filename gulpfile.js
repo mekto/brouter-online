@@ -18,7 +18,7 @@ var config = {
 gulp.task('js', function(callback) {
   var vendors = path.join(__dirname, 'js/vendors');
   var node_modules = path.join(__dirname, 'node_modules');
-  return gulp.src('js/app.js')
+  return gulp.src('js/init.js')
     .pipe(webpack({
       output: { filename: 'app.js' },
       externals: { 'leaflet': 'L', 'regular': 'Regular' },
@@ -39,7 +39,7 @@ gulp.task('js', function(callback) {
 
 
 gulp.task('css', function() {
-  var task = gulp.src('css/layout.styl')
+  var task = gulp.src('css/app.styl')
     .pipe(stylus({sourcemaps: config.debug, use: [nib(), autoprefixer()]}))
       .on('error', gutil.log)
       .on('error', gutil.beep)

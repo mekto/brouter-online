@@ -1,0 +1,47 @@
+$toolbox-width = 280px;
+
+.toolbox {
+  margin: 12px !important;
+
+  input[type=text] {
+    width: $toolbox-width;
+    padding: 7px 12px;
+    outline: 0;
+    border: 1px solid mediumgray;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-right: 0;
+  }
+  input[type=text]:focus { border-color: blue; }
+
+  input[type=text], button { box-shadow: 1px 1px 2px rgba(black, .2); }
+  button { border-top-right-radius: 2px; border-bottom-right-radius: 2px; padding: 5px 25px; }
+}
+
+.flex { display: flex; }
+
+button {
+  background-color: blue;
+  border: 0;
+  color: white;
+  font-size: 11px;
+  padding: 5px 10px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken(blue, 10%);
+  }
+  .icon * { icon-color: white; }
+}
+
+.typeahead-dropdown-menu {
+  width: $toolbox-width - 1;
+  margin-left: 1px;
+  background-color: white;
+  box-shadow: 1px 1px 2px rgba(black, .2);
+
+  .item { padding: 4px 10px; cursor: pointer; }
+  .item:not(:last-child) { border-bottom: 1px solid #eee; }
+  .item.active { background-color: lighten(blue, 90%); }
+  .item small { color: $muted-text-color; }
+}
