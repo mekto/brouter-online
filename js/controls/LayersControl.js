@@ -13,6 +13,7 @@ var copyrights = {
   Thunderforest: '© <a href="http://www.thunderforest.com" target="_blank">Thunderforest</a>',
   Heidelberg: '© <a href="http://openmapsurfer.uni-hd.de/" target="_blank">GIScience Research Group @ University of Heidelberg</a>',
   WaymarkedTrails: '© <a href="http://cycling.waymarkedtrails.org" target="_blank">Waymarked Trails</a>',
+  OpenMapLT: '© <a href="http://openmap.lt" target="_blank">OpenMap.lt</a>',
   Google: '© <a href="http://www.google.com" target="_blank">Google</a>',
 };
 
@@ -49,10 +50,10 @@ var baseLayers = [
   leafletLayer('OpenMapSurfer', 'http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', copyrights.Heidelberg),
   leafletLayer('OSM Standard', 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', copyrights.OSM),
   leafletLayer('OSM Cycle', 'http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', copyrights.Thunderforest),
-  leafletLayer('OSM Transport', 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', copyrights.Thunderforest),
   mapboxLayer('MapBox Street', 'mekto.hj5462ii', copyrights.MapBox),
   mapboxLayer('MapBox Terrain', 'mekto.hgp09m7l', copyrights.MapBox),
-  mapboxLayer('MapBox Outdoors', 'mekto.l8gcl6k6', copyrights.MapBox),
+  leafletLayer('OSM Transport', 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', copyrights.Thunderforest),
+  // mapboxLayer('MapBox Outdoors', 'mekto.l8gcl6k6', copyrights.MapBox),
   googleLayer('Google Road', 'ROADMAP', copyrights.Google),
   googleLayer('Google Terrain', 'TERRAIN', copyrights.Google),
   googleLayer('Google Satellite', 'HYBRID', copyrights.Google),
@@ -60,6 +61,7 @@ var baseLayers = [
 
 var overlays = [
   leafletLayer('Cycling Routes', 'http://tile.waymarkedtrails.org/cycling/{z}/{x}/{y}.png', copyrights.WaymarkedTrails),
+  leafletLayer('Public Transport', 'http://pt.openmap.lt/{z}/{x}/{y}.png', copyrights.OpenMapLT),
   leafletLayer('Hillshade', 'http://korona.geog.uni-heidelberg.de/tiles/asterh/x={x}&y={y}&z={z}', copyrights.Heidelberg),
 ];
 
