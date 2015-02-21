@@ -4,7 +4,7 @@ var Control = require('./Control');
 var LocateControl = Control.extend({
   template: require('./templates/locate.html'),
   data: { locateStatus: 'off' },
-  position: 'bottomright',
+  position: 'topright',
 
   toggleLocate: function() {
     if (this.data.locateStatus === 'off')
@@ -14,7 +14,7 @@ var LocateControl = Control.extend({
   },
 
   locate: function() {
-    this.map.locate({setView: true, maxZoom: 16});
+    this.map.locate({setView: true, maxZoom: 15});
     this.$update('locateStatus', 'searching');
   },
 

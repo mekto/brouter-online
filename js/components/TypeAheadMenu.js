@@ -84,7 +84,7 @@ Regular.directive('typeahead', function(input, value) {
     if (item) {
       input.value = item.description;
     }
-    if (document.activeElement === input && config.onselect) {
+    if (config.onselect) {
       config.onselect(input, item);
     }
   }
@@ -101,7 +101,9 @@ Regular.directive('typeahead', function(input, value) {
   }
 
   function handleBlur(ev) {
-    typeahead.clear();
+    setTimeout(function() {
+      typeahead.clear();
+    }, 100);
   }
 
   function handleKeyDown(ev) {

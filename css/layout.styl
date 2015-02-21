@@ -1,8 +1,9 @@
 * { box-sizing: border-box; }
-body, html, #map { size: 100%; margin: 0; padding: 0; }
+body, html, #map { size: 100%; margin: 0; padding: 0; line-height: 1.4em; }
 body { font-size: 13px; color: $text-color; }
 input { font-size: inherit; }
 
+.clear { clear: both; }
 
 icon-color(color) {
   fill: color;
@@ -36,7 +37,7 @@ icon-color(color) {
   position: relative;
 
   .layers-menu {
-    absolute: bottom 0 right 40px;
+    absolute: top 0 right 40px;
     width: 334px;
     background-color: white;
     border: 1px solid #bbb;
@@ -44,6 +45,8 @@ icon-color(color) {
     padding: 10px 0 0 10px;
     box-shadow: 1px 1px 1px rgba(black, .1);
 
+    h5 { margin: 0 0 5px; font-size: 13px; }
+    h5:not(:first-child) { margin-top: 4px; }
   }
 
   .preview-minimap {

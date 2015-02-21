@@ -3,7 +3,7 @@ var Control = require('./Control');
 
 var ZoomControl = Control.extend({
   template: require('./templates/zoom.html'),
-  position: 'bottomright',
+  position: 'topright',
 
   zoomIn: function(e) {
     this.map.zoomIn(e.event.shiftKey ? 3 : 1);

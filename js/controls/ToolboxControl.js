@@ -40,7 +40,7 @@ var ToolboxControl = Control.extend({
         if (autocompleteItem) {
           geocoder.resolve(autocompleteItem.place_id, callback.bind(this));
         } else {
-          geocoder.geocode(input.value, callback.bind(this));
+          geocoder.query(input.value, callback.bind(this));
         }
       }.bind(this)
     };

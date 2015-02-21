@@ -46,10 +46,10 @@ var googleLayer = function(name, style, attribution) {
 
 
 var baseLayers = [
+  leafletLayer('OpenMapSurfer', 'http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', copyrights.Heidelberg),
   leafletLayer('OSM Standard', 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', copyrights.OSM),
   leafletLayer('OSM Cycle', 'http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', copyrights.Thunderforest),
   leafletLayer('OSM Transport', 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', copyrights.Thunderforest),
-  leafletLayer('OpenMapSurfer', 'http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', copyrights.Heidelberg),
   mapboxLayer('MapBox Street', 'mekto.hj5462ii', copyrights.MapBox),
   mapboxLayer('MapBox Terrain', 'mekto.hgp09m7l', copyrights.MapBox),
   mapboxLayer('MapBox Outdoors', 'mekto.l8gcl6k6', copyrights.MapBox),
@@ -65,7 +65,7 @@ var overlays = [
 
 
 var LayersControl = Control.extend({
-  position: 'bottomright',
+  position: 'topright',
   template: require('./templates/layers.html'),
   data: {expanded: false, activeLayer: null, activeOverlays: {}, layers: baseLayers, overlays: overlays},
 
@@ -109,8 +109,7 @@ var LayersControl = Control.extend({
 
   addTo: function(map) {
     this.supr(map);
-    this.setLayer(this.data.layers[7]);
-    this.$update();
+    this.setLayer(this.data.layers[0]);
 
     this.map.on('click', function() {
       if (this.data.expanded) {

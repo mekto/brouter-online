@@ -9,7 +9,7 @@ var cache = {};
 
 
 var geocoder = {
-  geocode: function(address, callback) {
+  query: function(address, callback) {
     geocoderService.geocode({address: address, bounds: getBounds()}, function(results, status) {
       if (status === 'OK') {
         var result = results[0];
