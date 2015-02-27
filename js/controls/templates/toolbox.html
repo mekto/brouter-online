@@ -1,4 +1,39 @@
 <div class="toolbox" ref="el">
+  <section class="waypoints">
+    <div class="inner">
+      <div class="waypoint">
+        <label>A</label>
+        <input type="text" typeahead={this.typeahead()}>
+      </div>
+      <div class="waypoint">
+        <label>B</label>
+        <input type="text" typeahead={this.typeahead()}>
+      </div>
+    </div>
+
+    <button class="search-button">
+      <svg width="23" height="31" viewBox="0 0 23 31" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="#fff"><g><g><path d="M.5 8.36c0 .07.024.14.073.2.098.117.27.16.422.106L5.512 7.05v23.623c0 .18.162.327.362.327h3.62c.2 0 .36-.147.36-.327v-8.288l.01.003c.114-.272 1.19-2.573 4.797-2.76l-1.73 3.973c-.06.138-.013.294.117.382.13.09.31.09.44 0l8.872-6.178c.088-.062.14-.158.14-.26 0-.1-.052-.197-.14-.26l-8.874-6.176c-.065-.045-.143-.067-.22-.067-.077 0-.154.022-.218.067-.13.088-.18.245-.12.382l1.785 4.088v.335c-2.03.06-3.622.54-4.857 1.195V7.05l4.517 1.616c.152.054.324.01.422-.108.097-.117.097-.28-.002-.397L7.97.13C7.904.048 7.798 0 7.685 0c-.112 0-.218.047-.286.128L.576 8.16c-.05.06-.076.13-.076.2z"/></g></g></g></g></svg>
+    </button>
+
+    <div class="swap">
+      <svg width="8" height="23" viewBox="0 0 8 23" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="#D1D1D0"><g><path d="M5 9h3L4 0 0 9h3v5H0l4 9 4-9H5V9z"/></g></g></g></svg>
+    </div>
+  </section>
+
+  <TypeAheadMenu ref="typeahead"/>
+
+  <section class="profile flex">
+    <svg class="profile-icon" width="36" height="22" viewBox="0 0 36 22" xmlns="http://www.w3.org/2000/svg"><title>Bicycle</title><desc>Created with Sketch.</desc><g fill="none" fill-rule="evenodd"><g fill="#191716"><g><g><path d="M36 14.734C36 18.742 32.555 22 28.323 22c-4.235 0-7.676-3.258-7.676-7.266 0-3.147 2.13-5.827 5.095-6.833l-.6-2.264-7.813 9.275s-.35.528-1.014.528h-1.002C14.94 19.116 11.66 22 7.674 22 3.443 22 0 18.742 0 14.734 0 10.727 3.442 7.47 7.675 7.47c1.343 0 2.605.33 3.704.906l2.05-2.836L12.264.938h4.265s1.308 1.066 0 1.407h-2.38l.535 2.11h10.14l-.81-3.048s-1.302-.066-2.626 0C20.473.65 21.39 0 21.39 0h6.935s.984.65 0 1.407h-2.778l1.635 6.152c.374-.053.753-.09 1.143-.09C32.555 7.466 36 10.726 36 14.733zM12.604 9.17c1.497 1.193 2.512 2.915 2.71 4.86h.272l-1.688-6.65-1.294 1.79zm-.848 1.17l-2.673 3.69h4.734c-.185-1.464-.947-2.762-2.06-3.69zm2.06 5.098H7.583c-1.3 0-.923-.544-.923-.544l3.873-5.353c-.857-.423-1.83-.666-2.86-.666-3.413 0-6.19 2.63-6.19 5.86 0 3.23 2.777 5.86 6.19 5.86 3.165 0 5.774-2.256 6.144-5.156zm9.235-9.58h-8.01l1.854 7.312 6.157-7.313zm11.464 8.876c0-3.23-2.777-5.858-6.19-5.858-.264 0-.523.02-.778.052l1.498 5.636s-.5 1.454-1.44.344c-.3-1.12-1.497-5.636-1.497-5.636-2.32.846-3.972 2.974-3.972 5.464 0 3.23 2.776 5.86 6.19 5.86 3.412-.003 6.19-2.632 6.19-5.862z"/></g></g></g></g></svg>
+
+    <div class="field">
+      <label>Profile:</label> Trekking
+    </div>
+    <div class="field" style="margin-left: 50px;">
+      <label>Alternative index:</label> Original
+    </div>
+  </section>
+
+  <!--
   <div class="flex">
     <input type="text" typeahead={this.typeahead()} autofocus>
     <button>
@@ -7,6 +42,6 @@
       </svg>
     </button>
   </div>
+  -->
 
-  <TypeAheadMenu ref="typeahead"/>
 </div>

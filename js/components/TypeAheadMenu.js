@@ -66,16 +66,15 @@ Regular.directive('typeahead', function(input, value) {
   var minlength = config.minlength || 2;
   var getItems = config.getItems;
   var typeahead = null;
+  var activeInput = null;
 
   setTimeout(function() {
     typeahead = config.getTypeahead();
-    typeahead.$on('change', handleChange);
-    typeahead.$on('select', handleSelect);
   });
 
   function handleChange(item) {
     input.value = item.description;
-    if (document.activeElement === input && config.onchange) {
+    if (config.onchange) {
       config.onchange(input, item);
     }
   }
@@ -100,9 +99,16 @@ Regular.directive('typeahead', function(input, value) {
     }
   }
 
+  function handleFocus(ev) {
+    typeahead.$on('change', handleChange);
+    typeahead.$on('select', handleSelect);
+  }
+
   function handleBlur(ev) {
     setTimeout(function() {
       typeahead.clear();
+      typeahead.$off('change', handleChange);
+      typeahead.$off('select', handleSelect);
     }, 100);
   }
 
@@ -121,12 +127,14 @@ Regular.directive('typeahead', function(input, value) {
   }
 
   dom.on(input, 'input', handleInput);
+  dom.on(input, 'focus', handleFocus);
   dom.on(input, 'blur', handleBlur);
   dom.on(input, 'keydown', handleKeyDown);
 
   return function destroy() {
     dom.off(input, 'input', handleInput);
     dom.off(input, 'blue', handleBlur);
+    dom.off(input, 'focus', handleBlur);
     dom.off(input, 'keydown', handleKeyDown);
 
     typeahead.$off('change', handleChange);
