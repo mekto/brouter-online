@@ -1,14 +1,12 @@
 <div class="toolbox" ref="el">
   <section class="waypoints">
     <div class="inner">
+      {#list waypoints as waypoint}
       <div class="waypoint">
         <label>A</label>
-        <input type="text" typeahead={this.typeahead()}>
+        <input type="text" r-model={waypoint.text} typeahead={this.typeahead(waypoint)}>
       </div>
-      <div class="waypoint">
-        <label>B</label>
-        <input type="text" typeahead={this.typeahead()}>
-      </div>
+      {/list}
     </div>
 
     <button class="search-button">

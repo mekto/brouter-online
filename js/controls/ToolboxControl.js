@@ -1,5 +1,6 @@
 var L = require('leaflet');
 var Control = require('./Control');
+var Waypoint = require('../utils/Waypoint');
 var geocoder = require('../geocoder');
 
 require('../components/TypeAheadMenu');
@@ -8,6 +9,15 @@ require('../components/TypeAheadMenu');
 var ToolboxControl = Control.extend({
   position: 'topleft',
   template: require('./templates/toolbox.html'),
+
+  addTo: function(map) {
+    this.supr(map);
+    this.data.waypoints = [
+      new Waypoint(map),
+      new Waypoint(map)
+    ];
+    this.$update();
+  },
 
   suggest: function(ev) {
     var typeahead = this.$refs.typeahead;
@@ -22,7 +32,7 @@ var ToolboxControl = Control.extend({
     }
   },
 
-  typeahead: function() {
+  typeahead: function(waypoint) {
     return {
       getTypeahead: function() { return this.$refs.typeahead; }.bind(this),
       minlength: 2,
@@ -33,27 +43,22 @@ var ToolboxControl = Control.extend({
       onselect: function(input, autocompleteItem) {
         function callback(result) {
           if (result) {
-            this.setMarker(result.latlng);
-            input.value = result.address;
+            waypoint.setPosition(result);
+          } else {
+            waypoint.clear();
           }
         }
         if (autocompleteItem) {
           geocoder.resolve(autocompleteItem.place_id, callback.bind(this));
         } else {
-          geocoder.query(input.value, callback.bind(this));
+          if (input.value) {
+            geocoder.query(input.value, callback.bind(this));
+          } else {
+            waypoint.clear();
+          }
         }
       }.bind(this)
     };
-  },
-
-  setMarker: function(latlng) {
-    if (!this.marker) {
-      this.marker = new L.Marker(latlng);
-      this.marker.addTo(this.map);
-    } else {
-      this.marker.setLatLng(latlng);
-    }
-    this.map.setView(latlng, 14);
   }
 });
 
