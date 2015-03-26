@@ -111,7 +111,7 @@ var LayersControl = Control.extend({
 
   addTo: function(map) {
     this.supr(map);
-    this.setLayer(this.data.layers[0]);
+    this.setLayer(this.data.layers[1]);
 
     this.map.on('click', function() {
       if (this.data.expanded) {

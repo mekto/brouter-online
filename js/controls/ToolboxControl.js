@@ -1,7 +1,11 @@
 var L = require('leaflet');
 var Control = require('./Control');
+var Waypoints = require('../utils/Waypoints');
 var Waypoint = require('../utils/Waypoint');
+var Routes = require('../utils/Routes');
+var Route = require('../utils/Route');
 var geocoder = require('../geocoder');
+var routing = require('../routing');
 
 require('../components/TypeAheadMenu');
 
@@ -12,24 +16,12 @@ var ToolboxControl = Control.extend({
 
   addTo: function(map) {
     this.supr(map);
-    this.data.waypoints = [
+    this.data.waypoints = new Waypoints(
       new Waypoint(map),
       new Waypoint(map)
-    ];
+    );
+    this.data.routes = new Routes();
     this.$update();
-  },
-
-  suggest: function(ev) {
-    var typeahead = this.$refs.typeahead;
-
-    var address = ev.target.value;
-    if (address.length > 2) {
-      geocoder.autocomplete(address, function(suggestions) {
-        typeahead.setItems(suggestions);
-      });
-    } else {
-      typeahead.clear();
-    }
   },
 
   typeahead: function(waypoint) {
@@ -44,6 +36,7 @@ var ToolboxControl = Control.extend({
         function callback(result) {
           if (result) {
             waypoint.setPosition(result);
+            this.calculateRoute();
           } else {
             waypoint.clear();
           }
@@ -59,6 +52,22 @@ var ToolboxControl = Control.extend({
         }
       }.bind(this)
     };
+  },
+
+  calculateRoute: function() {
+    var waypoints = this.data.waypoints.getWithMarkers();
+    if (waypoints.length < 2)
+      return;
+
+    this.data.routes.clear();
+    routing.route(waypoints, function(geojson) {
+      if (geojson) {
+        var route = new Route(geojson, waypoints).addTo(this.map);
+        this.data.routes.push(route);
+
+        this.map.fitBounds(route.layer.getBounds());
+      }
+    }.bind(this));
   }
 });
 
