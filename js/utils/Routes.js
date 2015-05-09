@@ -1,17 +1,14 @@
-function Routes() {
-  var routes = [];
-  routes.push.apply(routes, arguments);
-
-  routes.clear = function() {
+class Routes extends Array {
+  clear() {
     var route = this.pop();
     while (route) {
       route.destroy();
       route = this.pop();
     }
-  };
-
-  return routes;
+  }
+  items() {
+    return this.filter(() => { return true; });
+  }
 }
-
 
 module.exports = Routes;

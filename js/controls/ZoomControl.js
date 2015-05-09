@@ -5,11 +5,11 @@ var ZoomControl = Control.extend({
   template: require('./templates/zoom.html'),
   position: 'topright',
 
-  zoomIn: function(e) {
+  zoomIn(e) {
     this.map.zoomIn(e.event.shiftKey ? 3 : 1);
   },
 
-  zoomOut: function(e) {
+  zoomOut(e) {
     this.map.zoomOut(e.event.shiftKey ? 3 : 1);
   },
 });

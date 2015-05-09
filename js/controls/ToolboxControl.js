@@ -14,17 +14,21 @@ var ToolboxControl = Control.extend({
   position: 'topleft',
   template: require('./templates/toolbox.html'),
 
-  addTo: function(map) {
+  config(data) {
+    data.waypoints = window.waypoints = new Waypoints();
+    data.routes = new Routes();
+  },
+
+  addTo(map) {
     this.supr(map);
-    this.data.waypoints = new Waypoints(
-      new Waypoint(map),
-      new Waypoint(map)
-    );
-    this.data.routes = new Routes();
+
+    this.data.waypoints.push(new Waypoint(map));
+    this.data.waypoints.push(new Waypoint(map));
+
     this.$update();
   },
 
-  typeahead: function(waypoint) {
+  typeahead(waypoint) {
     return {
       getTypeahead: function() { return this.$refs.typeahead; }.bind(this),
       minlength: 2,
@@ -54,7 +58,7 @@ var ToolboxControl = Control.extend({
     };
   },
 
-  calculateRoute: function() {
+  calculateRoute() {
     var waypoints = this.data.waypoints.getWithMarkers();
     if (waypoints.length < 2)
       return;

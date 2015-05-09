@@ -9,7 +9,7 @@ var cache = {};
 
 
 var geocoder = {
-  query: function(address, callback) {
+  query(address, callback) {
     geocoderService.geocode({address: address, bounds: getBounds()}, function(results, status) {
       if (status === 'OK') {
         var result = results[0];
@@ -22,7 +22,7 @@ var geocoder = {
     });
   },
 
-  autocomplete: function(text, callback) {
+  autocomplete(text, callback) {
     if (cache[text] !== undefined) {
       callback(cache[text]);
       return;
@@ -41,7 +41,7 @@ var geocoder = {
     });
   },
 
-  resolve: function(placeId, callback) {
+  resolve(placeId, callback) {
     placesService.getDetails({placeId: placeId}, function(result, status) {
       if (status === 'OK') {
         result.latlng = new L.LatLng(result.geometry.location.lat(), result.geometry.location.lng());

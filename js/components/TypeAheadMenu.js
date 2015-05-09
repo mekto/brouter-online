@@ -7,7 +7,7 @@ var TypeAheadMenu = Regular.extend({
   template: require('./templates/typeaheadmenu.html'),
   data: {items: [], selectedIndex: null},
 
-  setItems: function(newItems) {
+  setItems(newItems) {
     var items = this.data.items;
     var index = this.data.selectedIndex;
 
@@ -29,21 +29,21 @@ var TypeAheadMenu = Regular.extend({
     this.$update();
   },
 
-  clear: function() {
+  clear() {
     this.setItems([]);
   },
 
-  next: function() {
+  next() {
     var index = (this.data.selectedIndex !== null) ? this.data.selectedIndex + 1 : 0;
     this.setSelectedIndex(index);
   },
 
-  prev: function() {
+  prev() {
     var index = (this.data.selectedIndex !== null) ? this.data.selectedIndex - 1 : -1;
     this.setSelectedIndex(this.data.selectedIndex - 1);
   },
 
-  setSelectedIndex: function(index) {
+  setSelectedIndex(index) {
     if (this.data.selectedIndex === index)
       return;
 
@@ -54,7 +54,7 @@ var TypeAheadMenu = Regular.extend({
     this.$emit('change', this.data.items[this.data.selectedIndex]);
   },
 
-  select: function(item) {
+  select(item) {
     this.$emit('select', item);
     this.clear();
   }

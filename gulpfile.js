@@ -30,6 +30,7 @@ gulp.task('js', function(callback) {
       },
       module: {
         loaders: [
+          { test: /\.js$/, exclude: /node_modules/, loaders: ['babel-loader?optional=runtime'] },
           { test: /\.html$/, loaders: ['regular'] }
         ]
       }

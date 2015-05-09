@@ -3,7 +3,7 @@ var config = require('../config');
 
 
 var routing = {
-  route: function(waypoints, callback) {
+  route(waypoints, callback) {
     var latlngs = waypoints.map(function(waypoint) {
       return waypoint.marker.getLatLng();
     });
@@ -20,7 +20,7 @@ var routing = {
     });
     req._query.push('lonlats=' + lonlats.join('|'));
 
-    req.end(function(response) {
+    req.end(response => {
       if (response.ok) {
         callback(JSON.parse(response.text));
       } else {

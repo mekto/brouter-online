@@ -71,15 +71,15 @@ var LayersControl = Control.extend({
   template: require('./templates/layers.html'),
   data: {expanded: false, activeLayer: null, activeOverlays: {}, layers: baseLayers, overlays: overlays},
 
-  toggleMenu: function() {
+  toggleMenu() {
     this.data.expanded = !this.data.expanded;
   },
 
-  closeMenu: function() {
+  closeMenu() {
     this.data.expanded = false;
   },
 
-  setLayer: function(layer) {
+  setLayer(layer) {
     var activeLayer = this.data.activeLayer;
     if (layer === activeLayer)
       return false;
@@ -95,7 +95,7 @@ var LayersControl = Control.extend({
     return false;
   },
 
-  toggleOverlay: function(overlay) {
+  toggleOverlay(overlay) {
     var activeOverlays = this.data.activeOverlays;
     var layer = activeOverlays[overlay.name];
     if (!layer) {
@@ -109,7 +109,7 @@ var LayersControl = Control.extend({
     return false;
   },
 
-  addTo: function(map) {
+  addTo(map) {
     this.supr(map);
     this.setLayer(this.data.layers[1]);
 
@@ -126,7 +126,7 @@ var PrevewMinimap = Control.extend({
   name: 'PreviewMinimap',
   template: require('./templates/preview-minimap.html'),
 
-  init: function() {
+  init() {
     this.map = this.data.map;
     this.minimap = L.map(this.$refs.map, {attributionControl: false, zoomControl: false});
     this.layer = this.data.layer.create();
@@ -143,12 +143,12 @@ var PrevewMinimap = Control.extend({
     }.bind(this));
   },
 
-  updateView: function() {
+  updateView() {
     this.minimap.invalidateSize();
     this.minimap.setView(this.map.getCenter(), Math.max(this.map.getZoom() - 1, 4));
   },
 
-  destroy: function() {
+  destroy() {
     this.map.off('moveend', this.updateView);
     this.minimap.removeLayer(this.layer);
     this.minimap.remove();

@@ -6,19 +6,19 @@ var LocateControl = Control.extend({
   data: { locateStatus: 'off' },
   position: 'topright',
 
-  toggleLocate: function() {
+  toggleLocate() {
     if (this.data.locateStatus === 'off')
       this.locate();
     else
       this.stopLocating();
   },
 
-  locate: function() {
+  locate() {
     this.map.locate({setView: true, maxZoom: 15});
     this.$update('locateStatus', 'searching');
   },
 
-  stopLocating: function() {
+  stopLocating() {
     this.map.stopLocate();
     this.$update('locateStatus', 'off');
 
@@ -30,7 +30,7 @@ var LocateControl = Control.extend({
     }
   },
 
-  onLocationFound: function(e) {
+  onLocationFound(e) {
     this.$update('locateStatus', 'on');
 
     if (!this._locationCircle) {
@@ -57,7 +57,7 @@ var LocateControl = Control.extend({
     }
   },
 
-  addTo: function(map) {
+  addTo(map) {
     map.on('locationfound', this.onLocationFound.bind(this));
     map.on('locationerror', this.stopLocating.bind(this));
     return this.supr(map);

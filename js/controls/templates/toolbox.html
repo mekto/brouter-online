@@ -1,7 +1,7 @@
 <div class="toolbox" ref="el">
   <section class="waypoints">
     <div class="inner">
-      {#list waypoints as waypoint}
+      {#list waypoints.items() as waypoint}
       <div class="waypoint">
         <label>A</label>
         <input type="text" r-model={waypoint.text} typeahead={this.typeahead(waypoint)}>
@@ -30,5 +30,4 @@
       <label>Alternative index:</label> Original
     </div>
   </section>
-
 </div>

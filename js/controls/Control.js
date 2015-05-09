@@ -4,7 +4,7 @@ var Regular = require('regular');
 var Control = Regular.extend({
   position: 'topright',
 
-  createControl: function() {
+  createControl() {
     var self = this;
 
     var LeafletControl = L.Control.extend({
@@ -23,7 +23,7 @@ var Control = Regular.extend({
     return new LeafletControl();
   },
 
-  addTo: function(map) {
+  addTo(map) {
     return this.createControl().addTo(map);
   }
 });
