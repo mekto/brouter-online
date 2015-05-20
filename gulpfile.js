@@ -63,7 +63,12 @@ gulp.task('express', function() {
 });
 
 
-gulp.task('devserver', ['config:debug', 'config:livereload', 'express', 'css', 'js'], function() {
+gulp.task('engine', function() {
+  run('./engine/standalone/server.sh');
+});
+
+
+gulp.task('devserver', ['config:debug', 'config:livereload', 'express', 'engine', 'css', 'js'], function() {
   gulp.watch('css/**/*.styl', ['css']);
   gulp.watch('js/**/*.js', ['js']);
   gulp.watch('js/**/*.html', ['js']);
@@ -83,6 +88,13 @@ gulp.task('config:livereload', function() { config.livereload = true; livereload
 /*
  * Utils
  */
-function run(cmd, args) {
-  require('child_process').spawn(cmd, args, {stdio: 'inherit'});
+function run(command, args) {
+  var cwd = path.resolve(path.dirname(command));
+  var cmd = command;
+
+  if (!args) args = args || [];
+  if (command.charAt(0) === '.')
+    cmd = path.resolve(command);
+
+  require('child_process').spawn(cmd, args, {cwd: cwd, stdio: 'inherit'});
 }
