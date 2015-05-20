@@ -1,3 +1,5 @@
+require('./components/filters');
+
 var request = require('superagent');
 var map = require('./map');
 var geocoder = require('./geocoder');

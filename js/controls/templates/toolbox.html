@@ -30,4 +30,17 @@
       <label>Alternative index:</label> Original
     </div>
   </section>
+
+  {#list routes.items() as route}
+  <section class="card">
+    <div class="flex s-b">
+      <div>
+        <strong>{route.from.text}</strong> - <strong>{route.to.text}</strong>
+      </div>
+      <div>
+        <small class="text-muted nowrap">{route.trackLength|km}</small>
+      </div>
+    </div>
+  </section>
+  {/list}
 </div>

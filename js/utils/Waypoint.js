@@ -12,7 +12,6 @@ class Waypoint {
       this.marker.setLatLng(pos.latlng);
     }
     this.text = pos.address;
-    this.map.setView(pos.latlng, 14);
   }
   clear() {
     this.text = '';

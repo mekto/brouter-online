@@ -40,7 +40,11 @@ var ToolboxControl = Control.extend({
         function callback(result) {
           if (result) {
             waypoint.setPosition(result);
-            this.calculateRoute();
+            if (this.calculateRoute()) {
+
+            } else {
+              this.map.setView(result.latlng, 14);
+            }
           } else {
             waypoint.clear();
           }
@@ -61,17 +65,20 @@ var ToolboxControl = Control.extend({
   calculateRoute() {
     var waypoints = this.data.waypoints.getWithMarkers();
     if (waypoints.length < 2)
-      return;
+      return false;
 
     this.data.routes.clear();
-    routing.route(waypoints, function(geojson) {
+    routing.route(waypoints, (geojson) => {
       if (geojson) {
         var route = new Route(geojson, waypoints).addTo(this.map);
         this.data.routes.push(route);
 
         this.map.fitBounds(route.layer.getBounds());
+        this.$update();
       }
-    }.bind(this));
+    });
+    this.$update();
+    return true;
   }
 });
 
