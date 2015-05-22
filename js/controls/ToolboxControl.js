@@ -14,6 +14,9 @@ require('../components/TypeAheadMenu');
 var ToolboxControl = Control.extend({
   position: 'topleft',
   template: require('./templates/toolbox.html'),
+  data: {
+    loading: false,
+  },
 
   config(data) {
     data.waypoints = new Waypoints();
@@ -75,9 +78,12 @@ var ToolboxControl = Control.extend({
         this.data.routes.push(route);
 
         this.map.fitBounds(route.layer.getBounds());
-        this.$update();
       }
+      this.data.loading = false;
+      this.$update();
     });
+
+    this.data.loading = true;
     this.$update();
     return true;
   }
