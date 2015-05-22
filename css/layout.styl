@@ -62,6 +62,12 @@ icon-color(color) {
   }
 }
 
+.loading-indicator-line { stroke-dasharray: 7 3; stroke-dashoffset: 0; animation: dash 2s linear infinite; }
+@keyframes dash {
+  to { stroke-dashoffset: -70; }
+}
+
+
 .nowrap { white-space: nowrap; }
 .flex { display: flex; }
 .s-b { justify-content: space-between; }

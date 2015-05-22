@@ -69,8 +69,11 @@ var ToolboxControl = Control.extend({
     if (waypoints.length < 2)
       return false;
 
-    var bounds = waypoints.map(waypoint => waypoint.marker.getLatLng());
-    this.map.fitBounds(bounds, {paddingTopLeft: [this.getToolboxWidth(), 0]});
+    var latlngs = waypoints.map(waypoint => waypoint.marker.getLatLng());
+    this.map.fitBounds(latlngs, {paddingTopLeft: [this.getToolboxWidth(), 0]});
+
+    var simuline = new L.Polyline(latlngs, {color: '#555', weight: 1, className: 'loading-indicator-line'});
+    simuline.addTo(this.map);
 
     this.data.routes.clear();
     routing.route(waypoints, profiles[0].getSource(), 0, (geojson) => {
@@ -80,6 +83,7 @@ var ToolboxControl = Control.extend({
 
         this.map.fitBounds(route.layer.getBounds(), {paddingTopLeft: [this.getToolboxWidth(), 0]});
       }
+      this.map.removeLayer(simuline);
       this.data.loading = false;
       this.$update();
     });
