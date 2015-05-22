@@ -7,3 +7,6 @@ function km(valueInMeters) {
 
 
 Regular.filter('km', km);
+
+
+export {km};

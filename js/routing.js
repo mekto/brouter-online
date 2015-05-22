@@ -22,7 +22,7 @@ var routing = {
     req.send(profile);
 
     req.end(response => {
-      if (response.ok) {
+      if (response.ok && response.type === 'application/vnd.geo+json') {
         callback(JSON.parse(response.text));
       } else {
         callback(null);

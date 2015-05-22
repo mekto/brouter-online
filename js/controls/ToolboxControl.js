@@ -4,9 +4,12 @@ var Waypoints = require('../utils/Waypoints');
 var Waypoint = require('../utils/Waypoint');
 var Routes = require('../utils/Routes');
 var Route = require('../utils/Route');
+var T = require('../utils/T');
 var geocoder = require('../geocoder');
 var routing = require('../routing');
 var profiles = require('../profiles');
+var filters = require('../components/filters');
+var config = require('../../config');
 
 require('../components/TypeAheadMenu');
 
@@ -16,6 +19,7 @@ var ToolboxControl = Control.extend({
   template: require('./templates/toolbox.html'),
   data: {
     loading: false,
+    info: null,
   },
 
   config(data) {
@@ -64,18 +68,35 @@ var ToolboxControl = Control.extend({
     };
   },
 
-  calculateRoute() {
+  calculateRoute(force) {
     var waypoints = this.data.waypoints.getWithMarkers();
     if (waypoints.length < 2)
       return false;
 
+    this.data.routes.clear();
+
     var latlngs = waypoints.map(waypoint => waypoint.marker.getLatLng());
-    this.map.fitBounds(latlngs, {paddingTopLeft: [this.getToolboxWidth(), 0]});
+    var distance = T.calculateDistance(latlngs);
+    if (distance > config.maxBrouterCalculationDistance) {
+      this.data.info = T.format('Can\'t calculate distances longer than {km} as the crow flies.',
+        {km: filters.km(config.maxBrouterCalculationDistance)}
+      );
+      this.$update();
+      return false;
+    }
+    if (distance > config.maxBrouterAutoCalculationDistance && !force) {
+      this.data.info = T.format('Press <em>Find route</em> button to calculate route.',
+        filters.km(config.maxBrouterCalculationDistance)
+      );
+      this.$update();
+      return false;
+    }
 
     var simuline = new L.Polyline(latlngs, {color: '#555', weight: 1, className: 'loading-indicator-line'});
     simuline.addTo(this.map);
 
-    this.data.routes.clear();
+    this.map.fitBounds(latlngs, {paddingTopLeft: [this.getToolboxWidth(), 0]});
+
     routing.route(waypoints, profiles[0].getSource(), 0, (geojson) => {
       if (geojson) {
         var route = new Route(geojson, waypoints).addTo(this.map);
@@ -89,6 +110,7 @@ var ToolboxControl = Control.extend({
     });
 
     this.data.loading = true;
+    this.data.info = null;
     this.$update();
     return true;
   },
