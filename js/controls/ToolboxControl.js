@@ -20,6 +20,10 @@ var ToolboxControl = Control.extend({
   data: {
     loading: false,
     info: null,
+    profiles: profiles,
+    profile: profiles[0],
+    alternativeidx: 0,
+    showProfileDropdown: false,
   },
 
   config(data) {
@@ -94,10 +98,9 @@ var ToolboxControl = Control.extend({
 
     var simuline = new L.Polyline(latlngs, {color: '#555', weight: 1, className: 'loading-indicator-line'});
     simuline.addTo(this.map);
-
     this.map.fitBounds(latlngs, {paddingTopLeft: [this.getToolboxWidth(), 0]});
 
-    routing.route(waypoints, profiles[0].getSource(), 0, (geojson) => {
+    routing.route(waypoints, this.data.profile.getSource(), this.data.alternativeidx, (geojson) => {
       if (geojson) {
         var route = new Route(geojson, waypoints).addTo(this.map);
         this.data.routes.push(route);
@@ -113,6 +116,21 @@ var ToolboxControl = Control.extend({
     this.data.info = null;
     this.$update();
     return true;
+  },
+
+  setProfile(profile) {
+    this.data.profile = profile;
+    this.data.showProfileDropdown = false;
+    this.calculateRoute();
+  },
+
+  setAlternativeIndex(idx) {
+    this.data.alternativeidx = idx;
+    this.calculateRoute();
+  },
+
+  toggleProfileDropdown() {
+    this.data.showProfileDropdown = !this.data.showProfileDropdown;
   },
 
   getToolboxWidth() {
