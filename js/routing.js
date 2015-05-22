@@ -3,7 +3,7 @@ var config = require('../config');
 
 
 var routing = {
-  route(waypoints, callback) {
+  route(waypoints, profile, idx, callback) {
     var latlngs = waypoints.map(function(waypoint) {
       return waypoint.marker.getLatLng();
     });
@@ -11,14 +11,15 @@ var routing = {
       return latlng.lng + ',' + latlng.lat;
     });
 
-    var req = request.get(config.brouterHost + '/brouter');
+    var req = request.post(config.brouterHost + '/brouter');
     req.query({
       nogos: '',
-      profile: 'trekking',
-      alternativeidx: '0',
+      alternativeidx: idx,
       format: 'geojson'
     });
     req._query.push('lonlats=' + lonlats.join('|'));
+    req.type('text/plain');
+    req.send(profile);
 
     req.end(response => {
       if (response.ok) {

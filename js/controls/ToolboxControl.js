@@ -6,6 +6,7 @@ var Routes = require('../utils/Routes');
 var Route = require('../utils/Route');
 var geocoder = require('../geocoder');
 var routing = require('../routing');
+var profiles = require('../profiles');
 
 require('../components/TypeAheadMenu');
 
@@ -15,7 +16,7 @@ var ToolboxControl = Control.extend({
   template: require('./templates/toolbox.html'),
 
   config(data) {
-    data.waypoints = window.waypoints = new Waypoints();
+    data.waypoints = new Waypoints();
     data.routes = new Routes();
   },
 
@@ -68,7 +69,7 @@ var ToolboxControl = Control.extend({
       return false;
 
     this.data.routes.clear();
-    routing.route(waypoints, (geojson) => {
+    routing.route(waypoints, profiles[0].getSource(), 0, (geojson) => {
       if (geojson) {
         var route = new Route(geojson, waypoints).addTo(this.map);
         this.data.routes.push(route);
