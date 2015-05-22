@@ -44,9 +44,7 @@ var ToolboxControl = Control.extend({
         function callback(result) {
           if (result) {
             waypoint.setPosition(result);
-            if (this.calculateRoute()) {
-
-            } else {
+            if (!this.calculateRoute()) {
               this.map.setView(result.latlng, 14);
             }
           } else {
@@ -71,13 +69,16 @@ var ToolboxControl = Control.extend({
     if (waypoints.length < 2)
       return false;
 
+    var bounds = waypoints.map(waypoint => waypoint.marker.getLatLng());
+    this.map.fitBounds(bounds, {paddingTopLeft: [this.getToolboxWidth(), 0]});
+
     this.data.routes.clear();
     routing.route(waypoints, profiles[0].getSource(), 0, (geojson) => {
       if (geojson) {
         var route = new Route(geojson, waypoints).addTo(this.map);
         this.data.routes.push(route);
 
-        this.map.fitBounds(route.layer.getBounds());
+        this.map.fitBounds(route.layer.getBounds(), {paddingTopLeft: [this.getToolboxWidth(), 0]});
       }
       this.data.loading = false;
       this.$update();
@@ -86,6 +87,11 @@ var ToolboxControl = Control.extend({
     this.data.loading = true;
     this.$update();
     return true;
+  },
+
+  getToolboxWidth() {
+    var rect = this.$refs.el.getBoundingClientRect();
+    return rect.width + 5;
   }
 });
 
