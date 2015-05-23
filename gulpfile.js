@@ -15,7 +15,7 @@ var config = {
 };
 
 
-gulp.task('js', function(callback) {
+gulp.task('js', function() {
   var webpackConfig = require('./webpack.config.js');
   var handleOutput = function(err, stats) {
     if (err) {
@@ -67,7 +67,10 @@ gulp.task('engine', function() {
 });
 
 
-gulp.task('devserver', ['config:debug', 'config:livereload', 'express', 'engine', 'css', 'js'], function() {
+gulp.task('serve', ['express', 'engine', 'css', 'js']);
+
+
+gulp.task('devserver', ['config:debug', 'config:livereload', 'serve'], function() {
   gulp.watch('css/**/*.styl', ['css']);
 });
 
