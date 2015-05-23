@@ -4,8 +4,6 @@ var config = require('../../config');
 
 require('../utils/Google');
 
-L.mapbox.accessToken = config.mapboxAccessToken;
-
 
 var copyrights = {
   OSM: '© <a href="http://openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
@@ -27,11 +25,12 @@ var leafletLayer = function(name, url, attribution) {
   };
 };
 
-var mapboxLayer = function(name, url, attribution) {
+var mapboxLayer = function(name, type, attribution) {
   return {
     name: name,
     create: function() {
-      return L.mapbox.tileLayer(url, {attribution: attribution});
+      var url = 'https://{s}.tiles.mapbox.com/v4/' + type + '/{z}/{x}/{y}.png?access_token=' + config.mapboxAccessToken;
+      return L.tileLayer(url, {attribution: attribution});
     }
   };
 };
@@ -128,7 +127,7 @@ var PrevewMinimap = Control.extend({
 
   init() {
     this.map = this.data.map;
-    this.minimap = L.map(this.$refs.map, {attributionControl: false, zoomControl: false});
+    this.minimap = L.map(this.$refs.map, {attributionControl: false, zoomControl: false, dragging: false});
     this.layer = this.data.layer.create();
 
     this.minimap.addLayer(this.layer);

@@ -46,6 +46,29 @@ L.Google.TileLayer = L.Class.extend({
     this._type = type || 'SATELLITE';
   },
 
+  _layerAdd: function (e) {
+    var map = e.target;
+
+    // check in case layer gets added and then removed before the map is ready
+    if (!map.hasLayer(this)) { return; }
+
+    this._map = map;
+    this._zoomAnimated = map._zoomAnimated;
+
+    this.onAdd(map);
+
+    if (this.getAttribution && this._map.attributionControl) {
+      this._map.attributionControl.addAttribution(this.getAttribution());
+    }
+
+    if (this.getEvents) {
+      map.on(this.getEvents(), this);
+    }
+
+    this.fire('add');
+    map.fire('layeradd', {layer: this});
+  },
+
   onAdd: function(map, insertAtTheBottom) {
     this._map = map;
     this._insertAtTheBottom = insertAtTheBottom;
@@ -57,7 +80,7 @@ L.Google.TileLayer = L.Class.extend({
     // set up events
     map.on('viewreset', this._resetCallback, this);
 
-    this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
+    this._limitedUpdate = L.Util.throttle(this._update, 150, this);
     map.on('move', this._update, this);
 
     map.on('zoomanim', this._handleZoomAnim, this);

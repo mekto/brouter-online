@@ -57,8 +57,9 @@ icon-color(color) {
     float: left;
 
     .name { absolute: left 0 top 0; display: inline-block; padding: 1px 5px; background-color: rgba(black, .7); color: white; z-index: 10; font-size: 12px; }
+    .minimap-container { size: 100%; background-color: white; }
     .minimap { size: 100%; background-color: white; }
-    &.active .minimap { outline: 4px solid aqua; }
+    &.active .minimap-container { outline: 4px solid aqua; }
   }
 }
 
@@ -106,6 +107,12 @@ button:active, button.active { border: 1px solid silver; box-shadow: inset 1px 1
 @keyframes dash {
   to { stroke-dashoffset: -70; }
 }
+
+.marker-body { fill: blue; stroke: rgba(black, .6); }
+.marker-dot { fill: rgba(black, .7); }
+.end-marker .marker-body { fill: green; }
+.via-marker .marker { size: 32px 26px; }
+.via-marker .marker-body { fill: yellow; }
 
 
 .nowrap { white-space: nowrap; }

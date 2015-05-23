@@ -6,9 +6,8 @@ var LayersControl = require('./controls/LayersControl');
 var ToolboxControl = require('./controls/ToolboxControl');
 
 
-var map = L.map('map', {zoomControl: false, attributionControl: false});
+var map = L.map('map', {zoomControl: false, attributionControl: true});
 
-new L.mapbox.InfoControl().addInfo('© <a href="http://leafletjs.com">Leaflet</a>').addTo(map);
 new LayersControl().addTo(map);
 new LocateControl().addTo(map);
 new ZoomControl().addTo(map);

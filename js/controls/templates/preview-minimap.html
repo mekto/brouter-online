@@ -1,4 +1,6 @@
 <div class="preview-minimap" r-class="{{'active': active}}" on-click="{this.$emit('click')}">
   <span class="name">{layer.name}</span>
-  <div class="minimap" ref="map"></div>
+  <div class="minimap-container">
+    <div class="minimap" ref="map"></div>
+  </div>
 </div>
