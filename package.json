@@ -19,8 +19,8 @@
     "gulp-rename": "^1.2.0",
     "gulp-stylus": "^2.0.0",
     "gulp-util": "^3.0.3",
-    "gulp-webpack": "^1.2.0",
     "nib": "^1.1.0",
-    "webpack": "^1.5.3"
+    "node-libs-browser": "^0.5.2",
+    "webpack": "^1.9.8"
   }
 }

@@ -4,7 +4,7 @@ var stylus = require('gulp-stylus');
 var autoprefixer = require('autoprefixer-stylus');
 var nib = require('nib');
 var livereload = require('gulp-livereload');
-var webpack = require('gulp-webpack');
+var webpack = require('webpack');
 var rename = require('gulp-rename');
 var path = require('path');
 var app = require('./app');
@@ -16,27 +16,25 @@ var config = {
 
 
 gulp.task('js', function(callback) {
-  var vendors = path.join(__dirname, 'js/vendors');
-  var node_modules = path.join(__dirname, 'node_modules');
-  return gulp.src('js/init.js')
-    .pipe(webpack({
-      output: { filename: 'app.js' },
-      externals: { 'leaflet': 'L', 'regular': 'Regular' },
-      resolve: {
-        alias: {
-          // 'regular': path.join(vendors, 'regular.js')
-          'superagent': path.join(node_modules, 'superagent')
-        }
-      },
-      module: {
-        loaders: [
-          { test: /\.js$/, exclude: /node_modules/, loaders: ['babel-loader?optional=runtime'] },
-          { test: /\.html$/, loaders: ['regular'] },
-          { test: /\.brf$/, loaders: ['profile'] },
-        ]
-      }
-    }))
-    .pipe(gulp.dest('public/'));
+  var webpackConfig = require('./webpack.config.js');
+  var handleOutput = function(err, stats) {
+    if (err) {
+      throw new gutil.PluginError('webpack', err);
+    }
+    gutil.log('[webpack]');
+    console.log(stats.toString({colors: true, modules: false, chunks: false, chunkModules: false, cached: false, cachedAssets: false}));
+  };
+
+  if (config.debug) {
+    webpackConfig.devtool = 'inline-source-map';
+    webpackConfig.debug = true;
+  }
+
+  var compiler = webpack(webpackConfig);
+  if (config.debug)
+    compiler.watch({aggregateTimeout: 10, poll: false}, handleOutput);
+  else
+    compiler.run(handleOutput);
 });
 
 
@@ -71,8 +69,6 @@ gulp.task('engine', function() {
 
 gulp.task('devserver', ['config:debug', 'config:livereload', 'express', 'engine', 'css', 'js'], function() {
   gulp.watch('css/**/*.styl', ['css']);
-  gulp.watch('js/**/*.js', ['js']);
-  gulp.watch('js/**/*.html', ['js']);
 });
 
 
