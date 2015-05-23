@@ -8,12 +8,12 @@
 # Use the following switches to change behaviour
 # (1=yes, 0=no):
 
-assign   consider_elevation   1   # set to 0 to ignore elevation in routing
-assign   allow_steps          1   # set to 0 to disallow steps
-assign   allow_ferries        1   # set to 0 to disallow ferries
-assign   ignore_cycleroutes   0   # set to 1 for better elevation results
-assign   stick_to_cycleroutes 0   # set to 1 to just follow cycleroutes
-assign   avoid_unsafe         0   # set to 1 to avoid standard highways
+assign   consider_elevation   {consider_elevation:1}    # set to 0 to ignore elevation in routing
+assign   allow_steps          {allow_steps:1}           # set to 0 to disallow steps
+assign   allow_ferries        {allow_ferries:1}         # set to 0 to disallow ferries
+assign   ignore_cycleroutes   {ignore_cycleroutes:0}    # set to 1 for better elevation results
+assign   stick_to_cycleroutes {stick_to_cycleroutes:0}  # set to 1 to just follow cycleroutes
+assign   avoid_unsafe         {avoid_unsafe:0}          # set to 1 to avoid standard highways
 
 assign   validForBikes        1
 
@@ -136,7 +136,7 @@ assign costfactor
   #
   # steps and ferries are special. Note this is handled
   # before the cycleroute-switch, to be able
-  # to really exlude them be setting cost to infinity 
+  # to really exlude them be setting cost to infinity
   #
   switch    highway=steps  switch allow_steps   40 100000
   switch    route=ferry    switch allow_ferries 5.67 100000
@@ -226,7 +226,7 @@ assign footaccess
 
 assign initialcost
        switch bikeaccess
-              0 
+              0
               switch footaccess
                      100
                      1000000

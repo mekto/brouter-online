@@ -55,29 +55,50 @@
 
   <TypeAheadMenu ref="typeahead"/>
 
-  <section class="profile flex">
-    <svg class="profile-icon" width="36" height="22" viewBox="0 0 36 22" xmlns="http://www.w3.org/2000/svg"><title>Bicycle</title><desc>Created with Sketch.</desc><g fill="none" fill-rule="evenodd"><g fill="#191716"><g><g><path d="M36 14.734C36 18.742 32.555 22 28.323 22c-4.235 0-7.676-3.258-7.676-7.266 0-3.147 2.13-5.827 5.095-6.833l-.6-2.264-7.813 9.275s-.35.528-1.014.528h-1.002C14.94 19.116 11.66 22 7.674 22 3.443 22 0 18.742 0 14.734 0 10.727 3.442 7.47 7.675 7.47c1.343 0 2.605.33 3.704.906l2.05-2.836L12.264.938h4.265s1.308 1.066 0 1.407h-2.38l.535 2.11h10.14l-.81-3.048s-1.302-.066-2.626 0C20.473.65 21.39 0 21.39 0h6.935s.984.65 0 1.407h-2.778l1.635 6.152c.374-.053.753-.09 1.143-.09C32.555 7.466 36 10.726 36 14.733zM12.604 9.17c1.497 1.193 2.512 2.915 2.71 4.86h.272l-1.688-6.65-1.294 1.79zm-.848 1.17l-2.673 3.69h4.734c-.185-1.464-.947-2.762-2.06-3.69zm2.06 5.098H7.583c-1.3 0-.923-.544-.923-.544l3.873-5.353c-.857-.423-1.83-.666-2.86-.666-3.413 0-6.19 2.63-6.19 5.86 0 3.23 2.777 5.86 6.19 5.86 3.165 0 5.774-2.256 6.144-5.156zm9.235-9.58h-8.01l1.854 7.312 6.157-7.313zm11.464 8.876c0-3.23-2.777-5.858-6.19-5.858-.264 0-.523.02-.778.052l1.498 5.636s-.5 1.454-1.44.344c-.3-1.12-1.497-5.636-1.497-5.636-2.32.846-3.972 2.974-3.972 5.464 0 3.23 2.776 5.86 6.19 5.86 3.412-.003 6.19-2.632 6.19-5.862z"/></g></g></g></g></svg>
+  <section class="profile">
+    <div class="flex v-center">
+      <svg class="profile-icon" width="36" height="22" viewBox="0 0 36 22" xmlns="http://www.w3.org/2000/svg"><title>Bicycle</title><desc>Created with Sketch.</desc><g fill="none" fill-rule="evenodd"><g fill="#191716"><g><g><path d="M36 14.734C36 18.742 32.555 22 28.323 22c-4.235 0-7.676-3.258-7.676-7.266 0-3.147 2.13-5.827 5.095-6.833l-.6-2.264-7.813 9.275s-.35.528-1.014.528h-1.002C14.94 19.116 11.66 22 7.674 22 3.443 22 0 18.742 0 14.734 0 10.727 3.442 7.47 7.675 7.47c1.343 0 2.605.33 3.704.906l2.05-2.836L12.264.938h4.265s1.308 1.066 0 1.407h-2.38l.535 2.11h10.14l-.81-3.048s-1.302-.066-2.626 0C20.473.65 21.39 0 21.39 0h6.935s.984.65 0 1.407h-2.778l1.635 6.152c.374-.053.753-.09 1.143-.09C32.555 7.466 36 10.726 36 14.733zM12.604 9.17c1.497 1.193 2.512 2.915 2.71 4.86h.272l-1.688-6.65-1.294 1.79zm-.848 1.17l-2.673 3.69h4.734c-.185-1.464-.947-2.762-2.06-3.69zm2.06 5.098H7.583c-1.3 0-.923-.544-.923-.544l3.873-5.353c-.857-.423-1.83-.666-2.86-.666-3.413 0-6.19 2.63-6.19 5.86 0 3.23 2.777 5.86 6.19 5.86 3.165 0 5.774-2.256 6.144-5.156zm9.235-9.58h-8.01l1.854 7.312 6.157-7.313zm11.464 8.876c0-3.23-2.777-5.858-6.19-5.858-.264 0-.523.02-.778.052l1.498 5.636s-.5 1.454-1.44.344c-.3-1.12-1.497-5.636-1.497-5.636-2.32.846-3.972 2.974-3.972 5.464 0 3.23 2.776 5.86 6.19 5.86 3.412-.003 6.19-2.632 6.19-5.862z"/></g></g></g></g></svg>
 
-    <div class="field" style="width: 120px">
-      <label>Profile:</label>
-      <div class="dropdown">
-        <div class="button" r-class="{{active: showProfileDropdown}}" on-click={this.toggleProfileDropdown()}>{profile.name} <i class="caret"/></div>
-        {#if showProfileDropdown}
-        <div class="dropdown-menu">
-          {#list profiles as profile}
-          <span class="item" on-click={this.setProfile(profile)}>{profile.name}</span>
-          {/list}
+      <div class="field" style="width: 120px">
+        <label>Profile:</label>
+        <div class="dropdown">
+          <button r-class="{{active: showProfileDropdown}}" on-click={this.toggleProfileDropdown()}>{profile.name} <i class="caret"/></button>
+          {#if showProfileDropdown}
+          <div class="dropdown-menu">
+            {#list profiles as profile}
+            <span class="item" on-click={this.setProfile(profile)}>{profile.name}</span>
+            {/list}
+          </div>
+          {/if}
         </div>
-        {/if}
       </div>
+      <div class="field">
+        <label>Route index:</label>
+        <span class="badge" r-class="{{active: alternativeidx === 0}}" on-click={this.setAlternativeIndex(0)}>1</span>
+        <span class="badge" r-class="{{active: alternativeidx === 1}}" on-click={this.setAlternativeIndex(1)}>2</span>
+        <span class="badge" r-class="{{active: alternativeidx === 2}}" on-click={this.setAlternativeIndex(2)}>3</span>
+        <span class="badge" r-class="{{active: alternativeidx === 3}}" on-click={this.setAlternativeIndex(3)}>4</span>
+      </div>
+
+      <div class="auto"></div>
+
+      {#if profile.options}
+      <button r-class="{{active: showProfileOptions}}" on-click={this.toggleProfileOptions()}>
+        <svg class="settings-icon" width="16" height="18" viewBox="0 0 16 18" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="#191716" opacity=".203"><g><g><path d="M2.91 4.125H1.454V0H2.91v4.125zM4.363 8.25c0 .203-.072.38-.216.527-.144.15-.315.223-.512.223H.726C.53 9 .36 8.926.217 8.777.072 8.63 0 8.453 0 8.25v-3c0-.203.072-.38.216-.527.144-.15.314-.223.51-.223h2.91c.197 0 .368.074.512.223.144.148.216.324.216.527v3zm4.363 1.875H7.273V0h1.454v10.125zm5.818-7.5H13.09V0h1.455v2.625zM2.91 18H1.454V9.375H2.91V18zM16 6.75c0 .203-.072.38-.216.527-.144.15-.314.223-.51.223h-2.91c-.197 0-.368-.074-.512-.223-.144-.148-.216-.324-.216-.527v-3c0-.203.072-.38.216-.527.144-.15.315-.223.512-.223h2.91c.196 0 .366.074.51.223.144.148.216.324.216.527v3zm-5.818 7.5c0 .203-.072.38-.216.527-.144.15-.314.223-.51.223h-2.91c-.198 0-.368-.074-.512-.223-.144-.148-.216-.324-.216-.527v-3c0-.203.072-.38.216-.527.144-.15.314-.223.51-.223h2.91c.198 0 .368.074.512.223.144.148.216.324.216.527v3zM8.727 18H7.273v-2.625h1.454V18zm5.818 0H13.09V7.875h1.455V18z"/></g></g></g></g></svg>
+      </button>
+      {/if}
     </div>
-    <div class="field">
-      <label>Route index:</label>
-      <span class="badge" r-class="{{active: alternativeidx === 0}}" on-click={this.setAlternativeIndex(0)}>1</span>
-      <span class="badge" r-class="{{active: alternativeidx === 1}}" on-click={this.setAlternativeIndex(1)}>2</span>
-      <span class="badge" r-class="{{active: alternativeidx === 2}}" on-click={this.setAlternativeIndex(2)}>3</span>
-      <span class="badge" r-class="{{active: alternativeidx === 3}}" on-click={this.setAlternativeIndex(3)}>4</span>
+
+    {#if profile.options && showProfileOptions}
+    <div class="profile-options">
+      {#if profile.options.indexOf('consider_elevation') > -1}<label><input type="checkbox" on-change="{this.toggleProfileOption('consider_elevation', $event)}" checked={profileOptions.consider_elevation}/> Consider elevation</label>{/if}
+      {#if profile.options.indexOf('allow_steps') > -1}<label><input type="checkbox" on-change="{this.toggleProfileOption('allow_steps', $event)}" checked={profileOptions.allow_steps}/> Allow steps</label>{/if}
+      {#if profile.options.indexOf('allow_ferries') > -1}<label><input type="checkbox" on-change="{this.toggleProfileOption('allow_ferries', $event)}" checked={profileOptions.allow_ferries}/> Allow ferries</label>{/if}
+      {#if profile.options.indexOf('ignore_cycleroutes') > -1}<label><input type="checkbox" on-change="{this.toggleProfileOption('ignore_cycleroutes', $event)}" checked={profileOptions.ignore_cycleroutes}/> Ignore cycleroutes</label>{/if}
+      {#if profile.options.indexOf('stick_to_cycleroutes') > -1}<label><input type="checkbox" on-change="{this.toggleProfileOption('stick_to_cycleroutes', $event)}" checked={profileOptions.stick_to_cycleroutes}/> Stick to cycleroutes</label>{/if}
+      {#if profile.options.indexOf('avoid_unsafe') > -1}<label><input type="checkbox" on-change="{this.toggleProfileOption('avoid_unsafe', $event)}" checked={profileOptions.avoid_unsafe}/> Avoid unsafe</label>{/if}
     </div>
+    {/if}
   </section>
 
   {#if info}<section class="info">{#include info}</section>{/if}

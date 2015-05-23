@@ -73,13 +73,13 @@ icon-color(color) {
   margin-left: 2px;
 }
 
+button { cursor: pointer; padding: 2px 4px; margin-top: -2px; margin-left: -4px; border: 1px solid transparent; background: transparent; border-radius: 2px; outline: 0 none; }
+button:hover { border-color: silver; }
+button:active, button.active { border: 1px solid silver; box-shadow: inset 1px 1px 2px rgba(black, .1); background-color: white; }
+
 .dropdown {
   position: relative;
   width: 100%;
-
-  .button { width: 100%; cursor: pointer; padding: 2px 4px; margin-top: -2px; margin-left: -4px; border: 1px solid transparent; border-radius: 2px; }
-  .button:hover { border-color: silver; }
-  .button.active { border: 1px solid silver; box-shadow: inset 1px 1px 2px rgba(black, .1); background-color: white; }
 
   .dropdown-menu {
     absolute: top 100% left 0;
@@ -110,4 +110,6 @@ icon-color(color) {
 
 .nowrap { white-space: nowrap; }
 .flex { display: flex; }
+.auto { flex: 1; }
+.v-center { align-items: center; }
 .s-b { justify-content: space-between; }

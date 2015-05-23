@@ -24,6 +24,15 @@ var ToolboxControl = Control.extend({
     profile: profiles[0],
     alternativeidx: 0,
     showProfileDropdown: false,
+    showProfileOptions: false,
+    profileOptions: {
+      consider_elevation: true,
+      allow_steps: true,
+      allow_ferries: true,
+      ignore_cycleroutes: false,
+      stick_to_cycleroutes: false,
+      avoid_unsafe: false,
+    }
   },
 
   config(data) {
@@ -100,7 +109,7 @@ var ToolboxControl = Control.extend({
     simuline.addTo(this.map);
     this.map.fitBounds(latlngs, {paddingTopLeft: [this.getToolboxWidth(), 0]});
 
-    routing.route(waypoints, this.data.profile.getSource(), this.data.alternativeidx, (geojson) => {
+    routing.route(waypoints, this.data.profile.getSource(this.data.profileOptions), this.data.alternativeidx, (geojson) => {
       if (geojson) {
         var route = new Route(geojson, waypoints).addTo(this.map);
         this.data.routes.push(route);
@@ -131,6 +140,21 @@ var ToolboxControl = Control.extend({
 
   toggleProfileDropdown() {
     this.data.showProfileDropdown = !this.data.showProfileDropdown;
+  },
+
+  toggleProfileOptions() {
+    this.data.showProfileOptions = !this.data.showProfileOptions;
+  },
+
+  toggleProfileOption(key, event) {
+    var options = this.data.profileOptions;
+    options[key] = event.target.checked;
+    if (key === 'ignore_cycleroutes' && event.target.checked)
+      options.stick_to_cycleroutes = false;
+    else if (key === 'stick_to_cycleroutes' && event.target.checked)
+      options.ignore_cycleroutes = false;
+
+    this.calculateRoute();
   },
 
   getToolboxWidth() {
