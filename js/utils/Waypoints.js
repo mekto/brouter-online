@@ -12,6 +12,10 @@ class Waypoints extends Array {
     this.push(waypoint);
     return waypoint;
   }
+  swap() {
+    this.unshift(this.pop());
+    this.updateWaypointMarkers();
+  }
   get first() {
     return this[0];
   }
@@ -46,6 +50,12 @@ class Waypoints extends Array {
       html: html,
     });
     return icon;
+  }
+  updateWaypointMarkers() {
+    this.forEach((waypoint) => {
+      if (waypoint.marker)
+        waypoint.marker.setIcon(this.createWaypointIcon(waypoint));
+    });
   }
   items() {
     return this.filter(() => { return true; });

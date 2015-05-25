@@ -157,6 +157,11 @@ var ToolboxControl = Control.extend({
     this.calculateRoute();
   },
 
+  swap: function() {
+    this.data.waypoints.swap();
+    this.calculateRoute();
+  },
+
   getToolboxWidth() {
     var rect = this.$refs.el.getBoundingClientRect();
     return rect.width + 5;
