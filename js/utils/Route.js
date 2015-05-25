@@ -1,4 +1,4 @@
-var L = require('leaflet');
+import L from 'leaflet';
 
 
 class Route {
@@ -47,4 +47,4 @@ class Route {
 }
 
 
-module.exports = Route;
+export default Route;

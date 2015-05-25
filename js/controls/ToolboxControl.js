@@ -1,7 +1,6 @@
 var L = require('leaflet');
 var Control = require('./Control');
 var Waypoints = require('../utils/Waypoints');
-var Waypoint = require('../utils/Waypoint');
 var Routes = require('../utils/Routes');
 var Route = require('../utils/Route');
 var T = require('../utils/T');
@@ -43,8 +42,9 @@ var ToolboxControl = Control.extend({
   addTo(map) {
     this.supr(map);
 
-    this.data.waypoints.push(new Waypoint(map));
-    this.data.waypoints.push(new Waypoint(map));
+    this.data.waypoints.map = map;
+    this.data.waypoints.add();
+    this.data.waypoints.add();
 
     this.$update();
   },
@@ -160,8 +160,12 @@ var ToolboxControl = Control.extend({
   getToolboxWidth() {
     var rect = this.$refs.el.getBoundingClientRect();
     return rect.width + 5;
+  },
+
+  waypointLetter(index) {
+    return String.fromCharCode(65 + index);
   }
 });
 
 
-module.exports = ToolboxControl;
+export default ToolboxControl;

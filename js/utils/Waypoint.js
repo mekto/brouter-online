@@ -1,20 +1,13 @@
 class Waypoint {
-  constructor(map) {
+  constructor(map, owner) {
     this.map = map;
+    this.owner = owner;
     this.text = '';
     this.marker = null;
   }
   setPosition(pos) {
     if (!this.marker) {
-      var type = 'start';
-      this.marker = new L.Marker(pos.latlng, {
-        icon: L.divIcon({
-          iconSize: (type === 'via') ? [16, 26] : [20, 31],
-          iconAnchor: (type === 'via') ? [8, 26] : [10, 31],
-          className: type + '-marker',
-          html: require('../../svg/marker.svg')
-        }),
-      });
+      this.marker = new L.Marker(pos.latlng, { icon: this.owner.createWaypointIcon(this) });
       this.marker.addTo(this.map);
     } else {
       this.marker.setLatLng(pos.latlng);
@@ -31,4 +24,4 @@ class Waypoint {
 }
 
 
-module.exports = Waypoint;
+export default Waypoint;

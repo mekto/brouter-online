@@ -3,7 +3,7 @@
     <div class="inner">
       {#list waypoints.items() as waypoint}
       <div class="waypoint">
-        <label>A</label>
+        <label>{this.waypointLetter(waypoint_index)}</label>
         <input type="text" r-model={waypoint.text} typeahead={this.typeahead(waypoint)}>
       </div>
       {/list}
