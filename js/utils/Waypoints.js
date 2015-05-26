@@ -60,7 +60,12 @@ class Waypoints extends Array {
   items() {
     return this.filter(() => { return true; });
   }
+  onWaypointDrag(waypoint) {
+    this.fire('waypointdrag', { waypoint: waypoint });
+  }
 }
+
+Object.assign(Waypoints.prototype, L.Evented.prototype);
 
 
 export default Waypoints;

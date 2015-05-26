@@ -37,6 +37,10 @@ var ToolboxControl = Control.extend({
   config(data) {
     data.waypoints = new Waypoints();
     data.routes = new Routes();
+
+    data.waypoints.on('waypointdrag', (e) => {
+      this.onWaypointDrag(e.waypoint);
+    });
   },
 
   addTo(map) {
@@ -81,7 +85,7 @@ var ToolboxControl = Control.extend({
     };
   },
 
-  calculateRoute(force) {
+  calculateRoute(force = false, fit = true) {
     var waypoints = this.data.waypoints.getWithMarkers();
     if (waypoints.length < 2)
       return false;
@@ -107,14 +111,16 @@ var ToolboxControl = Control.extend({
 
     var simuline = new L.Polyline(latlngs, {color: '#555', weight: 1, className: 'loading-indicator-line'});
     simuline.addTo(this.map);
-    this.map.fitBounds(latlngs, {paddingTopLeft: [this.getToolboxWidth(), 0]});
+    if (fit)
+      this.map.fitBounds(latlngs, {paddingTopLeft: [this.getToolboxWidth(), 0]});
 
     routing.route(waypoints, this.data.profile.getSource(this.data.profileOptions), this.data.alternativeidx, (geojson) => {
       if (geojson) {
         var route = new Route(geojson, waypoints).addTo(this.map);
         this.data.routes.push(route);
 
-        this.map.fitBounds(route.layer.getBounds(), {paddingTopLeft: [this.getToolboxWidth(), 0]});
+        if (fit)
+          this.map.fitBounds(route.layer.getBounds(), {paddingTopLeft: [this.getToolboxWidth(), 0]});
       }
       this.map.removeLayer(simuline);
       this.data.loading = false;
@@ -169,6 +175,12 @@ var ToolboxControl = Control.extend({
 
   waypointLetter(index) {
     return String.fromCharCode(65 + index);
+  },
+
+  onWaypointDrag(waypoint) {
+    var latlng = waypoint.marker.getLatLng();
+    waypoint.text = T.format('{lat}, {lng}', {lat: latlng.lat.toFixed(4), lng: latlng.lng.toFixed(4)});
+    this.calculateRoute(false, false);
   }
 });
 
