@@ -1,4 +1,5 @@
 var L = require('leaflet');
+var google = require('google');
 
 var geocoderService = new google.maps.Geocoder();
 var autocompleteService = new google.maps.places.AutocompleteService();

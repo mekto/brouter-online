@@ -1,3 +1,4 @@
+var L = require('leaflet');
 var Control = require('./Control');
 
 

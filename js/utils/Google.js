@@ -11,6 +11,7 @@
 
 
 var L = require('leaflet');
+var google = require('google');
 
 
 L.Google = {};
