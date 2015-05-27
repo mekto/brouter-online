@@ -17,6 +17,9 @@ class Waypoint {
       this.marker.on('dragend', () => {
         this.owner.onWaypointDrag(this);
       });
+      this.marker.on('click', () => {
+        this.onClick();
+      });
       this.marker.addTo(this.map);
     } else {
       this.marker.setLatLng(pos.latlng);
@@ -29,6 +32,10 @@ class Waypoint {
       this.map.removeLayer(this.marker);
       this.marker = null;
     }
+  }
+  onClick() {
+    if (this.owner.getWaypointType(this) === 'via')
+      this.owner.remove(this);
   }
 }
 

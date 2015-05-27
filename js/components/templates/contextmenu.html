@@ -1,0 +1,9 @@
+<div class="contextmenu" ref="el" r-hide={!visible}>
+  {#if latlng}<div class="static text-muted"><small>{latlng.lat.toFixed(6)}, {latlng.lng.toFixed(6)}</small></div>{/if}
+  <div class="divider"></div>
+  <div class="item" on-click="{this.setWaypoint('start')}">Set as start</div>
+  <div class="item" on-click="{this.setWaypoint('via')}">Set intermediate</div>
+  <div class="item" on-click="{this.setWaypoint('end')}">Set as end</div>
+  <div class="divider"></div>
+  <div class="item" on-click="{this.centerMap()}">Center map here</div>
+</div>

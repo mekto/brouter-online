@@ -10,7 +10,23 @@ class Waypoints extends Array {
   add() {
     var waypoint = new Waypoint(this.map, this);
     this.push(waypoint);
+    this.updateWaypointMarkers();
     return waypoint;
+  }
+  insert(index) {
+    var waypoint = new Waypoint(this.map, this);
+    this.splice(index, 0, waypoint);
+    this.updateWaypointMarkers();
+    return waypoint;
+  }
+  remove(waypoint) {
+    var idx = this.indexOf(waypoint);
+    console.log(idx);
+    if (idx !== -1) {
+      waypoint.clear();
+      this.splice(idx, 1);
+    }
+    this.fire('remove', { waypoint: waypoint });
   }
   swap() {
     this.unshift(this.pop());
@@ -52,9 +68,8 @@ class Waypoints extends Array {
     return icon;
   }
   updateWaypointMarkers() {
-    this.forEach((waypoint) => {
-      if (waypoint.marker)
-        waypoint.marker.setIcon(this.createWaypointIcon(waypoint));
+    this.getWithMarkers().forEach((waypoint) => {
+      waypoint.marker.setIcon(this.createWaypointIcon(waypoint));
     });
   }
   items() {

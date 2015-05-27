@@ -16,7 +16,8 @@ var Control = Regular.extend({
 
         L.DomEvent
           .disableClickPropagation(self.$refs.el)
-          .disableScrollPropagation(self.$refs.el);
+          .disableScrollPropagation(self.$refs.el)
+          .on(self.$refs.el, {contextmenu: L.DomEvent.stopPropagation});
 
         return self.$refs.el;
       }

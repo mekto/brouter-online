@@ -2,6 +2,8 @@
 body, html, #map { size: 100%; margin: 0; padding: 0; line-height: 1.4em; }
 body { font-size: 13px; font-family: Arial; color: $text-color; }
 input { font-size: inherit; }
+small { font-size: 11px; }
+.text-muted { color: #777; }
 
 .clear { clear: both; }
 
@@ -114,6 +116,22 @@ button:active, button.active { border: 1px solid silver; box-shadow: inset 1px 1
 .end-marker .marker-body { fill: $primary-color; }
 .via-marker .marker { size: 32px 26px; }
 .via-marker .marker-body { fill: yellow; }
+
+.contextmenu {
+  min-width: 160px;
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px rgba(#000, .3);
+  padding: 3px 0;
+  .item {
+    white-space: nowrap;
+    padding: 4px 8px;
+    cursor: default;
+    &:hover { background-color: saturate(lighten($secondary-color, 80%), 80%); }
+  }
+  .static { padding: 4px 8px; white-space: nowrap; }
+  .divider { border-top: 1px solid $border-color; margin: 3px 0; }
+}
 
 
 .nowrap { white-space: nowrap; }

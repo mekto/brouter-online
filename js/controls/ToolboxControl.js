@@ -1,5 +1,6 @@
 var L = require('leaflet');
 var Control = require('./Control');
+var ContextMenu = require('../components/ContextMenu');
 var Waypoints = require('../utils/Waypoints');
 var Routes = require('../utils/Routes');
 var Route = require('../utils/Route');
@@ -41,6 +42,10 @@ var ToolboxControl = Control.extend({
     data.waypoints.on('waypointdrag', (e) => {
       this.onWaypointDrag(e.waypoint);
     });
+    data.waypoints.on('remove', () => {
+      this.calculateRoute();
+      this.$update();
+    });
   },
 
   addTo(map) {
@@ -49,6 +54,18 @@ var ToolboxControl = Control.extend({
     this.data.waypoints.map = map;
     this.data.waypoints.add();
     this.data.waypoints.add();
+
+    this.contextmenu = new ContextMenu();
+    map.addLayer(this.contextmenu);
+    map.on('contextmenu', (e) => {
+      this.contextmenu.open(e.latlng);
+    });
+    map.on('click', () => {
+      this.contextmenu.close();
+    });
+    this.contextmenu.on('setWaypoint', (e) => {
+      this.setWaypoint(e.waypointType, e.latlng);
+    });
 
     this.$update();
   },
@@ -181,7 +198,25 @@ var ToolboxControl = Control.extend({
     var latlng = waypoint.marker.getLatLng();
     waypoint.text = T.format('{lat}, {lng}', {lat: latlng.lat.toFixed(4), lng: latlng.lng.toFixed(4)});
     this.calculateRoute(false, false);
-  }
+    this.$update();
+  },
+
+  setWaypoint(type, latlng) {
+    var waypoint;
+    if (type === 'start') {
+      waypoint = this.data.waypoints.first;
+    } else if (type === 'end') {
+      waypoint = this.data.waypoints.last;
+    } else {
+      waypoint = this.data.waypoints.insert(this.data.waypoints.length - 1);
+    }
+    waypoint.setPosition({
+      latlng: latlng,
+      address: T.format('{lat}, {lng}', {lat: latlng.lat.toFixed(4), lng: latlng.lng.toFixed(4)})
+    });
+    this.calculateRoute();
+    this.$update();
+  },
 });
 
 
