@@ -4,7 +4,10 @@
       <Sortable items={waypoints} parent={this} on-sort={this.calculateRoute()}>
         {#list items.items() as waypoint}
         <div class="waypoint" draggable="true" on-dragover="{this.dragOver($event, waypoint)}" on-dragstart="{this.dragStart($event, waypoint)}" on-drop={this.dragEnd()} on-dragend={this.dragEnd()}>
-          <label on-mousedown={this.setHandle($event.origin)} on-mouseup={this.setHandle(null)}>{parent.waypointLetter(waypoint_index)}</label>
+          <span class="label" on-mousedown={this.setHandle($event.origin)} on-mouseup={this.setHandle(null)}>
+            <svg import="grip.svg"/>
+            <span class="icon">{parent.waypointLetter(waypoint_index)}</span>
+          </span>
           <input type="text" r-model={waypoint.text} typeahead={parent.typeahead(waypoint)}>
         </div>
         {/list}
