@@ -12,6 +12,7 @@ var filters = require('../components/filters');
 var config = require('../../config');
 
 require('../components/TypeAheadMenu');
+require('../components/Sortable');
 
 
 var ToolboxControl = Control.extend({

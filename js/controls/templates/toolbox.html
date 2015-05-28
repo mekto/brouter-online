@@ -1,12 +1,14 @@
 <div class="toolbox" ref="el">
   <section class="waypoints">
     <div class="inner">
-      {#list waypoints.items() as waypoint}
-      <div class="waypoint">
-        <label>{this.waypointLetter(waypoint_index)}</label>
-        <input type="text" r-model={waypoint.text} typeahead={this.typeahead(waypoint)}>
-      </div>
-      {/list}
+      <Sortable items={waypoints} parent={this} on-sort={this.calculateRoute()}>
+        {#list items.items() as waypoint}
+        <div class="waypoint" draggable="true" on-dragover="{this.dragOver($event, waypoint)}" on-dragstart="{this.dragStart($event, waypoint)}" on-drop={this.dragEnd()} on-dragend={this.dragEnd()}>
+          <label on-mousedown={this.setHandle($event.origin)} on-mouseup={this.setHandle(null)}>{parent.waypointLetter(waypoint_index)}</label>
+          <input type="text" r-model={waypoint.text} typeahead={parent.typeahead(waypoint)}>
+        </div>
+        {/list}
+      </Sortable>
     </div>
 
     <button class="search-button" on-click={this.calculateRoute(true)}>
@@ -48,9 +50,11 @@
       {/if}
     </button>
 
+    {#if waypoints.length === 2}
     <div class="swap" on-click={this.swap()}>
       <svg width="8" height="23" viewBox="0 0 8 23" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="#D1D1D0"><g><path d="M5 9h3L4 0 0 9h3v5H0l4 9 4-9H5V9z"/></g></g></g></svg>
     </div>
+    {/if}
   </section>
 
   <TypeAheadMenu ref="typeahead"/>
