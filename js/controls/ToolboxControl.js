@@ -133,7 +133,7 @@ var ToolboxControl = Control.extend({
     this.trailer = new L.Polyline(latlngs, {color: '#555', weight: 1, className: 'trailer-line'});
     this.trailer.addTo(this.map);
 
-    if (fit)
+    if (fit && !this.map.getBounds().contains(latlngs))
       this.map.fitBounds(latlngs, {paddingTopLeft: [this.getToolboxWidth(), 0]});
 
     routing.route(waypoints, this.data.profile.getSource(this.data.profileOptions), this.data.alternativeidx, (geojson) => {
@@ -141,7 +141,7 @@ var ToolboxControl = Control.extend({
         var route = new Route(geojson, waypoints).addTo(this.map);
         this.data.routes.push(route);
 
-        if (fit)
+        if (fit && !this.map.getBounds().contains(route.layer.getBounds()))
           this.map.fitBounds(route.layer.getBounds(), {paddingTopLeft: [this.getToolboxWidth(), 0]});
       }
       if (this.trailer) {
