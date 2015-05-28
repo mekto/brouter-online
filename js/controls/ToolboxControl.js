@@ -127,8 +127,12 @@ var ToolboxControl = Control.extend({
       return false;
     }
 
-    var simuline = new L.Polyline(latlngs, {color: '#555', weight: 1, className: 'loading-indicator-line'});
-    simuline.addTo(this.map);
+    if (this.trailer) {
+      this.map.removeLayer(this.trailer);
+    }
+    this.trailer = new L.Polyline(latlngs, {color: '#555', weight: 1, className: 'trailer-line'});
+    this.trailer.addTo(this.map);
+
     if (fit)
       this.map.fitBounds(latlngs, {paddingTopLeft: [this.getToolboxWidth(), 0]});
 
@@ -140,7 +144,10 @@ var ToolboxControl = Control.extend({
         if (fit)
           this.map.fitBounds(route.layer.getBounds(), {paddingTopLeft: [this.getToolboxWidth(), 0]});
       }
-      this.map.removeLayer(simuline);
+      if (this.trailer) {
+        this.map.removeLayer(this.trailer);
+        this.trailer = null;
+      }
       this.data.loading = false;
       this.$update();
     });
