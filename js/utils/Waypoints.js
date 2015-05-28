@@ -21,7 +21,6 @@ class Waypoints extends Array {
   }
   remove(waypoint) {
     var idx = this.indexOf(waypoint);
-    console.log(idx);
     if (idx !== -1) {
       waypoint.clear();
       this.splice(idx, 1);
