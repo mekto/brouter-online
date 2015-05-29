@@ -1,34 +1,25 @@
-var L = require('leaflet');
-var Regular = require('regular');
+import Leaflet from 'leaflet';
+import React from 'react';
 
 
-var Control = Regular.extend({
-  position: 'topright',
-
-  createControl() {
-    var self = this;
-
-    var LeafletControl = L.Control.extend({
-      options: { position: self.position },
-
-      onAdd: function(map) {
-        self.map = map;
-
-        L.DomEvent
-          .disableClickPropagation(self.$refs.el)
-          .disableScrollPropagation(self.$refs.el)
-          .on(self.$refs.el, {contextmenu: L.DomEvent.stopPropagation});
-
-        return self.$refs.el;
-      }
-    });
-    return new LeafletControl();
+export default Leaflet.Control.extend({
+  options: {
+    position: 'topright',
   },
 
-  addTo(map) {
-    return this.createControl().addTo(map);
+  onAdd(map) {
+    var container = document.createElement('div');
+    Leaflet.DomEvent
+      .disableClickPropagation(container)
+      .disableScrollPropagation(container)
+      .on(container, {contextmenu: Leaflet.DomEvent.stopPropagation});
+
+    this.component = React.render(
+      React.createElement(this.getComponentClass(), {map}),
+      container
+    );
+
+    return container;
   }
+
 });
-
-
-module.exports = Control;

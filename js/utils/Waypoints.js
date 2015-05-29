@@ -5,16 +5,16 @@ import Waypoint from './Waypoint';
 class Waypoints extends Array {
   constructor(...args) {
     super(...args);
-    this.map = null;
+    this._map = null;
   }
   add() {
-    var waypoint = new Waypoint(this.map, this);
+    var waypoint = new Waypoint(this._map, this);
     this.push(waypoint);
     this.updateWaypointMarkers();
     return waypoint;
   }
   insert(index) {
-    var waypoint = new Waypoint(this.map, this);
+    var waypoint = new Waypoint(this._map, this);
     this.splice(index, 0, waypoint);
     this.updateWaypointMarkers();
     return waypoint;
@@ -75,7 +75,7 @@ class Waypoints extends Array {
     return this.filter(() => { return true; });
   }
   onWaypointDrag(waypoint) {
-    this.fire('waypointdrag', { waypoint: waypoint });
+    this.fire('dragend', { waypoint: waypoint });
   }
 }
 

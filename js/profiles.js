@@ -18,8 +18,17 @@ class Profile {
   }
 }
 
+const profileOptions = [
+  ['consider_elevation', 'Consider elevation', true],
+  ['allow_steps', 'Allow steps', true],
+  ['allow_ferries', 'Allow ferries', true],
+  ['ignore_cycleroutes', 'Ignore cycleroutes', false],
+  ['stick_to_cycleroutes', 'Stick to cycleroutes', false],
+  ['avoid_unsafe', 'Avoid unsafe', false],
+].map((item) => Object({'id': item[0], 'desc': item[1], 'defaultValue': item[2]}));
 
-module.exports = [
+
+export default [
   new Profile('trekking', 'Trekking', require('./profiles/trekking.brf'),
     ['consider_elevation', 'allow_steps', 'allow_ferries', 'ignore_cycleroutes', 'stick_to_cycleroutes', 'avoid_unsafe']
   ),
@@ -28,3 +37,5 @@ module.exports = [
   ),
   new Profile('shortest', 'Shortest', require('./profiles/shortest.brf')),
 ];
+
+export {profileOptions};

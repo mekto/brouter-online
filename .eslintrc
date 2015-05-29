@@ -1,18 +1,19 @@
 {
+    "plugins": ["react"],
     "rules": {
         "indent": [2, 2],
         "quotes": [2, "single"],
         "linebreak-style": [2, "unix"],
         "semi": [2, "always"],
-	"comma-dangle": [0],
-	"curly": [0],
-	"no-underscore-dangle": [0],
-	"camelcase": [1, {"properties": "never"}]
+        "comma-dangle": [0],
+        "curly": [0],
+        "no-underscore-dangle": [0],
+        "camelcase": [1, {"properties": "never"}]
     },
     "env": {
         "es6": true,
         "node": true,
         "browser": true
     },
-    "ecmaFeatures": { "modules": true } 
+    "ecmaFeatures": { "modules": true, "jsx": true }
 }

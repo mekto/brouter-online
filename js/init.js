@@ -1,11 +1,9 @@
-require('./components/filters');
-
-var request = require('superagent');
-var map = require('./map');
-var geocoder = require('./geocoder');
+import request from 'superagent';
+import map from './map';
+import geocoder from './geocoder';
 
 
-request.get('http://freegeoip.net/json/').timeout(1999).end(function(res) {
+request.get('http://freegeoip.net/json/').timeout(1999).end((res) => {
   if (res && res.ok) {
     map.setView([res.body.latitude, res.body.longitude], 8);
     geocoder.countryCode = res.body.country_code;

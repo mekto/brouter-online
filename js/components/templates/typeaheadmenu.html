@@ -1,5 +1,0 @@
-{#if items.length}
-<div class="typeahead-dropdown-menu">
-  {#list items as item}<div class="item" r-class="{{'active': selectedIndex === item_index}}" on-click={this.select(item)}>{#include item.html}</div>{/list}
-</div>
-{/if}

@@ -1,6 +1,3 @@
-var Regular = require('../js/vendors/regular');
-
-
 module.exports = function(source) {
   this.cacheable();
   source = source.replace(/\s*#[^\n]*/g, '');  // remove comments

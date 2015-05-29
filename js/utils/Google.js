@@ -239,3 +239,5 @@ L.Google.asyncInitialize = function() {
   }
   L.Google.asyncWait = [];
 };
+
+export default L.Google;

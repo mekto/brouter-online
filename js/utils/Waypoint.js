@@ -24,7 +24,12 @@ class Waypoint {
     } else {
       this.marker.setLatLng(pos.latlng);
     }
+
     this.text = pos.address;
+    if (this.text === undefined) {
+      let latlng = pos.latlng;
+      this.text = `${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}`;
+    }
   }
   clear() {
     this.text = '';

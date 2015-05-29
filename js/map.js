@@ -1,17 +1,17 @@
-var L = require('leaflet');
+import Leaflet from 'leaflet';
 
-var ZoomControl = require('./controls/ZoomControl');
-var LocateControl = require('./controls/LocateControl');
-var LayersControl = require('./controls/LayersControl');
-var ToolboxControl = require('./controls/ToolboxControl');
+import ZoomControl from './controls/ZoomControl';
+import LocateControl from './controls/LocateControl';
+import LayersControl from './controls/LayersControl';
+import ToolboxControl from './controls/ToolboxControl';
 
 
-var map = L.map('map', {zoomControl: false, attributionControl: true});
+const map = new Leaflet.Map('map', {zoomControl: false, attributionControl: true});
 
-new LayersControl().addTo(map);
-new LocateControl().addTo(map);
 new ZoomControl().addTo(map);
+new LocateControl().addTo(map);
+new LayersControl().addTo(map);
 new ToolboxControl().addTo(map);
 
 
-module.exports = map;
+export default map;

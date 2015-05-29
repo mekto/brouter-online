@@ -1,8 +1,9 @@
-var L = require('leaflet');
-var Control = require('./Control');
-var config = require('../../config');
-
-require('../utils/Google');
+import Leaflet from 'leaflet';
+import React from 'react';
+import cs from 'classnames';
+import Control from './Control';
+import Google from '../utils/Google.js';
+import config from '../../config.js';
 
 
 var copyrights = {
@@ -20,7 +21,7 @@ var leafletLayer = function(name, url, attribution) {
   return {
     name: name,
     create: function() {
-      return L.tileLayer(url, {attribution: attribution});
+      return new Leaflet.TileLayer(url, {attribution: attribution});
     }
   };
 };
@@ -30,7 +31,7 @@ var mapboxLayer = function(name, type, attribution) {
     name: name,
     create: function() {
       var url = 'https://{s}.tiles.mapbox.com/v4/' + type + '/{z}/{x}/{y}.png?access_token=' + config.mapboxAccessToken;
-      return L.tileLayer(url, {attribution: attribution});
+      return new Leaflet.TileLayer(url, {attribution: attribution});
     }
   };
 };
@@ -39,7 +40,7 @@ var googleLayer = function(name, style, attribution) {
   return {
     name: name,
     create: function(variant) {
-      return L.Google.tileLayer(style, {layer: variant, attribution: attribution});
+      return new Google.TileLayer(style, {layer: variant, attribution: attribution});
     }
   };
 };
@@ -65,94 +66,154 @@ var overlays = [
 ];
 
 
-var LayersControl = Control.extend({
-  position: 'topright',
-  template: require('./templates/layers.html'),
-  data: {expanded: false, activeLayer: null, activeOverlays: {}, layers: baseLayers, overlays: overlays},
+class LayersComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: false,
+      activeLayer: null,
+      activeOverlays: {},
+    };
+  }
 
   toggleMenu() {
-    this.data.expanded = !this.data.expanded;
-  },
+    this.setState({expanded: !this.state.expanded});
+  }
 
   closeMenu() {
-    this.data.expanded = false;
-  },
+    this.setState({expanded: false});
+  }
 
   setLayer(layer) {
-    var activeLayer = this.data.activeLayer;
+    var activeLayer = this.state.activeLayer;
     if (layer === activeLayer)
       return false;
 
     if (activeLayer) {
-      this.map.removeLayer(activeLayer.layer);
+      this.props.map.removeLayer(activeLayer.layer);
       delete activeLayer.layer;
     }
-    this.data.activeLayer = activeLayer = layer;
+    activeLayer = layer;
     activeLayer.layer = layer.create();
-    this.map.addLayer(activeLayer.layer);
-
-    return false;
-  },
+    this.props.map.addLayer(activeLayer.layer);
+    this.setState({activeLayer});
+  }
 
   toggleOverlay(overlay) {
-    var activeOverlays = this.data.activeOverlays;
+    var activeOverlays = this.state.activeOverlays;
     var layer = activeOverlays[overlay.name];
     if (!layer) {
       layer = activeOverlays[overlay.name] = overlay.create();
-      this.map.addLayer(layer);
+      this.props.map.addLayer(layer);
       layer.bringToFront();
     } else {
-      this.map.removeLayer(layer);
+      this.props.map.removeLayer(layer);
       delete activeOverlays[overlay.name];
     }
-    return false;
-  },
-
-  addTo(map) {
-    this.supr(map);
-    this.setLayer(this.data.layers[1]);
-
-    this.map.on('click', function() {
-      if (this.data.expanded) {
-        this.$update('expanded', false);
-      }
-    }.bind(this));
+    this.setState({activeOverlays: activeOverlays});
   }
-});
+
+  componentDidMount() {
+    this.setLayer(baseLayers[1]);
+
+    this.props.map.on('click', () => {
+      if (this.state.expanded) {
+        this.closeMenu();
+      }
+    });
+  }
+
+  render() {
+    return (
+      <div className="layers-control">
+        <div className="leaflet-bar">
+          <a className="control-button" onClick={this.toggleMenu.bind(this)} title="Show layers">
+            <svg width="16" height="16" className="icon icon-layers" viewBox="0 0 23.303 21.461">
+              <polygon points="23.303,6.333 11.652,0 0,6.333 11.652,12.667" className="fill" />
+              <polygon points="11.652,14.709 2.166,9.555 0,10.732 11.652,17.063 23.303,10.732 21.137,9.555" className="fill" />
+              <polygon points="11.652,19.107 2.166,13.952 0,15.127 11.652,21.461 23.303,15.127 21.137,13.952" className="fill" />
+            </svg>
+          </a>
+        </div>
+
+        {this.state.expanded && this.renderMenu()}
+      </div>
+    );
+  }
+
+  renderMenu() {
+    return (
+      <div className="layers-menu">
+        <h5>Layers</h5>
+        {baseLayers.map((layer, i) =>
+          <PreviewMinimap
+            key={i}
+            map={this.props.map}
+            layer={layer}
+            active={layer === this.state.activeLayer}
+            onClick={() => this.setLayer(layer)}/>
+        )}
+
+        <br className="clear"/>
+
+        <h5>Overlays</h5>
+        {overlays.map((overlay, i) =>
+          <PreviewMinimap
+            key={i}
+            map={this.props.map}
+            layer={overlay}
+            active={!!this.state.activeOverlays[overlay.name]}
+            onClick={() => this.toggleOverlay(overlay)}/>
+        )}
+      </div>
+    );
+  }
+}
 
 
-var PrevewMinimap = Control.extend({
-  name: 'PreviewMinimap',
-  template: require('./templates/preview-minimap.html'),
-
-  init() {
-    this.map = this.data.map;
-    this.minimap = L.map(this.$refs.map, {attributionControl: false, zoomControl: false, dragging: false});
-    this.layer = this.data.layer.create();
-
+class PreviewMinimap extends React.Component {
+  constructor(props) {
+    super(props);
+    this.updateView = this.updateView.bind(this);
+  }
+  componentDidMount() {
+    this.layer = this.props.layer.create();
+    this.minimap = new Leaflet.Map(this.refs.map.getDOMNode(), {
+      attributionControl: false,
+      zoomControl: false,
+      dragging: false,
+    });
     this.minimap.addLayer(this.layer);
     this.minimap.dragging.disable();
     this.minimap.touchZoom.disable();
     this.minimap.doubleClickZoom.disable();
     this.minimap.scrollWheelZoom.disable();
-    this.map.on('moveend', this.updateView.bind(this));
 
-    setTimeout(function() {
-      this.updateView();
-    }.bind(this));
-  },
-
-  updateView() {
-    this.minimap.invalidateSize();
-    this.minimap.setView(this.map.getCenter(), Math.max(this.map.getZoom() - 1, 4));
-  },
-
-  destroy() {
-    this.map.off('moveend', this.updateView);
+    this.props.map.on('moveend', this.updateView);
+    this.updateView();
+  }
+  componentWillUnmount() {
     this.minimap.removeLayer(this.layer);
     this.minimap.remove();
   }
+  updateView() {
+    this.props.map.off('moveend', this.updateView);
+    this.minimap.invalidateSize();
+    this.minimap.setView(this.props.map.getCenter(), Math.max(this.props.map.getZoom() - 1, 4));
+  }
+  render() {
+    return (
+      <div className={cs('preview-minimap', {active: this.props.active})} onClick={this.props.onClick}>
+        <span className="name">{this.props.layer.name}</span>
+        <div className="minimap-container">
+          <div className="minimap" ref="map"></div>
+        </div>
+      </div>
+    );
+  }
+}
+
+
+export default Control.extend({
+  getComponentClass() { return LayersComponent; }
 });
-
-
-module.exports = LayersControl;
