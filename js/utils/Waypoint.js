@@ -1,4 +1,5 @@
 import L from 'leaflet';
+import geocoder from '../geocoder';
 
 
 class Waypoint {
@@ -8,7 +9,7 @@ class Waypoint {
     this.text = '';
     this.marker = null;
   }
-  setPosition(pos) {
+  setPosition(pos, callback) {
     if (!this.marker) {
       this.marker = new L.Marker(pos.latlng, {
         icon: this.owner.createWaypointIcon(this),
@@ -27,9 +28,19 @@ class Waypoint {
 
     this.text = pos.address;
     if (this.text === undefined) {
-      let latlng = pos.latlng;
-      this.text = `${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}`;
+      this.queryAddress(callback);
     }
+    if (callback) callback();
+  }
+  queryAddress(callback) {
+    let latlng = this.marker.getLatLng();
+    this.text = `${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}`;
+
+    geocoder.reverse(latlng, (result) => {
+      if (result)
+        this.text = result.formatted;
+      if (callback) callback();
+    });
   }
   clear() {
     this.text = '';

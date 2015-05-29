@@ -58,8 +58,7 @@ class ToolboxComponent extends React.Component {
   }
 
   queryWaypoint(waypoint) {
-    var latlng = waypoint.marker.getLatLng();
-    waypoint.text = `${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}`;
+    waypoint.queryAddress(this.forceUpdate.bind(this));
     this.calculateRoute(false, false);
   }
 
@@ -159,7 +158,7 @@ class ToolboxComponent extends React.Component {
     } else {
       waypoint = this.state.waypoints.insert(this.state.waypoints.length - 1);
     }
-    waypoint.setPosition({latlng});
+    waypoint.setPosition({latlng}, this.forceUpdate.bind(this));
     this.calculateRoute();
   }
 
