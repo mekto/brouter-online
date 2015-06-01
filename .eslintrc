@@ -8,7 +8,9 @@
         "comma-dangle": [0],
         "curly": [0],
         "no-underscore-dangle": [0],
-        "camelcase": [1, {"properties": "never"}]
+        "camelcase": [1, {"properties": "never"}],
+        "no-use-before-define": [2, "nofunc"],
+        "no-console": [1]
     },
     "env": {
         "es6": true,

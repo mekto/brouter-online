@@ -202,16 +202,7 @@ class ToolboxComponent extends React.Component {
           <div className="swap" onClick={this.swap.bind(this)}>
             <SVGImport src={require('swap.svg')}/>
           </div>}
-
         </section>
-
-        {/*
-        <div className="typeahead-dropdown-menu">
-          <div className="item active">Warszawa</div>
-          <div className="item">Katowice</div>
-          <div className="item">Kraków</div>
-        </div>
-        */}
       </div>
     );
   }
@@ -332,6 +323,28 @@ class WaypointList extends React.Component {
     }
   }
 
+  onKeyDown(waypoint, e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const address = e.target.value;
+
+      geocoder.query(address, results => {
+        if (results && results[0]) {
+          var result = results[0];
+          result.address = address;
+
+          waypoint.setPosition(result);
+          this.props.onChangePosition(waypoint);
+        }
+      });
+    }
+  }
+
+  onChange(waypoint, e) {
+    waypoint.text = e.target.value;
+    this.setState({});
+  }
+
   render() {
     return (
       <div className="inner">
@@ -341,39 +354,10 @@ class WaypointList extends React.Component {
               <SVGImport src={require('grip.svg')}/>
               <span className="icon">{utils.indexToLetter(i)}</span>
             </span>
-            <WaypointInput waypoint={waypoint} onChangePosition={this.props.onChangePosition}/>
+            <input type="text" value={waypoint.text} onChange={this.onChange.bind(this, waypoint)} onKeyDown={this.onKeyDown.bind(this, waypoint)}/>
           </div>
         )}
       </div>
-    );
-  }
-}
-
-
-class WaypointInput extends React.Component {
-  handleChange(e) {
-    this.props.waypoint.text = e.target.value;
-    this.setState({});
-  }
-
-  handleKeyDown(e) {
-    if (e.key === 'Enter') {
-      geocoder.query(e.target.value, result => {
-        if (result) {
-          this.props.waypoint.setPosition(result);
-          this.props.onChangePosition(this.props.waypoint);
-        }
-      });
-    }
-  }
-
-  render() {
-    return (
-      <input
-        type="text"
-        value={this.props.waypoint.text}
-        onChange={this.handleChange.bind(this)}
-        onKeyDown={this.handleKeyDown.bind(this)}/>
     );
   }
 }
