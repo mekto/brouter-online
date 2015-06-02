@@ -32,6 +32,11 @@ class Waypoint {
     }
     if (callback) callback();
   }
+  getLatLng() {
+    if (this.marker)
+      return this.marker.getLatLng();
+    return null;
+  }
   queryAddress(callback) {
     let latlng = this.marker.getLatLng();
     this.text = `${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}`;

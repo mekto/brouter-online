@@ -1,22 +1,17 @@
 import Leaflet from 'leaflet';
 import React from 'react';
-import cs from 'classnames';
+import cx from 'classnames';
+import store from '../store';
 
 
 class ContextMenu extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      visible: false,
-      latlng: null,
-    };
+    this.state = {visible: false, latLng: null};
   }
 
-  show(latlng) {
-    this.setState({
-      visible: true,
-      latlng: latlng,
-    });
+  show(latLng) {
+    this.setState({visible: true, latLng: latLng});
   }
 
   hide() {
@@ -24,24 +19,24 @@ class ContextMenu extends React.Component {
   }
 
   setWaypoint(type) {
-    this.props.onAction('setWaypoint', { waypointType: type, latlng: this.state.latlng });
+    store.setWaypoint(type, this.state.latLng);
     this.hide();
   }
 
   centerMap() {
-    this.props.map.panTo(this.state.latlng);
+    this.props.map.panTo(this.state.latLng);
     this.hide();
   }
 
   render() {
-    let latlng = this.state.latlng;
+    const latLng = this.state.latLng;
     return (
-      <div className={cs('contextmenu', {hide: !this.state.visible})}>
-        {latlng && <div className="static text-muted"><small>{latlng.lat.toFixed(6)}, {latlng.lng.toFixed(6)}</small></div>}
+      <div className={cx('contextmenu', {hide: !this.state.visible})}>
+        {latLng && <div className="static text-muted"><small>{latLng.lat.toFixed(6)}, {latLng.lng.toFixed(6)}</small></div>}
         <div className="divider"></div>
-        <div className="item" onClick={() => this.setWaypoint('start')}>Set as start</div>
-        <div className="item" onClick={() => this.setWaypoint('via')}>Set intermediate</div>
-        <div className="item" onClick={() => this.setWaypoint('end')}>Set as end</div>
+        <div className="item" onClick={()=>{ this.setWaypoint('start'); }}>Directions from here</div>
+        <div className="item" onClick={()=>{ this.setWaypoint('end'); }}>Directions to here</div>
+        <div className="item" onClick={()=>{ this.setWaypoint('via'); }}>Via here</div>
         <div className="divider"></div>
         <div className="item" onClick={this.centerMap.bind(this)}>Center map here</div>
       </div>
