@@ -1,4 +1,4 @@
+import Sortable from './Sortable';
 import SVGImport from './SVGImport';
 
-
-export {SVGImport};
+export {Sortable, SVGImport};

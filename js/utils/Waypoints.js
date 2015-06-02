@@ -27,8 +27,14 @@ class Waypoints extends Array {
     }
     this.fire('remove', { waypoint: waypoint });
   }
-  swap() {
-    this.unshift(this.pop());
+  swap(first, second) {
+    if (first === undefined) {
+      this.unshift(this.pop());
+    } else {
+      const fromIndex = this.indexOf(first);
+      const toIndex = this.indexOf(second);
+      this.splice(toIndex, 0, this.splice(fromIndex, 1)[0]);
+    }
     this.updateWaypointMarkers();
   }
   get first() {

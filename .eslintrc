@@ -9,7 +9,7 @@
         "curly": [0],
         "no-underscore-dangle": [0],
         "camelcase": [1, {"properties": "never"}],
-        "no-use-before-define": [2, "nofunc"],
+        "no-use-before-define": [0],
         "no-console": [1],
         "no-shadow": [0]
     },

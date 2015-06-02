@@ -5,7 +5,7 @@ import store, {messages} from '../store';
 import profiles, {profileOptions} from '../profiles';
 import util from '../util';
 import config from '../../config';
-import {SVGImport} from '../components';
+import {Sortable, SVGImport} from '../components';
 
 
 class ToolboxComponent extends React.Component {
@@ -153,66 +153,23 @@ class ProfileSection extends React.Component {
 
 
 class WaypointList extends React.Component {
-  setHandle(handle) {
-    this.handle = handle;
-  }
-
-  dragOver(waypoint, e) {
-    e.preventDefault();
-    if (this.draggedWaypoint === waypoint)
-      return;
-
-    var items = this.props.waypoints;
-    var fromIndex = items.indexOf(this.draggedWaypoint);
-    var toIndex = items.indexOf(waypoint);
-
-    items.splice(toIndex, 0, items.splice(fromIndex, 1)[0]);
-    this.sorted = true;
-    this.setState({});
-  }
-
-  dragStart(waypoint, e) {
-    if (!e.target.contains(this.handle)) {
-      e.preventDefault();
-    }
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', '1');
-    this.draggedWaypoint = waypoint;
-    this.dragged = e.target;
-    this.sorted = false;
-    this.handle = null;
-  }
-
-  dragEnd() {
-    if (this.dragged) {
-      this.dragged = null;
-      this.draggedWaypoint = null;
-    }
-    if (this.sorted) {
-      this.props.waypoints.updateWaypointMarkers();
-      if (!store.calculateRoute())
-        store.forceUpdate();
-      this.sorted = false;
-    }
-  }
-
   onEnter(waypoint, e) {
     store.geocode(waypoint, e.target.value);
   }
 
   render() {
     return (
-      <div className="inner">
+      <Sortable className="inner" swapItems={store.swapWaypoints.bind(store)} onSort={store.calculateRoute.bind(store)}>
         {this.props.waypoints.map((waypoint, i) =>
-          <div key={i} className="waypoint" draggable="true" onDragOver={this.dragOver.bind(this, waypoint)} onDragStart={this.dragStart.bind(this, waypoint)} onDrop={this.dragEnd.bind(this)} onDragEnd={this.dragEnd.bind(this)}>
-            <span className="label" onMouseEnter={(e) => this.setHandle(e.target)} onMouseLeave={() => this.setHandle(null)}>
+          <Sortable.Item className="waypoint" item={waypoint} key={i}>
+            <Sortable.Handle className="label">
               <SVGImport src={require('grip.svg')}/>
               <span className="icon">{util.indexToLetter(i)}</span>
-            </span>
+            </Sortable.Handle>
             <WaypointInput value={waypoint.text} onEnter={this.onEnter.bind(this, waypoint)}/>
-          </div>
+          </Sortable.Item>
         )}
-      </div>
+      </Sortable>
     );
   }
 }

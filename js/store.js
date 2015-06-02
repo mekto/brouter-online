@@ -139,10 +139,13 @@ class MapStore extends Store {
       this.forceUpdate();
   }
 
-  swapWaypoints() {
-    this.state.waypoints.swap();
-    if (!this.calculateRoute())
+  swapWaypoints(first, second) {
+    this.state.waypoints.swap(first, second);
+
+    // do not calculate route if swapping first and second
+    if (first || !this.calculateRoute()) {
       this.forceUpdate();
+    }
   }
 
   geocode(waypoint, address) {

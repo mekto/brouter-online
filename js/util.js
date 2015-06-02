@@ -83,6 +83,17 @@ function pick(obj, props) {
 }
 
 
+function skip(obj, props) {
+  const rv = {};
+  Object.keys(obj).forEach(key => {
+    if (props.indexOf(key) === -1) {
+      rv[key] = obj[key];
+    }
+  });
+  return rv;
+}
+
+
 function keyMirror(obj) {
   const rv = {};
   Object.keys(obj).forEach(key => {
@@ -94,5 +105,5 @@ function keyMirror(obj) {
 
 export default {
   calculateDistance, format, km, indexToLetter, bindMethods,
-  isEmpty, toArray, toObject, indexBy, pick, keyMirror
+  isEmpty, toArray, toObject, indexBy, pick, skip, keyMirror,
 };
