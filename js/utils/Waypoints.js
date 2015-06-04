@@ -25,6 +25,7 @@ class Waypoints extends Array {
       waypoint.clear();
       this.splice(idx, 1);
     }
+    this.updateWaypointMarkers();
     this.fire('remove', { waypoint: waypoint });
   }
   swap(first, second) {

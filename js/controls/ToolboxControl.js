@@ -5,7 +5,7 @@ import store, {messages} from '../store';
 import profiles, {profileOptions} from '../profiles';
 import util from '../util';
 import config from '../../config';
-import {Sortable, SVGImport} from '../components';
+import {Sortable, SVGImport, RouteCard} from '../components';
 
 
 class ToolboxComponent extends React.Component {
@@ -74,16 +74,7 @@ class RouteCardsSection extends React.Component {
     return (
       <div>
         {this.props.routes.map((route, i) =>
-          <section key={i} className="card">
-           <div className="flex s-b">
-             <div>
-               <strong>{route.from.text}</strong> - <strong>{route.to.text}</strong>
-             </div>
-             <div>
-               <small className="text-muted nowrap">{util.km(route.trackLength)}</small>
-             </div>
-           </div>
-         </section>)}
+          <RouteCard route={route} key={i}/>)}
       </div>
     );
   }

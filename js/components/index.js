@@ -1,4 +1,6 @@
 import Sortable from './Sortable';
 import SVGImport from './SVGImport';
 
-export {Sortable, SVGImport};
+import RouteCard from './RouteCard';
+
+export {Sortable, SVGImport, RouteCard};

@@ -1,11 +1,11 @@
 * { box-sizing: border-box; }
 body, html, #map { size: 100%; margin: 0; padding: 0; line-height: 1.4em; }
-body { font-size: 13px; font-family: Arial; color: $text-color; }
+body { font-size: 13px; font-family: Arial, sans-serif; color: $text-color; }
 input { font-size: inherit; }
 small { font-size: 11px; }
 a { cursor: pointer; }
 
-.text-muted { color: #777; }
+.text-muted { color: #999; }
 .clear { clear: both; }
 .hide { display: none; }
 .pull-right { float: right; }
@@ -105,9 +105,10 @@ button:active, button.active { border: 1px solid silver; box-shadow: inset 1px 1
   }
 }
 
-.badge { display: inline-block; size: 14px; line-height: @height; text-align: center; border-radius: 50%; background-color: transparent; cursor: pointer; }
+.badge { display: inline-block; size: 14px; line-height: @height; font-size: 11px; text-align: center; border-radius: 50%; background-color: transparent; cursor: pointer; }
 .badge:hover { background-color: silver; }
 .badge.active { background-color: $secondary-color; color: white; }
+.badge.muted { background-color: #eee; }
 
 
 .trailer-line { stroke-dasharray: 7 3; stroke-dashoffset: 0; animation: dash 2s linear infinite; }

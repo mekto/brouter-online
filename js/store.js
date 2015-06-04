@@ -14,6 +14,7 @@ const messages = util.keyMirror({
   DISTANCE_TOO_LONG: null,
   DISTANCE_TOO_LONG_FOR_AUTOCALCULATION: null,
 });
+const fitOptions = {paddingTopLeft: [250, 20]};
 
 
 class MapStore extends Store {
@@ -51,12 +52,10 @@ class MapStore extends Store {
     const waypoints = this.state.waypoints.getWithMarkers();
     const routes = this.state.routes;
     const profile = this.state.profile;
-    const profileSettings = this.state.profileSettings;
+    const profileSettings = Object.assign({}, this.state.profileSettings);
     const routeIndex = this.state.routeIndex;
     const latLngs = waypoints.map(waypoint => waypoint.getLatLng());
     const distance = util.calculateDistance(latLngs);
-    const fitOptions = {paddingTopLeft: [250, 20]};
-
 
     if (waypoints.length < 2) {
       return false;
@@ -84,7 +83,7 @@ class MapStore extends Store {
 
     routing.route(waypoints, profile.getSource(profileSettings), routeIndex, (geojson) => {
       if (geojson) {
-        const route = new Route(geojson, waypoints);
+        const route = new Route(geojson, waypoints, profile, profileSettings, routeIndex, routes.getFreeColor());
         route.addTo(this.map);
         routes.push(route);
 
@@ -161,6 +160,21 @@ class MapStore extends Store {
         }
       }
     });
+  }
+
+  fitRoute(route) {
+    this.map.fitBounds(route.layer.getBounds(), fitOptions);
+  }
+
+  toggleRouteLock(route) {
+    route.locked = !route.locked;
+    this.forceUpdate();
+  }
+
+  removeRoute(route) {
+    const routes = this.state.routes;
+    routes.remove(route);
+    this.forceUpdate();
   }
 
   onWaypointDragEnd(event) {

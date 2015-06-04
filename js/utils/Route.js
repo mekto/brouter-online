@@ -2,7 +2,7 @@ import L from 'leaflet';
 
 
 class Route {
-  constructor(geojson, waypoints) {
+  constructor(geojson, waypoints, profile, profileSettings, routeIndex, color) {
     this.waypoints = waypoints.map(function(waypoint) {
       return {
         text: waypoint.text,
@@ -10,10 +10,17 @@ class Route {
       };
     });
     this.geojson = geojson;
+    this.profile = profile;
+    this.profileSettings = profileSettings;
+    this.routeIndex = routeIndex;
+    this.color = color;
     this.layer = null;
+    this.locked = false;
   }
   addTo(map) {
-    this.layer = L.geoJson(this.geojson);
+    this.layer = L.geoJson(this.geojson, {
+      style: () => ({color: this.color})
+    });
     this.layer.addTo(map);
     return this;
   }
