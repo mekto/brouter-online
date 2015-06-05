@@ -1,4 +1,4 @@
-import L from 'leaflet';
+import Leaflet from 'leaflet';
 
 
 class Route {
@@ -18,7 +18,7 @@ class Route {
     this.locked = false;
   }
   addTo(map) {
-    this.layer = L.geoJson(this.geojson, {
+    this.layer = Leaflet.geoJson(this.geojson, {
       style: () => ({color: this.color})
     });
     this.layer.addTo(map);
@@ -50,6 +50,9 @@ class Route {
   }
   get cost() {
     return parseInt(this.properties.cost);
+  }
+  get coordinates() {
+    return this.geojson.features[0].geometry.coordinates;
   }
 }
 
