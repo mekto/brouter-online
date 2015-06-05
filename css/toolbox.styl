@@ -90,13 +90,12 @@
   width: 100%;
   font-size: 13px;
   background-color: white;
-  border-radius: 0px;
   position: relative;
   box-shadow: 2px 2px 2px rgba($text-color, .2);
   margin-top: 11px;
   margin-bottom: 0;
   .inner {
-    padding: 10px 12px 0;
+    padding: 10px 12px 5px;
   }
   .actions {
     flex-shrink: 0;
@@ -117,6 +116,7 @@
   &:hover {
     .actions a { opacity: 1; }
   }
+  .separation-dot { display: inline-block; margin: 0 5px; }
 
   .icon-thumb-tack { position: relative; top: 1px; }
   .actions a.active .icon-thumb-tack .fill { fill: $secondary-color; }
@@ -124,12 +124,28 @@
 
 .elevation-chart {
   size: 100% 80px;
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   vertical-align: top;
 
-  .line { fill: none; stroke: saturate(lighten($secondary-color, 50%), 90%); stroke-width: 5px; }
+  .line { fill: none; stroke: saturate(lighten($secondary-color, 50%), 90%); stroke-width: 3px; }
   .area { fill: saturate(lighten($secondary-color, 80%), 90%); stroke: none; }
+
+  .axis, .tick { stroke: #888; stroke-width: 1px; shape-rendering: crispEdges; }
+  .axis-label, .tick-label { font-size: 10px; fill: #555; }
+  .x-axis .tick-label { text-anchor: middle; }
+  .y-axis .tick-label { text-anchor: end; }
 }
+
+.guide { stroke: #999; stroke-width: 1px; stroke-dasharray: 4 1; pointer-events: none; shape-rendering: crispEdges; }
+.guide-label { font-size: 10px; background-color: rgba(white, .8); fill: #444; }
+.labels-left .guide-label { text-anchor: end; }
+
+.height-indicator {
+  .guide { stroke-dasharray: none; stroke: #555; }
+  circle { fill: white; stroke: #555; stroke-width: 1px; }
+}
+
 
 .info {
   width: 100%;

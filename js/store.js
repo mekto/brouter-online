@@ -14,7 +14,7 @@ const messages = util.keyMirror({
   DISTANCE_TOO_LONG: null,
   DISTANCE_TOO_LONG_FOR_AUTOCALCULATION: null,
 });
-const fitOptions = {paddingTopLeft: [250, 20]};
+const fitOptions = {paddingTopLeft: [400, 20]};
 
 
 class MapStore extends Store {
@@ -175,6 +175,10 @@ class MapStore extends Store {
     const routes = this.state.routes;
     routes.remove(route);
     this.forceUpdate();
+  }
+
+  panTo(latLng) {
+    this.map.panTo(Leaflet.latLng(latLng));
   }
 
   onWaypointDragEnd(event) {

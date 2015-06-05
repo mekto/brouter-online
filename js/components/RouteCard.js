@@ -14,9 +14,9 @@ export default class RouteCard extends React.Component {
             <div>
               <strong>{route.from.text}</strong> - <strong>{route.to.text}</strong><br/>
               <small className="text-muted nowrap">
-                {util.km(route.trackLength)} &nbsp; &middot; &nbsp;{' '}
-                {route.profile.name}{' '}
-                <span className="badge muted">{route.routeIndex + 1}</span>
+                <strong>{util.km(route.trackLength)}</strong>
+                <span className="separation-dot">·</span>
+                {route.profile.name} <span className="badge muted">{route.routeIndex + 1}</span>
               </small>
             </div>
             <div className="actions">

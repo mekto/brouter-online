@@ -1,6 +1,5 @@
-
-function km(valueInMeters) {
-  return +(valueInMeters / 1000).toFixed(1) + ' km';
+function km(valueInMeters, n=1) {
+  return +(valueInMeters / 1000).toFixed(n) + ' km';
 }
 
 
@@ -104,6 +103,6 @@ function keyMirror(obj) {
 
 
 export default {
-  calculateDistance, format, km, indexToLetter, bindMethods,
+  km, indexToLetter, calculateDistance, format, bindMethods,
   isEmpty, toArray, toObject, indexBy, pick, skip, keyMirror,
 };
