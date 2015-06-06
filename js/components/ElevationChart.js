@@ -2,12 +2,13 @@ import React from 'react';
 import Leaflet from 'leaflet';
 import util from '../util';
 import store from '../store';
+import PureComponent from './PureComponent';
 
 
 const MIN_ALTITUDE_SPAN = 160;
 
 
-export default class ElevationChart extends React.Component {
+export default class ElevationChart extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
