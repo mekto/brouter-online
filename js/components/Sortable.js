@@ -3,6 +3,13 @@ import util from '../util';
 
 
 class Sortable extends React.Component {
+
+  static propTypes = {
+    swapItems: React.PropTypes.func.isRequired,
+    onSort: React.PropTypes.func,
+  }
+  static defaultProps = { onSort: () => {} }
+
   onDragOver(item, event) {
     if (!this.dragged || this.dragged === item)
       return;
@@ -59,12 +66,6 @@ class Sortable extends React.Component {
     });
   }
 }
-
-Sortable.propTypes = {
-  swapItems: React.PropTypes.func.isRequired,
-  onSort: React.PropTypes.func,
-};
-Sortable.defaultProps = { onSort: () => {} };
 
 
 class Item extends React.Component {
