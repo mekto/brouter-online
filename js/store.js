@@ -22,52 +22,50 @@ class MapStore extends Store {
     super();
     this.map = require('./map');
 
-    const waypoints = new Waypoints();
-    const routes = new Routes();
-    const profile = profiles[0];
-    const routeIndex = 0;
-    const isPending = false;
-    const message = null;
-    const profileSettings = util.toObject(profileOptions.map((option) => {
+    this.waypoints = new Waypoints();
+    this.routes = new Routes();
+    this.profile = profiles[0];
+    this.routeIndex = 0;
+    this.isPending = false;
+    this.message = null;
+    this.profileSettings = util.toObject(profileOptions.map((option) => {
       return [option.id, option.defaultValue];
     }));
 
-    waypoints._map = this.map;
-    waypoints.add();
-    waypoints.add();
+    this.waypoints._map = this.map;
+    this.waypoints.add();
+    this.waypoints.add();
 
-    waypoints.on('dragend', this.onWaypointDragEnd.bind(this));
-    waypoints.on('remove', this.onWaypointRemove.bind(this));
-
-    this.state = {
-      waypoints, routes, profile, profileSettings,
-      routeIndex, isPending, message,
-    };
+    this.waypoints.on('dragend', this.onWaypointDragEnd.bind(this));
+    this.waypoints.on('remove', this.onWaypointRemove.bind(this));
   }
 
   calculateRoute(options={}) {
     const force = options.force || false;
     const fit = options.fit || true;
 
-    const waypoints = this.state.waypoints.getWithMarkers();
-    const routes = this.state.routes;
-    const profile = this.state.profile;
-    const profileSettings = Object.assign({}, this.state.profileSettings);
-    const routeIndex = this.state.routeIndex;
+    const waypoints = this.waypoints.getWithMarkers();
+    const routes = this.routes;
+    const profile = this.profile;
+    const profileSettings = Object.assign({}, this.profileSettings);
+    const routeIndex = this.routeIndex;
     const latLngs = waypoints.map(waypoint => waypoint.getLatLng());
     const distance = util.calculateDistance(latLngs);
 
     if (waypoints.length < 2) {
+      this.emitChange();
       return false;
     }
 
     routes.clear();
     if (distance > config.maxBrouterCalculationDistance) {
-      this.setState({message: messages.DISTANCE_TOO_LONG});
+      this.message = messages.DISTANCE_TOO_LONG;
+      this.emitChange();
       return false;
     }
     else if (distance > config.maxBrouterAutoCalculationDistance && !force) {
-      this.setState({message: messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION});
+      this.message = messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION;
+      this.emitChange();
       return false;
     }
 
@@ -95,56 +93,57 @@ class MapStore extends Store {
         this.map.removeLayer(this.trailer);
         delete this.trailer;
       }
-      this.setState({isPending: false});
+      this.isPending = false;
+      this.emitChange();
     });
 
-    this.setState({isPending: true, message: null});
+    this.isPending = true;
+    this.message = null;
+    this.emitChange();
 
     return true;
   }
 
   toggleProfileSetting(id, value) {
-    const profileSettings = this.state.profileSettings;
+    const profileSettings = this.profileSettings;
     profileSettings[id] = value;
 
     if (id === 'ignore_cycleroutes' && value)
       profileSettings.stick_to_cycleroutes = false;
     else if (id === 'stick_to_cycleroutes' && value)
       profileSettings.ignore_cycleroutes = false;
-    this.setState({profileSettings});
+    this.profileSettings = profileSettings;
     this.calculateRoute();
   }
 
   setProfile(profile) {
-    this.setState({profile});
+    this.profile = profile;
     this.calculateRoute();
   }
 
   setRouteIndex(routeIndex) {
-    this.setState({routeIndex});
+    this.routeIndex = routeIndex;
     this.calculateRoute();
   }
 
   setWaypoint(type, latlng) {
-    const waypoints = this.state.waypoints;
+    const waypoints = this.waypoints;
     let waypoint;
     switch (type) {
       case 'start': waypoint = waypoints.first; break;
       case 'end': waypoint = waypoints.last; break;
       case 'via': waypoint = waypoints.insert(waypoints.length - 1); break;
     }
-    waypoint.setPosition({latlng}, this.forceUpdate.bind(this));
-    if (!this.calculateRoute())
-      this.forceUpdate();
+    waypoint.setPosition({latlng}, this.emitChange.bind(this));
+    this.calculateRoute();
   }
 
   swapWaypoints(first, second) {
-    this.state.waypoints.swap(first, second);
+    this.waypoints.swap(first, second);
 
     // do not calculate route if swapping first and second
-    if (first || !this.calculateRoute()) {
-      this.forceUpdate();
-    }
+    if (first === undefined)
+      this.calculateRoute();
   }
 
   geocode(waypoint, address) {
@@ -156,7 +155,7 @@ class MapStore extends Store {
 
         if (!this.calculateRoute()) {
           this.map.setView(waypoint.getLatLng(), 14);
-          this.forceUpdate();
+          this.emitChange();
         }
       }
     });
@@ -168,13 +167,13 @@ class MapStore extends Store {
 
   toggleRouteLock(route) {
     route.locked = !route.locked;
-    this.forceUpdate();
+    this.emitChange();
   }
 
   removeRoute(route) {
-    const routes = this.state.routes;
+    const routes = this.routes;
     routes.remove(route);
-    this.forceUpdate();
+    this.emitChange();
   }
 
   panTo(latLng) {
@@ -183,9 +182,8 @@ class MapStore extends Store {
 
   onWaypointDragEnd(event) {
     const waypoint = event.waypoint;
-    waypoint.queryAddress(this.forceUpdate.bind(this));
-    if (!this.calculateRoute({fit: false}))
-      this.forceUpdate();
+    waypoint.queryAddress(this.emitChange.bind(this));
+    this.calculateRoute({fit: false});
   }
 
   onWaypointRemove() {

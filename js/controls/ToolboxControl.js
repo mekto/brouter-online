@@ -12,10 +12,22 @@ class ToolboxComponent extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = store.getStateAsObject();
-    store.addChangeListener(newState => {
-      this.setState(newState);
+    this.state = this.getStateFromStore();
+    store.addChangeListener(() => {
+      this.setState(this.getStateFromStore());
     });
+  }
+
+  getStateFromStore() {
+    return {
+      waypoints: store.waypoints,
+      routes: store.routes,
+      profile: store.profile,
+      routeIndex: store.routeIndex,
+      isPending: store.isPending,
+      message: store.message,
+      profileSettings: store.profileSettings,
+    };
   }
 
   render() {
