@@ -14,7 +14,7 @@ const messages = util.keyMirror({
   DISTANCE_TOO_LONG: null,
   DISTANCE_TOO_LONG_FOR_AUTOCALCULATION: null,
 });
-const fitOptions = {paddingTopLeft: [400, 20]};
+const fitOptions = {paddingTopLeft: [360, 20]};
 
 
 class MapStore extends Store {

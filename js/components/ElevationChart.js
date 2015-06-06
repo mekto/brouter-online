@@ -4,7 +4,7 @@ import util from '../util';
 import store from '../store';
 
 
-const MIN_ALTITUDE_SPAN = 120;
+const MIN_ALTITUDE_SPAN = 160;
 
 
 export default class ElevationChart extends React.Component {
