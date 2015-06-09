@@ -1,7 +1,7 @@
 import Leaflet from 'leaflet';
 import React from 'react';
 import cx from 'classnames';
-import store from '../store';
+import * as actions from '../actions';
 
 
 class ContextMenu extends React.Component {
@@ -19,7 +19,7 @@ class ContextMenu extends React.Component {
   }
 
   setWaypoint(type) {
-    store.setWaypoint(type, this.state.latLng);
+    actions.putWaypointAtLatLng(type, this.state.latLng);
     this.hide();
   }
 

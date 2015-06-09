@@ -1,5 +1,5 @@
 import React from 'react';
-import store from '../store';
+import * as actions from '../actions';
 import util from '../util';
 import {SVGImport, ElevationChart} from '.';
 
@@ -12,7 +12,7 @@ export default class RouteCard extends React.Component {
         <div className="inner">
           <div className="flex s-b">
             <div>
-              <strong>{route.from.text}</strong> - <strong>{route.to.text}</strong><br/>
+              <strong>{route.name}</strong><br/>
               <small className="text-muted nowrap">
                 <strong>{util.km(route.trackLength)}</strong>
                 <span className="separation-dot">·</span>
@@ -20,9 +20,9 @@ export default class RouteCard extends React.Component {
               </small>
             </div>
             <div className="actions">
-             <a onClick={()=>{ store.fitRoute(route); }}><SVGImport src={require('expand.svg')}/></a>
-             <a onClick={()=>{ store.toggleRouteLock(route); }} className={route.locked && 'active'}><SVGImport src={require('thumb-tack.svg')}/></a>
-             <a onClick={()=>{ store.removeRoute(route); }}><SVGImport src={require('x.svg')}/></a>
+             <a onClick={()=>{ actions.fitRoute(route); }}><SVGImport src={require('expand.svg')}/></a>
+             <a onClick={()=>{ actions.toggleRouteLock(route); }} className={route.locked && 'active'}><SVGImport src={require('thumb-tack.svg')}/></a>
+             <a onClick={()=>{ actions.deleteRoute(route); }}><SVGImport src={require('x.svg')}/></a>
             </div>
           </div>
         </div>

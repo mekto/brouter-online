@@ -1,40 +1,48 @@
 import React from 'react';
 import Control from './Control';
 import cx from 'classnames';
-import store, {messages} from '../store';
 import profiles, {profileOptions} from '../profiles';
 import util from '../util';
 import config from '../../config';
+import store from '../store';
 import {Sortable, SVGImport, RouteCard} from '../components';
+import {messages} from '../constants';
+import * as actions from '../actions';
+
+
+function getStateFromStores() {
+  return {
+    waypoints: store.waypoints,
+    routes: store.routes,
+    profile: store.profile,
+    routeIndex: store.routeIndex,
+    isPending: store.isPending,
+    message: store.message,
+    profileOptions: store.profileOptions,
+  };
+}
 
 
 class ToolboxComponent extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = this.getStateFromStore();
-    store.addChangeListener(() => {
-      this.setState(this.getStateFromStore());
-    });
+    this.state = getStateFromStores();
   }
 
-  getStateFromStore() {
-    return {
-      waypoints: store.waypoints,
-      routes: store.routes,
-      profile: store.profile,
-      routeIndex: store.routeIndex,
-      isPending: store.isPending,
-      message: store.message,
-      profileSettings: store.profileSettings,
-    };
+  componentDidMount() {
+    store.addChangeListener(this.onChange);
+  }
+
+  onChange = () => {
+    this.setState(getStateFromStores());
   }
 
   render() {
     return (
       <div className="toolbox">
         <WaypointsSection waypoints={this.state.waypoints} isPending={this.state.isPending}/>
-        <ProfileSection profile={this.state.profile} profileSettings={this.state.profileSettings}
+        <ProfileSection profile={this.state.profile} profileOptions={this.state.profileOptions}
           routeIndex={this.state.routeIndex}/>
         {this.renderMessagePanel()}
         <RouteCardsSection routes={this.state.routes}/>
@@ -52,7 +60,7 @@ class ToolboxComponent extends React.Component {
         {this.state.message === messages.DISTANCE_TOO_LONG &&
           <span>Can't calculate distances longer than {maxDistance} as the crow flies.</span>}
         {this.state.message === messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION &&
-          <span>Press <a onClick={()=>{ store.calculateRoute({force: true}); }}>Find route</a> button to calculate route.</span>}
+          <span>Press <a onClick={()=>{ actions.calculateRoute({force: true}); }}>Find route</a> button to calculate route.</span>}
       </div>
     );
   }
@@ -65,14 +73,14 @@ class WaypointsSection extends React.Component {
       <section className="waypoints">
         <WaypointList waypoints={this.props.waypoints}/>
 
-        <button className="search-button" onClick={()=>{ store.calculateRoute({force: true}); }}>
+        <button className="search-button" onClick={()=>{ actions.calculateRoute({force: true}); }}>
           {!this.props.isPending
             ? <SVGImport src={require('directions.svg')}/>
             : <SVGImport src={require('tail-spin.svg')}/>}
         </button>
 
-        {this.props.waypoints.length === 2 &&
-        <div className="swap" onClick={()=>{ store.swapWaypoints(); }}>
+        {this.props.waypoints.size === 2 &&
+        <div className="swap" onClick={()=>{ actions.swapWaypoints(); }}>
           <SVGImport src={require('swap.svg')}/>
         </div>}
       </section>
@@ -85,8 +93,8 @@ class RouteCardsSection extends React.Component {
   render() {
     return (
       <div>
-        {this.props.routes.map((route, i) =>
-          <RouteCard route={route} key={i}/>)}
+        {this.props.routes.toArray().map(route =>
+          <RouteCard route={route} key={route.id}/>)}
       </div>
     );
   }
@@ -117,7 +125,7 @@ class ProfileSection extends React.Component {
               {this.state.showProfileDropdown &&
               <div className="dropdown-menu">
                 {profiles.map((profile, i) =>
-                  <span key={i} className="item" onClick={()=>{ store.setProfile(profile); this.setState({showProfileDropdown: false}); }}>{profile.name}</span>
+                  <span key={i} className="item" onClick={()=>{ actions.setProfile(profile); this.setState({showProfileDropdown: false}); }}>{profile.name}</span>
                 )}
               </div>}
             </div>
@@ -125,7 +133,7 @@ class ProfileSection extends React.Component {
           <div className="field">
             <label>Route index:</label>
             {[0, 1, 2, 3].map((idx) =>
-              <span key={idx} className={cx('badge', {active: this.props.routeIndex === idx})} onClick={()=>{ store.setRouteIndex(idx); }}>{idx + 1}</span>
+              <span key={idx} className={cx('badge', {active: this.props.routeIndex === idx})} onClick={()=>{ actions.setRouteIndex(idx); }}>{idx + 1}</span>
             )}
           </div>
           <div className="auto"></div>
@@ -138,14 +146,14 @@ class ProfileSection extends React.Component {
 
         {this.props.profile.options && this.state.showProfileOptions &&
         <div className="profile-options">
-          {profileOptions.map((setting, i) =>
-            this.props.profile.options.indexOf(setting.id) > -1 &&
+          {profileOptions.map((option, i) =>
+            this.props.profile.options.indexOf(option.id) > -1 &&
               <label key={i}>
                 <input
                   type="checkbox"
-                  onChange={(e) => store.toggleProfileSetting(setting.id, e.target.checked)}
-                  checked={!!this.props.profileSettings[setting.id]}/>
-                  {setting.desc}
+                  onChange={(e) => actions.setProfileOption(option.id, e.target.checked)}
+                  checked={!!this.props.profileOptions.get(option.id)}/>
+                  {option.desc}
               </label>
           )}
         </div>}
@@ -156,20 +164,16 @@ class ProfileSection extends React.Component {
 
 
 class WaypointList extends React.Component {
-  onEnter(waypoint, e) {
-    store.geocode(waypoint, e.target.value);
-  }
-
   render() {
     return (
-      <Sortable className="inner" swapItems={store.swapWaypoints.bind(store)} onSort={store.calculateRoute.bind(store)}>
-        {this.props.waypoints.map((waypoint, i) =>
-          <Sortable.Item className="waypoint" item={waypoint} key={i}>
+      <Sortable className="inner" swapItems={actions.swapWaypoints} onSort={actions.calculateRoute}>
+        {this.props.waypoints.valueSeq().map((waypoint, i) =>
+          <Sortable.Item className="waypoint" item={waypoint} key={waypoint.id}>
             <Sortable.Handle className="label">
               <SVGImport src={require('grip.svg')}/>
               <span className="icon">{util.indexToLetter(i)}</span>
             </Sortable.Handle>
-            <WaypointInput value={waypoint.text} onEnter={this.onEnter.bind(this, waypoint)}/>
+            <WaypointInput value={waypoint.address} onEnter={(e)=> actions.onWaypointInputEnter(waypoint, e.target.value)}/>
           </Sortable.Item>
         )}
       </Sortable>

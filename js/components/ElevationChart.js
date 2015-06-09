@@ -1,7 +1,7 @@
 import React from 'react';
 import Leaflet from 'leaflet';
 import util from '../util';
-import store from '../store';
+import map from '../map';
 import PureComponent from './PureComponent';
 
 
@@ -123,7 +123,6 @@ export default class ElevationChart extends PureComponent {
 
   onShowGuide(event) {
     const guide = this._getHoverData(event);
-    const map = store.map;
     this.setState({guide});
 
     let container;
@@ -153,7 +152,7 @@ export default class ElevationChart extends PureComponent {
 
   onPan(event) {
     const {lat, lng} = this._getHoverData(event);
-    store.panTo([lat, lng]);
+    map.panTo([lat, lng]);
   }
 
   _getHoverData(event) {

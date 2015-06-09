@@ -1,23 +1,19 @@
-function km(valueInMeters, n=1) {
+export function id() {
+  return new Date().getTime().toString(36) + Math.floor(Math.random() * 9999).toString(36);
+}
+
+
+export function km(valueInMeters, n=1) {
   return +(valueInMeters / 1000).toFixed(n) + ' km';
 }
 
 
-function indexToLetter(index) {
+export function indexToLetter(index) {
   return String.fromCharCode(65 + index);
 }
 
 
-function calculateDistance(latlngs) {
-  var distance = 0, i;
-  for (i = 1; i < latlngs.length; ++i) {
-    distance += latlngs[i - 1].distanceTo(latlngs[i]);
-  }
-  return distance;
-}
-
-
-function format(string, params) {
+export function format(string, params) {
   Object.keys(params).forEach(function(key) {
     string = string.replace('{' + key + '}', params[key]);
   });
@@ -25,14 +21,14 @@ function format(string, params) {
 }
 
 
-function bindMethods(context, ...methods) {
+export function bindMethods(context, ...methods) {
   methods.forEach((method) => {
     context[method] = context[method].bind(context);
   });
 }
 
 
-function isEmpty(obj) {
+export function isEmpty(obj) {
   // null and undefined are "empty"
   if (obj === undefined || obj === null) return true;
 
@@ -48,7 +44,7 @@ function isEmpty(obj) {
 }
 
 
-function toArray(obj) {
+export function toArray(obj) {
   if (Array.isArray(obj))
     return obj;
   return Object.keys(obj).map(function(key) {
@@ -57,23 +53,23 @@ function toArray(obj) {
 }
 
 
-function toObject(array) {
-  var obj = {};
-  array.forEach(function(item) {
-    obj[item[0]] = item[1];
+export function toObject(array) {
+  const obj = {};
+  array.forEach(function([key, value]) {
+    obj[key] = value;
   });
   return obj;
 }
 
 
-function indexBy(key, array) {
+export function indexBy(key, array) {
   return toObject(array.map(function(item) {
     return [item[key], item];
   }));
 }
 
 
-function pick(obj, props) {
+export function pick(obj, props) {
   var rv = {};
   props.forEach(function(prop) {
     rv[prop] = obj[prop];
@@ -82,7 +78,7 @@ function pick(obj, props) {
 }
 
 
-function skip(obj, props) {
+export function skip(obj, props) {
   const rv = {};
   Object.keys(obj).forEach(key => {
     if (props.indexOf(key) === -1) {
@@ -93,16 +89,7 @@ function skip(obj, props) {
 }
 
 
-function keyMirror(obj) {
-  const rv = {};
-  Object.keys(obj).forEach(key => {
-    rv[key] = key;
-  });
-  return rv;
-}
-
-
 export default {
-  km, indexToLetter, calculateDistance, format, bindMethods,
-  isEmpty, toArray, toObject, indexBy, pick, skip, keyMirror,
+  id, km, indexToLetter, format, bindMethods,
+  isEmpty, toArray, toObject, indexBy, pick, skip,
 };

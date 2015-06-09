@@ -11,8 +11,6 @@ var webpackConfig = {
   resolve: {
     alias: {
       'leaflet': path.join(vendors, 'leaflet'),
-      'superagent': path.join(node_modules, 'superagent'),
-      'classnames': path.join(node_modules, 'classnames'),
       'eventemitter': path.join(node_modules, 'eventemitter3'),
     },
     modulesDirectories: ['web_modules', 'node_modules', 'svg'],

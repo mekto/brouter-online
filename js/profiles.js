@@ -1,3 +1,6 @@
+import {toObject} from './util';
+
+
 class Profile {
   constructor(id, name, source, options=null) {
     this.id = id;
@@ -18,7 +21,7 @@ class Profile {
   }
 }
 
-const profileOptions = [
+export const profileOptions = [
   ['consider_elevation', 'Consider elevation', true],
   ['allow_steps', 'Allow steps', true],
   ['allow_ferries', 'Allow ferries', true],
@@ -26,6 +29,8 @@ const profileOptions = [
   ['stick_to_cycleroutes', 'Stick to cycleroutes', false],
   ['avoid_unsafe', 'Avoid unsafe', false],
 ].map((item) => Object({'id': item[0], 'desc': item[1], 'defaultValue': item[2]}));
+
+export const profileOptionValues = toObject(profileOptions.map(option => ([option.id, option.defaultValue])));
 
 
 export default [
@@ -37,5 +42,3 @@ export default [
   ),
   new Profile('shortest', 'Shortest', require('./profiles/shortest.brf')),
 ];
-
-export {profileOptions};
