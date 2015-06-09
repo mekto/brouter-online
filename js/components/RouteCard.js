@@ -1,10 +1,10 @@
-import React from 'react';
 import * as actions from '../actions';
 import util from '../util';
 import {SVGImport, ElevationChart} from '.';
+import PureComponent from './PureComponent';
 
 
-export default class RouteCard extends React.Component {
+export default class RouteCard extends PureComponent {
   render() {
     const route = this.props.route;
     return (

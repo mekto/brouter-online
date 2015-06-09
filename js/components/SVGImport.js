@@ -1,7 +1,7 @@
-import React from 'react';
+import PureComponent from './PureComponent';
 
 
-export default class SVGImport extends React.Component {
+export default class SVGImport extends PureComponent {
   render() {
     return <span dangerouslySetInnerHTML={{__html: this.props.src}}></span>;
   }

@@ -5,7 +5,7 @@ import profiles, {profileOptions} from '../profiles';
 import util from '../util';
 import config from '../../config';
 import store from '../store';
-import {Sortable, SVGImport, RouteCard} from '../components';
+import {PureComponent, Sortable, SVGImport, RouteCard} from '../components';
 import {messages} from '../constants';
 import * as actions from '../actions';
 
@@ -23,7 +23,7 @@ function getStateFromStores() {
 }
 
 
-class ToolboxComponent extends React.Component {
+class ToolboxComponent extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -67,7 +67,7 @@ class ToolboxComponent extends React.Component {
 }
 
 
-class WaypointsSection extends React.Component {
+class WaypointsSection extends PureComponent {
   render() {
     return (
       <section className="waypoints">
@@ -89,7 +89,7 @@ class WaypointsSection extends React.Component {
 }
 
 
-class RouteCardsSection extends React.Component {
+class RouteCardsSection extends PureComponent {
   render() {
     return (
       <div>
@@ -101,7 +101,7 @@ class RouteCardsSection extends React.Component {
 }
 
 
-class ProfileSection extends React.Component {
+class ProfileSection extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -163,7 +163,7 @@ class ProfileSection extends React.Component {
 }
 
 
-class WaypointList extends React.Component {
+class WaypointList extends PureComponent {
   render() {
     return (
       <Sortable className="inner" swapItems={actions.swapWaypoints} onSort={actions.calculateRoute}>
@@ -182,7 +182,7 @@ class WaypointList extends React.Component {
 }
 
 
-class WaypointInput extends React.Component {
+class WaypointInput extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {value: props.value};
