@@ -3,11 +3,15 @@ import {registerListeners} from '../dispatcher';
 
 
 const CHANGE_EVENT = 'change';
+const requestAnimationFrame = window.requestAnimationFrame
+                                || function(cb) { cb(); };
 
 
 export default class Store extends EventEmitter {
   constructor(listeners) {
     super();
+    this._isPendingChangeEvent = false;
+    this.emitChangeImmediately = this.emitChangeImmediately.bind(this);
 
     if (listeners) {
       this.dispatchToken = registerListeners(listeners, this);
@@ -15,6 +19,14 @@ export default class Store extends EventEmitter {
   }
 
   emitChange() {
+    if (this._isPendingChangeEvent)
+      return;
+    this._isPendingChangeEvent = true;
+    requestAnimationFrame(this.emitChangeImmediately);
+  }
+
+  emitChangeImmediately() {
+    this._isPendingChangeEvent = false;
     this.emit(CHANGE_EVENT);
   }
 
