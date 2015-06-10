@@ -2,7 +2,15 @@
 import {Record} from 'immutable';
 
 
-export default class Waypoint extends Record({id: null, address: '', marker: null}) {
+const WaypointRecord = Record({
+  id: null,
+  address: '',
+  marker: '',
+  loading: false,
+});
+
+
+export default class Waypoint extends WaypointRecord {
   getLatLng() {
     if (this.marker)
       return this.marker.getLatLng();

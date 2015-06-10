@@ -9,6 +9,8 @@ import {PureComponent, Sortable, SVGImport, RouteCard} from '../components';
 import {messages} from '../constants';
 import * as actions from '../actions';
 
+const CSSTransitionSpan = React.addons.CSSTransitionGroup;
+
 
 function getStateFromStores() {
   return {
@@ -174,6 +176,10 @@ class WaypointList extends PureComponent {
               <span className="icon">{util.indexToLetter(i)}</span>
             </Sortable.Handle>
             <WaypointInput value={waypoint.address} onEnter={(e)=> actions.onWaypointInputEnter(waypoint, e.target.value)}/>
+            <CSSTransitionSpan transitionName="fade">
+              {waypoint.loading &&
+                <span className="loading-indicator"><SVGImport key="indicator" src={require('loading-spokes.svg')}/></span>}
+            </CSSTransitionSpan>
           </Sortable.Item>
         )}
       </Sortable>

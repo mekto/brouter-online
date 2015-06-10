@@ -83,7 +83,7 @@ class Item extends React.Component {
   }
 
   renderChild(child) {
-    if (child.type === Sortable.Handle) {
+    if (child && child.type === Sortable.Handle) {
       return React.cloneElement(child, {
         onMouseEnter: (e) => this.props.setHandle(e.target),
         onMouseLeave: () => this.props.setHandle(null),

@@ -144,3 +144,10 @@ button:active, button.active { border: 1px solid silver; box-shadow: inset 1px 1
 .auto { flex: 1; }
 .v-center { align-items: center; }
 .s-b { justify-content: space-between; }
+
+
+/* animations */
+.fade-enter { opacity: 0.01; transition: opacity .1s ease-in; }
+.fade-enter.fade-enter-active { opacity: 1; }
+.fade-leave { opacity: 1; transition: opacity .1s ease-in; }
+.fade-leave.fade-leave-active { opacity: 0.01; }

@@ -190,8 +190,33 @@ export default new AppStore({
     this.emitChange();
   },
 
+  GEOCODE_START({id, address}) {
+    updateWaypoint(id, {address, loading: true});
+    this.emitChange();
+  },
+
+  GEOCODE_SUCCESS({id, latLng, address}) {
+    updateWaypoint(id, {latLng, address, loading: false});
+    this.emitChange();
+  },
+
+  GEOCODE_FAIL({id}) {
+    updateWaypoint(id, {loading: false});
+    this.emitChange();
+  },
+
+  REVERSE_GEOCODE_START({id, latLng}) {
+    updateWaypoint(id, {address: MapUtils.latLngToString(latLng), loading: true});
+    this.emitChange();
+  },
+
   REVERSE_GEOCODE_SUCCESS({id, address}) {
-    updateWaypoint(id, {address: address});
+    updateWaypoint(id, {address, loading: false});
+    this.emitChange();
+  },
+
+  REVERSE_GEOCODE_FAIL({id}) {
+    updateWaypoint(id, {loading: false});
     this.emitChange();
   },
 

@@ -47,11 +47,8 @@ export function calculateRoute(options={}) {
   Waypoints
 */
 export function onWaypointInputEnter(waypoint, address) {
-  geocoder.query(address, (results) => {
-    if (results && results[0]) {
-      const result = results[0];
-      updateWaypoint(waypoint, {latLng: result.latLng, address});
-
+  geocodeWaypoint(waypoint, address, (result) => {
+    if (result) {
       if (store.validWaypoints.size === 1) {
         zoomWaypoint(store.waypoints.get(waypoint.id));
       } else {
@@ -101,13 +98,28 @@ export function addViaWaypoint(props) {
   dispatch('ADD_VIA_WAYPOINT', props);
 }
 
+export function geocodeWaypoint(waypoint, address, callback) {
+  dispatch('GEOCODE_START', {id: waypoint.id, address});
+  geocoder.query(address, (results) => {
+    if (results && results[0]) {
+      const result = results[0];
+      dispatch('GEOCODE_SUCCESS', {id: waypoint.id, latLng: result.latLng, address});
+      if (callback) callback(result);
+    } else {
+      dispatch('GEOCODE_FAIL', {id: waypoint.id, address});
+      callback(null);
+    }
+  });
+}
+
 export function reverseGeocodeWaypoint(waypoint) {
-  dispatch('REVERSE_GEOCODE_START', waypoint.id);
+  const latLng = waypoint.getLatLng();
+  dispatch('REVERSE_GEOCODE_START', {id: waypoint.id, latLng});
   geocoder.reverse(waypoint.getLatLng(), (result) => {
     if (result) {
-      dispatch('REVERSE_GEOCODE_SUCCESS', {id: waypoint.id, address: result.formatted});
+      dispatch('REVERSE_GEOCODE_SUCCESS', {id: waypoint.id, latLng, address: result.formatted});
     } else {
-      dispatch('REVERSE_GEOCODE_FAIL', waypoint.id);
+      dispatch('REVERSE_GEOCODE_FAIL', {id: waypoint.id, latLng});
     }
   });
 }
