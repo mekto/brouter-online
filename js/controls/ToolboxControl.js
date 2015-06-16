@@ -168,13 +168,13 @@ class ProfileSection extends PureComponent {
 class WaypointList extends PureComponent {
   render() {
     return (
-      <Sortable className="inner" swapItems={actions.swapWaypoints} onSort={actions.calculateRoute}>
+      <Sortable className="inner" handle=".label" swapItems={actions.swapWaypoints} onSort={actions.calculateRoute}>
         {this.props.waypoints.valueSeq().map((waypoint, i) =>
           <Sortable.Item className="waypoint" item={waypoint} key={waypoint.id}>
-            <Sortable.Handle className="label">
+            <span className="label">
               <SVGImport src={require('grip.svg')}/>
               <span className="icon">{util.indexToLetter(i)}</span>
-            </Sortable.Handle>
+            </span>
             <WaypointInput value={waypoint.address} onEnter={(e)=> actions.onWaypointInputEnter(waypoint, e.target.value)}/>
             <CSSTransitionSpan transitionName="fade">
               {waypoint.loading &&
