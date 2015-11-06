@@ -5,7 +5,7 @@
   "dependencies": {
     "babel-runtime": "^5.2.17",
     "express": "^4.11.2",
-    "superagent": "^0.21.0",
+    "superagent": "^1.4.0",
     "swig": "^1.4.2"
   },
   "devDependencies": {
@@ -14,8 +14,8 @@
     "babel-eslint": "^3.1.13",
     "babel-loader": "^5.0.0",
     "classnames": "^2.1.2",
-    "eslint": "^0.21.2",
-    "eslint-plugin-react": "^2.3.0",
+    "eslint": "^1.9.0",
+    "eslint-plugin-react": "^3.7.1",
     "eventemitter3": "^1.1.0",
     "flux": "^2.0.3",
     "gulp": "^3.8.11",
@@ -28,7 +28,6 @@
     "immutable": "^3.7.3",
     "keymirror": "^0.1.1",
     "nib": "^1.1.0",
-    "node-libs-browser": "^0.5.2",
     "raw-loader": "^0.5.1",
     "webpack": "^1.9.8"
   }
