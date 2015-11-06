@@ -1,5 +1,6 @@
 import Leaflet from 'leaflet';
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 
 export default Leaflet.Control.extend({
@@ -14,7 +15,7 @@ export default Leaflet.Control.extend({
       .disableScrollPropagation(container)
       .on(container, {contextmenu: Leaflet.DomEvent.stopPropagation});
 
-    this.component = React.render(
+    this.component = ReactDOM.render(
       React.createElement(this.getComponentClass(), {map}),
       container
     );

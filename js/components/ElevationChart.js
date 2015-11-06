@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM, {findDOMNode, unmountComponentAtNode} from 'react-dom';
 import Leaflet from 'leaflet';
 import util from '../util';
 import map from '../map';
@@ -19,7 +20,7 @@ export default class ElevationChart extends PureComponent {
   }
 
   componentDidMount() {
-    const svg = React.findDOMNode(this);
+    const svg = findDOMNode(this);
     this.setState({
       width: svg.clientWidth,
       height: svg.clientHeight,
@@ -127,14 +128,14 @@ export default class ElevationChart extends PureComponent {
 
     let container;
     if (this._heightIndicator) {
-      container = React.findDOMNode(this._heightIndicator).parentElement;
+      container = findDOMNode(this._heightIndicator).parentElement;
     } else {
       container = document.createElement('div');
       map.getPanes().popupPane.appendChild(container);
     }
-    this._heightIndicator = React.render(<HeightIndicator alt={guide.alt} dist={guide.dist}/>, container);
+    this._heightIndicator = ReactDOM.render(<HeightIndicator alt={guide.alt} dist={guide.dist}/>, container);
 
-    const svg = React.findDOMNode(this._heightIndicator);
+    const svg = findDOMNode(this._heightIndicator);
     const point = map.latLngToLayerPoint([guide.lat, guide.lng]);
     Leaflet.DomUtil.setPosition(container, point.subtract([3, svg.height.baseVal.value - 3]));
   }
@@ -143,8 +144,8 @@ export default class ElevationChart extends PureComponent {
     this.setState({guide: null});
 
     if (this._heightIndicator) {
-      const container = React.findDOMNode(this._heightIndicator).parentElement;
-      React.unmountComponentAtNode(container);
+      const container = findDOMNode(this._heightIndicator).parentElement;
+      unmountComponentAtNode(container);
       container.parentElement.removeChild(container);
       delete this._heightIndicator;
     }

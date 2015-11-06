@@ -178,7 +178,7 @@ class PreviewMinimap extends React.Component {
   }
   componentDidMount() {
     this.layer = this.props.layer.create();
-    this.minimap = new Leaflet.Map(this.refs.map.getDOMNode(), {
+    this.minimap = new Leaflet.Map(this.refs.map, {
       attributionControl: false,
       zoomControl: false,
       dragging: false,

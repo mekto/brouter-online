@@ -1,5 +1,6 @@
 import Leaflet from 'leaflet';
 import React from 'react';
+import ReactDOM, {findDOMNode} from 'react-dom';
 import cx from 'classnames';
 import * as actions from '../actions';
 
@@ -90,14 +91,14 @@ export default Leaflet.Layer.extend({
     if (!this._map) { return; }
 
     var pos = this._map.latLngToLayerPoint(this._latlng);
-    Leaflet.DomUtil.setPosition(React.findDOMNode(this._control), pos);
+    Leaflet.DomUtil.setPosition(findDOMNode(this._control), pos);
   },
 
   _initLayout() {
     let container = document.createElement('div');
     this.getPane().appendChild(container);
 
-    this._control = React.render(
+    this._control = ReactDOM.render(
       <ContextMenu map={this._map} onAction={this.onAction.bind(this)}/>,
       container
     );

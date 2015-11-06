@@ -176,7 +176,7 @@ class WaypointList extends PureComponent {
               <span className="icon">{util.indexToLetter(i)}</span>
             </span>
             <WaypointInput value={waypoint.address} onEnter={(e)=> actions.onWaypointInputEnter(waypoint, e.target.value)}/>
-            <CSSTransitionSpan transitionName="fade">
+            <CSSTransitionSpan transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
               {waypoint.loading &&
                 <span className="loading-indicator"><SVGImport key="indicator" src={require('loading-spokes.svg')}/></span>}
             </CSSTransitionSpan>

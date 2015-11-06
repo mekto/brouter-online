@@ -7,7 +7,7 @@ var node_modules = path.join(__dirname, 'node_modules');
 var webpackConfig = {
   entry: path.join(__dirname, 'js/init.js'),
   output: { path: path.join(__dirname, 'public'), filename: 'app.js' },
-  externals: { 'react': 'React', 'google': 'google' },
+  externals: { 'react': 'React', 'react-dom': 'ReactDOM', 'google': 'google' },
   resolve: {
     alias: {
       'leaflet': path.join(vendors, 'leaflet'),

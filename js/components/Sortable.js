@@ -67,7 +67,7 @@ export default class Sortable extends React.Component {
 }
 
 
-Sortable.Item = class {
+Sortable.Item = class extends React.Component {
   render() {
     return (
       <div {...this.props} draggable="true">
