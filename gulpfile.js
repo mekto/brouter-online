@@ -67,10 +67,10 @@ gulp.task('engine', function() {
 });
 
 
-gulp.task('serve', ['express', 'engine', 'css', 'js']);
+gulp.task('serve', ['express', 'css', 'js']);
 
 
-gulp.task('devserver', ['config:debug', 'config:livereload', 'serve'], function() {
+gulp.task('devserver', ['config:debug', 'config:livereload', 'serve', 'engine'], function() {
   gulp.watch('css/**/*.styl', ['css']);
 });
 
