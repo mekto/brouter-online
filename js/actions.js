@@ -24,7 +24,7 @@ export function calculateRoute(options={}) {
     const latLngs = MapUtils.getLatLngsFromWaypoints(waypoints);
     const profile = store.profile;
     const routeIndex = store.routeIndex;
-    const profileOptions = store.profileOptions;
+    const profileOptions = store.profileOptions.toJS();
 
     routing.route(latLngs, profile.getSource(profileOptions), routeIndex, (geojson) => {
       if (geojson) {
