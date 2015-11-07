@@ -160,7 +160,7 @@ export default new AppStore({
     this.emitChange();
   },
 
-  CALCULATE_ROUTE_STOP({message}) {
+  CALCULATE_ROUTE_ABORT({message}) {
     if (message === messages.MISSING_WAYPOINTS)
       message = null;
     if (message !== _message) {

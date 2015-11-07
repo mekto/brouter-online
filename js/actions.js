@@ -39,7 +39,7 @@ export function calculateRoute(options={}) {
       }
     });
   } else {
-    dispatch('CALCULATE_ROUTE_STOP', {message: canCalculate});
+    dispatch('CALCULATE_ROUTE_ABORT', {message: canCalculate});
   }
 }
 
