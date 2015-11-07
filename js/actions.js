@@ -5,6 +5,7 @@ import store from './store';
 import map from './map';
 import MapUtils from './utils/MapUtils';
 import util from './util';
+import { findById } from './immulib';
 
 
 /*
@@ -24,14 +25,14 @@ export function calculateRoute(options={}) {
     const latLngs = MapUtils.getLatLngsFromWaypoints(waypoints);
     const profile = store.profile;
     const routeIndex = store.routeIndex;
-    const profileOptions = store.profileOptions.toJS();
+    const profileOptions = store.profileOptions;
 
     routing.route(latLngs, profile.getSource(profileOptions), routeIndex, (geojson) => {
       if (geojson) {
         const id = util.id();
         dispatch('CALCULATE_ROUTE_SUCCESS', {id, geojson, waypoints, profile, profileOptions, routeIndex});
         if (fit) {
-          fitRoute(store.routes.get(id));
+          fitRoute(store.routes::findById(id));
         }
       } else {
         dispatch('CALCULATE_ROUTE_FAIL');
@@ -49,8 +50,8 @@ export function calculateRoute(options={}) {
 export function onWaypointInputEnter(waypoint, address) {
   geocodeWaypoint(waypoint, address, (result) => {
     if (result) {
-      if (store.validWaypoints.size === 1) {
-        zoomWaypoint(store.waypoints.get(waypoint.id));
+      if (store.validWaypoints.length === 1) {
+        zoomWaypoint(store.waypoints::findById(waypoint.id));
       } else {
         fitWaypoints(store.validWaypoints);
         calculateRoute();
@@ -71,11 +72,11 @@ export function putWaypointAtLatLng(type, latLng) {
     else if (type === 'end')
       waypoint = store.waypoints.last();
     updateWaypoint(waypoint, {latLng, address: MapUtils.latLngToString(latLng)});
-    waypoint = store.waypoints.get(waypoint.id);
+    waypoint = store.waypoints::findById(waypoint.id);
   } else {
     const id = util.id();
     addViaWaypoint({id, latLng});
-    waypoint = store.waypoints.get(id);
+    waypoint = store.waypoints::findById(id);
   }
   reverseGeocodeWaypoint(waypoint);
   calculateRoute();
@@ -87,7 +88,9 @@ export function deleteWaypoint(waypoint) {
 
 export function swapWaypoints(waypointA, waypointB) {
   if (waypointA !== undefined) {
-    dispatch('SWAP_WAYPOINTS', [waypointA.id, waypointB.id]);
+    if (waypointA.id !== waypointB.id) {
+      dispatch('SWAP_WAYPOINTS', [waypointA.id, waypointB.id]);
+    }
   } else {
     dispatch('SWAP_WAYPOINTS');
     calculateRoute();
@@ -133,13 +136,13 @@ export function fitWaypoints(waypoints) {
 }
 
 export function onWaypointDrag(id) {
-  reverseGeocodeWaypoint(store.waypoints.get(id));
+  reverseGeocodeWaypoint(store.waypoints::findById(id));
   calculateRoute({fit: false});
 }
 
 export function onWaypointClick(id) {
   if (MapUtils.getWaypointType(id) === 'via') {
-    deleteWaypoint(store.waypoints.get(id));
+    deleteWaypoint(store.waypoints::findById(id));
     calculateRoute();
   }
 }

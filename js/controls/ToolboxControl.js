@@ -81,7 +81,7 @@ class WaypointsSection extends PureComponent {
             : <SVGImport src={require('tail-spin.svg')}/>}
         </button>
 
-        {this.props.waypoints.size === 2 &&
+        {this.props.waypoints.length === 2 &&
         <div className="swap" onClick={()=>{ actions.swapWaypoints(); }}>
           <SVGImport src={require('swap.svg')}/>
         </div>}
@@ -95,8 +95,9 @@ class RouteCardsSection extends PureComponent {
   render() {
     return (
       <div>
-        {this.props.routes.toArray().map(route =>
-          <RouteCard route={route} key={route.id}/>)}
+        {this.props.routes.map(route =>
+          <RouteCard route={route} key={route.id}/>
+        )}
       </div>
     );
   }
@@ -154,7 +155,7 @@ class ProfileSection extends PureComponent {
                 <input
                   type="checkbox"
                   onChange={(e) => actions.setProfileOption(option.id, e.target.checked)}
-                  checked={!!this.props.profileOptions.get(option.id)}/>
+                  checked={!!this.props.profileOptions[option.id]}/>
                   {option.desc}
               </label>
           )}
@@ -169,7 +170,7 @@ class WaypointList extends PureComponent {
   render() {
     return (
       <Sortable className="inner" handle=".label" swapItems={actions.swapWaypoints} onSort={actions.calculateRoute}>
-        {this.props.waypoints.valueSeq().map((waypoint, i) =>
+        {this.props.waypoints.map((waypoint, i) =>
           <Sortable.Item className="waypoint" item={waypoint} key={waypoint.id}>
             <span className="label">
               <SVGImport src={require('grip.svg')}/>

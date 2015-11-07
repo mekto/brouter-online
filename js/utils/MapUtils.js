@@ -2,6 +2,7 @@ import Leaflet from 'leaflet';
 import store from '../store';
 import map from '../map';
 import util from '../util';
+import { findById, findIndexById } from '../immulib';
 import {routeColors} from '../constants';
 import * as actions from '../actions';
 
@@ -10,7 +11,7 @@ export const FIT_OPTIONS = {paddingTopLeft: [360, 20]};
 
 
 export function createWaypointMarker(id, latLng) {
-  const waypoint = store.waypoints.get(id);
+  const waypoint = store.waypoints::findById(id);
   let marker = waypoint.marker;
   if (!marker) {
     marker = new Leaflet.Marker(latLng, {
@@ -29,7 +30,7 @@ export function createWaypointMarker(id, latLng) {
 }
 
 export function createWaypointIcon(id) {
-  const index = store.waypoints.keySeq().indexOf(id);
+  const index = store.waypoints::findIndexById(id);
   const type = getWaypointType(id);
   const html = require('../../svg/marker.svg').replace('{A}', util.indexToLetter(index));
 
@@ -43,10 +44,10 @@ export function createWaypointIcon(id) {
 }
 
 export function getWaypointType(id) {
-  const waypoint = store.waypoints.get(id);
-  if (waypoint === store.waypoints.first())
+  const waypoint = store.waypoints::findById(id);
+  if (waypoint === store.waypoints[0])
     return 'start';
-  else if (waypoint === store.waypoints.last())
+  else if (waypoint === store.waypoints[store.waypoints.length - 1])
     return 'end';
   return 'via';
 }
@@ -54,8 +55,7 @@ export function getWaypointType(id) {
 export function getLatLngsFromWaypoints(waypoints) {
   return waypoints
     .map(waypoint => waypoint.getLatLng())
-    .filter(latLng => latLng)
-    .toArray();
+    .filter(latLng => latLng);
 }
 
 export function calculateDistance(waypoints) {
@@ -87,7 +87,7 @@ export function latLngToString(latLng) {
 
 export function getRouteFreeColor() {
   const colors = Object.keys(routeColors);
-  const takenColors = store.routes.map(route => route.color).toArray();
+  const takenColors = store.routes.map(route => route.color);
   for (let i = 0; colors.length; ++i) {
     if (takenColors.indexOf(colors[i]) === -1)
       return colors[i];

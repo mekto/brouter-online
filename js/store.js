@@ -1,21 +1,21 @@
-import {OrderedMap, Map} from 'immutable';
 import Store from './utils/Store';
 import Waypoint from './utils/Waypoint';
 import Route from './utils/Route';
 import util from './util';
-import profiles, {profileOptionValues} from './profiles';
+import { findById, findIndexById, set, remove } from './immulib';
+import profiles, { profileOptionValues } from './profiles';
 import MapUtils from './utils/MapUtils';
-import {messages} from './constants';
+import { messages } from './constants';
 import config from '../config';
 
 
-let _waypoints = new OrderedMap();
-let _routes = new OrderedMap();
+let _waypoints = [];
+let _routes = [];
 let _profile = profiles[0];
 let _routeIndex = 0;
 let _isPending = false;
 let _message = null;
-let _profileOptions = new Map(profileOptionValues);
+let _profileOptions = {...profileOptionValues};
 let _trailer = null;
 
 
@@ -27,13 +27,13 @@ function addWaypoint(props={}, insertIndex) {
   delete props.latLng;
 
   if (insertIndex === undefined) {
-    _waypoints = _waypoints.set(id, new Waypoint(props));
+    _waypoints = [..._waypoints, new Waypoint(props)];
   } else {
-    const keySeq = _waypoints.keySeq();
-    const waypoint = new Waypoint(props);
-    _waypoints = new OrderedMap(keySeq.splice(insertIndex, 0, id).map(id_ => {
-      return [id_, _waypoints.get(id_, waypoint)];
-    }));
+    _waypoints = [
+      ..._waypoints.slice(0, insertIndex),
+      new Waypoint(props),
+      ..._waypoints.slice(insertIndex)
+    ];
   }
 
   if (latLng) {
@@ -44,29 +44,32 @@ function addWaypoint(props={}, insertIndex) {
 }
 
 function updateWaypoint(id, updates) {
-  const waypoint = _waypoints.get(id);
+  const index = _waypoints::findIndexById(id);
   if (updates.latLng) {
     updates.marker = MapUtils.createWaypointMarker(id, updates.latLng);
     delete updates.latLng;
   }
-  _waypoints = _waypoints.set(id, waypoint.merge(updates));
+  _waypoints = _waypoints::set(index, _waypoints[index].merge(updates));
 }
 
 function deleteWaypoint(id) {
-  MapUtils.removeLayer(_waypoints.get(id).marker);
-  _waypoints = _waypoints.delete(id);
+  const index = _waypoints::findIndexById(id);
+  MapUtils.removeLayer(_waypoints[index].marker);
+  _waypoints = _waypoints::remove(index);
 
   MapUtils.updateWaypointMarkers(_waypoints);
 }
 
 function swapWaypoints(idA, idB) {
-  const keySeq = _waypoints.keySeq();
-  const indexA = keySeq.indexOf(idA);
-  const indexB = keySeq.indexOf(idB);
+  const indexA = _waypoints::findIndexById(idA);
+  const indexB = _waypoints::findIndexById(idB);
 
-  _waypoints = new OrderedMap(keySeq.splice(indexA, 1).splice(indexB, 0, idA).map(id => {
-    return [id, _waypoints.get(id)];
-  }));
+  const waypointA = _waypoints[indexA];
+  const waypointB = _waypoints[indexB];
+
+  _waypoints = [..._waypoints];
+  _waypoints[indexA] = waypointB;
+  _waypoints[indexB] = waypointA;
 
   MapUtils.updateWaypointMarkers(_waypoints);
 }
@@ -76,25 +79,27 @@ function addRoute(props) {
   if (!props.id)
     props.id = util.id();
   if (!props.name)
-    props.name = `${props.waypoints.first().address} - ${props.waypoints.last().address}`;
+    props.name = `${props.waypoints[0].address} - ${props.waypoints[props.waypoints.length - 1].address}`;
   if (!props.color)
     props.color = MapUtils.getRouteFreeColor();
   props.layer = MapUtils.createRouteLayer(props.geojson, props.color);
-  _routes = _routes.set(props.id, new Route(props));
+  _routes = [..._routes, new Route(props)];
 }
 
 function updateRoute(id, updates) {
-  _routes = _routes.set(id, _routes.get(id).merge(updates));
+  const index = _routes::findIndexById(id);
+  _routes = _routes::set(index, _routes[index].merge(updates));
 }
 
 function deleteRoute(id) {
-  MapUtils.removeLayer(_routes.get(id).layer);
-  _routes = _routes.delete(id);
+  const index = _routes::findIndexById(id);
+  MapUtils.removeLayer(_routes[index].layer);
+  _routes = _routes::remove(index);
 }
 
 function clearRoutes(removeLocked=false) {
-  const routesToDelete = _routes.filter(route => removeLocked || !route.locked);
-  routesToDelete.keySeq().forEach(deleteRoute, this);
+  const routesToDelete = _routes.filter(route => removeLocked || !route.locked).map(route => route.id);
+  routesToDelete.forEach(deleteRoute);
 }
 
 
@@ -116,7 +121,7 @@ class AppStore extends Store {
 
   canCalculateRoute(force=false) {
     const waypoints = this.validWaypoints;
-    if (waypoints.size < 2)
+    if (waypoints.length < 2)
       return messages.MISSING_WAYPOINTS;
 
     const distance = MapUtils.calculateDistance(waypoints);
@@ -179,13 +184,13 @@ export default new AppStore({
       const [idA, idB] = ids;
       swapWaypoints(idA, idB);
     } else {
-      swapWaypoints(_waypoints.first().id, _waypoints.last().id);
+      swapWaypoints(_waypoints[0].id, _waypoints[_waypoints.length - 1].id);
     }
     this.emitChange();
   },
 
   ADD_VIA_WAYPOINT(props) {
-    const insertIndex = _waypoints.size - 1;
+    const insertIndex = _waypoints.length - 1;
     addWaypoint(props, insertIndex);
     this.emitChange();
   },
@@ -241,11 +246,11 @@ export default new AppStore({
   },
 
   SET_PROFILE_OPTION({optionId, value}) {
-    _profileOptions = _profileOptions.set(optionId, value);
+    _profileOptions = {..._profileOptions, [optionId]: value};
     if (optionId === 'ignore_cycleroutes' && value)
-      _profileOptions = _profileOptions.set('stick_to_cycleroutes', false);
+      _profileOptions['stick_to_cycleroutes'] = false;
     else if (optionId === 'stick_to_cycleroutes' && value)
-      _profileOptions = _profileOptions.set('ignore_cycleroutes', false);
+      _profileOptions['ignore_cycleroutes'] = false;
     this.emitChange();
   }
 });

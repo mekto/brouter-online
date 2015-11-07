@@ -1,16 +1,11 @@
-/* eslint new-cap: 0 */
-import {Record} from 'immutable';
+import Record from './Record';
 
 
-const WaypointRecord = Record({
-  id: null,
-  address: '',
-  marker: '',
-  loading: false,
-});
+export default class Waypoint extends Record {
+  constructor({id = null, address = '', marker = '', loading = false} = {}) {
+    super({id, address, marker, loading});
+  }
 
-
-export default class Waypoint extends WaypointRecord {
   getLatLng() {
     if (this.marker)
       return this.marker.getLatLng();

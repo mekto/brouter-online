@@ -25,7 +25,6 @@
     "gulp-rename": "^1.2.0",
     "gulp-stylus": "^2.0.0",
     "gulp-util": "^3.0.3",
-    "immutable": "^3.7.3",
     "keymirror": "^0.1.1",
     "nib": "^1.1.0",
     "raw-loader": "^0.5.1",

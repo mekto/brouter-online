@@ -1,13 +1,15 @@
-/* eslint new-cap: 0 */
-import {Record} from 'immutable';
+import Record from './Record';
 
 
-const RouteRecord = Record({id: null, geojson: null, name: null, waypoints: null, profile: null,
-                            profileSettings: null, routeIndex: null, layer: null,
-                            color: null, locked: false});
-
-
-export default class Route extends RouteRecord {
+export default class Route extends Record {
+  constructor({id = null, geojson = null, name = null, waypoints = null, profile = null,
+               profileSettings = null, routeIndex = null, layer = null,
+               color = null, locked = false} = {}) {
+    super({
+      id, geojson, name, waypoints, profile, profileSettings, routeIndex,
+      layer, color, locked
+    });
+  }
   get properties() {
     return this.geojson.features[0].properties;
   }
