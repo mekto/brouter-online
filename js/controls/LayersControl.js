@@ -47,8 +47,8 @@ var googleLayer = function(name, style, attribution) {
 
 
 var baseLayers = [
-  leafletLayer('OpenMapSurfer', 'http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', copyrights.Heidelberg),
   leafletLayer('OSM Standard', 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', copyrights.OSM),
+  leafletLayer('OpenMapSurfer', 'http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', copyrights.Heidelberg),
   leafletLayer('OSM Cycle', 'http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', copyrights.Thunderforest),
   mapboxLayer('MapBox Street', 'mekto.hj5462ii', copyrights.MapBox),
   mapboxLayer('MapBox Terrain', 'mekto.hgp09m7l', copyrights.MapBox),
@@ -114,7 +114,7 @@ class LayersComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.setLayer(baseLayers[1]);
+    this.setLayer(baseLayers[0]);
 
     this.props.map.on('click', () => {
       if (this.state.expanded) {
