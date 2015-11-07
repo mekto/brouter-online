@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM, {findDOMNode, unmountComponentAtNode} from 'react-dom';
 import Leaflet from 'leaflet';
-import util from '../util';
+import f from '../filters';
 import map from '../map';
 import PureComponent from './PureComponent';
 
@@ -109,7 +109,7 @@ export default class ElevationChart extends PureComponent {
             <line className="guide" y2={height}/>
 
             <text className="guide-label" x={guideLeftLabels ? -3 : 3} y="9">{Math.round(guide.alt) + ' m'}</text>
-            <text className="guide-label" x={guideLeftLabels ? -3 : 3} y="22">{util.km(guide.dist, 2)}</text>
+            <text className="guide-label" x={guideLeftLabels ? -3 : 3} y="22">{f.km(guide.dist, 2)}</text>
           </g>
         }
 
@@ -173,7 +173,7 @@ class HeightIndicator extends React.Component {
           <line className="guide" y2="60"/>
 
           <text className="guide-label" x="3" y="9">{Math.round(this.props.alt) + ' m'}</text>
-          <text className="guide-label" x="3" y="20">{util.km(this.props.dist, 2)}</text>
+          <text className="guide-label" x="3" y="20">{f.km(this.props.dist, 2)}</text>
           <circle cx="0" cy="57" r="2.5"/>
         </g>
       </svg>

@@ -3,16 +3,6 @@ export function id() {
 }
 
 
-export function km(valueInMeters, n=1) {
-  return +(valueInMeters / 1000).toFixed(n) + ' km';
-}
-
-
-export function indexToLetter(index) {
-  return String.fromCharCode(65 + index);
-}
-
-
 export function format(string, params) {
   Object.keys(params).forEach(function(key) {
     string = string.replace('{' + key + '}', params[key]);
@@ -90,6 +80,6 @@ export function skip(obj, props) {
 
 
 export default {
-  id, km, indexToLetter, format, bindMethods,
+  id, format, bindMethods,
   isEmpty, toArray, toObject, indexBy, pick, skip,
 };

@@ -2,6 +2,7 @@ import Leaflet from 'leaflet';
 import store from '../store';
 import map from '../map';
 import util from '../util';
+import f from '../filters';
 import { findById, findIndexById } from '../immulib';
 import {routeColors} from '../constants';
 import * as actions from '../actions';
@@ -32,7 +33,7 @@ export function createWaypointMarker(id, latLng) {
 export function createWaypointIcon(id) {
   const index = store.waypoints::findIndexById(id);
   const type = getWaypointType(id);
-  const html = require('../../svg/marker.svg').replace('{A}', util.indexToLetter(index));
+  const html = require('../../svg/marker.svg').replace('{A}', f.indexToLetter(index));
 
   const icon = Leaflet.divIcon({
     iconSize: (type === 'via') ? [16, 26] : [20, 31],

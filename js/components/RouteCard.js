@@ -1,5 +1,5 @@
 import * as actions from '../actions';
-import util from '../util';
+import f from '../filters';
 import {SVGImport, ElevationChart} from '.';
 import PureComponent from './PureComponent';
 
@@ -14,7 +14,7 @@ export default class RouteCard extends PureComponent {
             <div>
               <strong>{route.name}</strong><br/>
               <small className="text-muted nowrap">
-                <strong>{util.km(route.trackLength)}</strong>
+                <strong>{f.km(route.trackLength)}</strong>
                 <span className="separation-dot">·</span>
                 {route.profile.name} <span className="badge muted">{route.routeIndex + 1}</span>
               </small>

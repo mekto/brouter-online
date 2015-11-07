@@ -3,6 +3,7 @@ import Control from './Control';
 import cx from 'classnames';
 import profiles, {profileOptions} from '../profiles';
 import util from '../util';
+import f from '../filters';
 import config from '../../config';
 import store from '../store';
 import {PureComponent, Sortable, SVGImport, RouteCard} from '../components';
@@ -56,7 +57,7 @@ class ToolboxComponent extends PureComponent {
     if (!this.state.message)
       return null;
 
-    const maxDistance = util.km(config.maxBrouterCalculationDistance);
+    const maxDistance = f.km(config.maxBrouterCalculationDistance);
     return (
       <div className="info">
         {this.state.message === messages.DISTANCE_TOO_LONG &&
@@ -174,7 +175,7 @@ class WaypointList extends PureComponent {
           <Sortable.Item className="waypoint" item={waypoint} key={waypoint.id}>
             <span className="label">
               <SVGImport src={require('grip.svg')}/>
-              <span className="icon">{util.indexToLetter(i)}</span>
+              <span className="icon">{f.indexToLetter(i)}</span>
             </span>
             <WaypointInput value={waypoint.address} onEnter={(e)=> actions.onWaypointInputEnter(waypoint, e.target.value)}/>
             <CSSTransitionSpan transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
