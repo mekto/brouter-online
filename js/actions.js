@@ -68,9 +68,9 @@ export function putWaypointAtLatLng(type, latLng) {
   let waypoint;
   if (type !== 'via') {
     if (type === 'start')
-      waypoint = store.waypoints.first();
+      waypoint = store.waypoints[0];
     else if (type === 'end')
-      waypoint = store.waypoints.last();
+      waypoint = store.waypoints[store.waypoints.length - 1];
     updateWaypoint(waypoint, {latLng, address: MapUtils.latLngToString(latLng)});
     waypoint = store.waypoints::findById(waypoint.id);
   } else {
