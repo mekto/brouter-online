@@ -17,5 +17,6 @@ export function registerListeners(listeners, context) {
 }
 
 export function dispatch(action, data) {
+  console.log('[DISPATCH]', action, data);  // eslint-disable-line
   dispatcher.dispatch({action, data});
 }
