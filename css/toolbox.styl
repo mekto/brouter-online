@@ -20,6 +20,11 @@
 
     .loading-indicator { absolute: right 2px top 8px; background-color: rgba(white, .1); display: inline-block; padding: 1px; }
     .loading-indicator svg { vertical-align: top; }
+
+    .clear-button { absolute: right 2px top 10px; background-color: rgba(white, .1); display: inline-block; padding: 1px; opacity: 0; transition: opacity .2s ease-in-out; cursor: pointer; }
+    .clear-button svg { vertical-align: top; }
+    .clear-button svg .fill { fill: #d1d0d0; }
+    &:hover .clear-button { opacity: 1; }
   }
   .waypoint:first-child {
     .label .icon { background-color: $secondary-color; }

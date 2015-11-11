@@ -86,6 +86,10 @@ export function deleteWaypoint(waypoint) {
   dispatch('DELETE_WAYPOINT', waypoint.id);
 }
 
+export function clearWaypoint(waypoint) {
+  updateWaypoint(waypoint, {latLng: null, address: ''});
+}
+
 export function swapWaypoints(waypointA, waypointB) {
   if (waypointA !== undefined) {
     if (waypointA.id !== waypointB.id) {

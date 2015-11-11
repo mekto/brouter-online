@@ -45,8 +45,13 @@ function addWaypoint(props={}, insertIndex) {
 
 function updateWaypoint(id, updates) {
   const index = _waypoints::findIndexById(id);
-  if (updates.latLng) {
-    updates.marker = MapUtils.createWaypointMarker(id, updates.latLng);
+  if (updates.latLng !== undefined) {
+    if (updates.latLng) {
+      updates.marker = MapUtils.createWaypointMarker(id, updates.latLng);
+    } else {
+      MapUtils.removeLayer(_waypoints[index].marker);
+      updates.marker = null;
+    }
     delete updates.latLng;
   }
   _waypoints = _waypoints::set(index, _waypoints[index].merge(updates));

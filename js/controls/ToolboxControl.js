@@ -182,6 +182,9 @@ class WaypointList extends PureComponent {
               {waypoint.loading &&
                 <span className="loading-indicator"><SVGImport key="indicator" src={require('loading-spokes.svg')}/></span>}
             </CSSTransitionSpan>
+            {waypoint.marker && !waypoint.loading &&
+              <span className="clear-button" onClick={() => { this.props.waypoints.length > 2 ? actions.deleteWaypoint(waypoint) : actions.clearWaypoint(waypoint); }}><SVGImport src={require('x.svg')}/></span>
+            }
           </Sortable.Item>
         )}
       </Sortable>
