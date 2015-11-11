@@ -12,7 +12,7 @@ export const routeColors = {
   red: '#ff4136',
   orange: '#ff851b',
   purple: '#b10dc9',
-  navy: '#001f3f',
   teal: '#39cccc',
   fuchsia: '#f012be',
+  navy: '#004ba0',
 };

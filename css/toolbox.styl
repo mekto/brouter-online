@@ -138,6 +138,42 @@
   .axis-label, .tick-label { font-size: 10px; fill: #555; }
   .x-axis .tick-label { text-anchor: middle; }
   .y-axis .tick-label { text-anchor: end; }
+
+  &.color-blue {
+    $color = #3388ff;
+    .line { stroke: saturate(lighten($color, 20%), 30%); }
+    .area { fill: saturate(lighten($color, 80%), 90%); }
+  }
+  &.color-red {
+    $color = #ff4136;
+    .line { stroke: saturate(lighten($color, 20%), 30%); }
+    .area { fill: saturate(lighten($color, 80%), -10%); }
+  }
+  &.color-orange {
+    $color = #ff851b;
+    .line { stroke: saturate(lighten($color, 20%), 0%); }
+    .area { fill: saturate(lighten($color, 80%), 90%); }
+  }
+  &.color-purple {
+    $color = #b10dc9;
+    .line { stroke: saturate(lighten($color, 0%), 0%); }
+    .area { fill: saturate(lighten($color, 80%), -20%); }
+  }
+  &.color-teal {
+    $color = #39cccc;
+    .line { stroke: saturate(lighten($color, 0%), 0%); }
+    .area { fill: saturate(lighten($color, 50%), 10%); }
+  }
+  &.color-fuchsia {
+    $color = #f012be;
+    .line { stroke: saturate(lighten($color, 0%), 0%); }
+    .area { fill: saturate(lighten($color, 50%), 10%); }
+  }
+  &.color-navy {
+    $color = #004ba0;
+    .line { stroke: saturate(lighten($color, 10%), 0%); }
+    .area { fill: saturate(lighten($color, 60%), -10%); }
+  }
 }
 
 .guide { stroke: #999; stroke-width: 1px; stroke-dasharray: 4 1; pointer-events: none; shape-rendering: crispEdges; }

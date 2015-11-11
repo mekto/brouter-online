@@ -30,7 +30,7 @@ export default class ElevationChart extends PureComponent {
 
   render() {
     return (
-      <svg className="elevation-chart">
+      <svg className={'elevation-chart color-' + this.props.route.color}>
         {this.state.width && this.renderInner()}
       </svg>
     );
