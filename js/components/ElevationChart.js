@@ -21,9 +21,10 @@ export default class ElevationChart extends PureComponent {
 
   componentDidMount() {
     const svg = findDOMNode(this);
+    const bounds = svg.getBoundingClientRect();
     this.setState({
-      width: svg.clientWidth,
-      height: svg.clientHeight,
+      width: bounds.width,
+      height: bounds.height,
     });
   }
 
