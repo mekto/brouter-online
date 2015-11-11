@@ -217,20 +217,20 @@ function scaleExtent(array, accessor) {
 
 
 function linearTickRange(domain, m) {
-  var extent = scaleExtent(domain),
-      span = extent[1] - extent[0],
-      step = Math.pow(10, Math.floor(Math.log(span / m) / Math.LN10)),
-      err = m / span * step,
-      range = [],
-      i = 0,
-      j;
+  const extent = scaleExtent(domain);
+  const span = extent[1] - extent[0];
+  let step = Math.pow(10, Math.floor(Math.log(span / m) / Math.LN10));
+  const err = m / span * step;
+  const range = [];
+  let i = 0;
+  let j;
 
   if (err <= 0.15) step *= 10;
   else if (err <= 0.35) step *= 5;
   else if (err <= 0.75) step *= 2;
 
-  var start = Math.ceil(extent[0] / step) * step;
-  var stop = Math.floor(extent[1] / step) * step + step * 0.5;
+  const start = Math.ceil(extent[0] / step) * step;
+  const stop = Math.floor(extent[1] / step) * step + step * 0.5;
 
   while ((j = start + step * i++) < stop)
     range.push(j);
