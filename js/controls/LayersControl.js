@@ -96,7 +96,7 @@ class LayersComponent extends React.Component {
     activeLayer = layer;
     activeLayer.layer = layer.create();
     this.props.map.addLayer(activeLayer.layer);
-    this.setState({activeLayer});
+    this.setState({activeLayer}, ::this.fireChangeEvent);
   }
 
   toggleOverlay(overlay) {
@@ -110,7 +110,23 @@ class LayersComponent extends React.Component {
       this.props.map.removeLayer(layer);
       delete activeOverlays[overlay.name];
     }
-    this.setState({activeOverlays: activeOverlays});
+    this.setState({activeOverlays}, ::this.fireChangeEvent);
+  }
+
+  fireChangeEvent() {
+    const layers = [{
+      name: this.state.activeLayer.name,
+      layer: this.state.activeLayer.layer,
+      attribution: this.state.activeLayer.layer.getAttribution(),
+    }];
+    Object.entries(this.state.activeOverlays).forEach(([name, layer]) => {
+      layers.push({
+        name,
+        layer,
+        attribution: layer.getAttribution(),
+      });
+    });
+    this.props.map.fire('layerchange', { layers });
   }
 
   componentDidMount() {

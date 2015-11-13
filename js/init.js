@@ -4,6 +4,7 @@ import geocoder from './geocoder';
 
 import ZoomControl from './controls/ZoomControl';
 import LocateControl from './controls/LocateControl';
+import AttributionControl from './controls/AttributionControl';
 import LayersControl from './controls/LayersControl';
 import ToolboxControl from './controls/ToolboxControl';
 import ContextMenu from './controls/ContextMenu';
@@ -11,6 +12,7 @@ import ContextMenu from './controls/ContextMenu';
 
 new ZoomControl().addTo(map);
 new LocateControl().addTo(map);
+new AttributionControl().addTo(map);
 new LayersControl().addTo(map);
 new ToolboxControl().addTo(map);
 new ContextMenu().addTo(map);

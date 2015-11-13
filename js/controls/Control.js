@@ -9,7 +9,9 @@ export default Leaflet.Control.extend({
   },
 
   onAdd(map) {
-    var container = document.createElement('div');
+    const container = document.createElement('div');
+    container.className = this.options.className;
+
     Leaflet.DomEvent
       .disableClickPropagation(container)
       .disableScrollPropagation(container)
@@ -22,5 +24,4 @@ export default Leaflet.Control.extend({
 
     return container;
   }
-
 });
