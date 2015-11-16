@@ -3,6 +3,7 @@ import store from '../store';
 import map from '../map';
 import util from '../util';
 import f from '../filters';
+import RouteLayer from '../utils/RouteLayer';
 import { findById, findIndexById } from '../immulib';
 import {routeColors} from '../constants';
 import * as actions from '../actions';
@@ -98,9 +99,7 @@ export function getRouteFreeColor() {
 }
 
 export function createRouteLayer(geojson, color) {
-  const layer = Leaflet.geoJson(geojson, {
-    style: () => ({color: routeColors[color]})
-  });
+  const layer = new RouteLayer(geojson, routeColors[color]);
   layer.addTo(map);
   return layer;
 }
