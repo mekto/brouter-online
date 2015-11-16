@@ -181,7 +181,9 @@ export function deleteRoute(route) {
 */
 export function setProfile(profile) {
   dispatch('SET_PROFILE', profile);
-  calculateRoute();
+  if (profile.id !== 'custom') {
+    calculateRoute();
+  }
 }
 
 export function setRouteIndex(routeIndex) {
