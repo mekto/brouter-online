@@ -111,10 +111,20 @@ button:active, button.active { border: 1px solid silver; box-shadow: inset 1px 1
 .badge.muted { background-color: #eee; }
 
 
+.route-line-0 { stroke: #fff; stroke-width: 8px; opacity: .9; display: none; }
+.route-line { stroke-width: 5px; stroke-dasharray: 1 6; opacity: .9; }
+.route-line-0:hover { opacity: .2; }
+.route-line:hover, .route-line-0:hover + .route-line { opacity: .5; }
+
+.zoom-16, .zoom-17, .zoom-18 {
+  .route-line { stroke-width: 9px; stroke-dasharray: 1 14; }
+}
+
 .trailer-line { stroke-dasharray: 7 3; stroke-dashoffset: 0; animation: dash 2s linear infinite; }
 @keyframes dash {
   to { stroke-dashoffset: -70; }
 }
+
 
 .marker-body { fill: $secondary-color; stroke: rgba(#333, .6); }
 .marker-letter { fill: white; }
