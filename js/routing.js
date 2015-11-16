@@ -20,9 +20,9 @@ var routing = {
 
     req.end((err, response) => {
       if (!err && response.ok && response.type === 'application/vnd.geo+json') {
-        callback(JSON.parse(response.text));
+        callback(null, JSON.parse(response.text));
       } else {
-        callback(null);
+        callback(response && respone.text ? response.text : '');
       }
     });
   }

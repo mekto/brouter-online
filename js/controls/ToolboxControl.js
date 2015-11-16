@@ -21,7 +21,8 @@ function getStateFromStores() {
     profiles: store.profiles,
     routeIndex: store.routeIndex,
     isPending: store.isPending,
-    message: store.message,
+    infoMessage: store.infoMessage,
+    errorMessage: store.errorMessage,
     profileOptions: store.profileOptions,
   };
 }
@@ -48,23 +49,39 @@ class ToolboxComponent extends PureComponent {
         <WaypointsSection waypoints={this.state.waypoints} isPending={this.state.isPending}/>
         <ProfileSection profile={this.state.profile} profiles={this.state.profiles} profileOptions={this.state.profileOptions}
           routeIndex={this.state.routeIndex}/>
-        {this.renderMessagePanel()}
+        {this.renderInfoMessagePanel()}
+        {this.renderErrorMessagePanel()}
         <RouteCardsSection routes={this.state.routes}/>
       </div>
     );
   }
 
-  renderMessagePanel() {
-    if (!this.state.message)
+  renderInfoMessagePanel() {
+    if (!this.state.infoMessage)
       return null;
 
     const maxDistance = f.km(config.maxBrouterCalculationDistance);
     return (
       <div className="info">
-        {this.state.message === messages.DISTANCE_TOO_LONG &&
+        {this.state.infoMessage === messages.DISTANCE_TOO_LONG &&
           <span>Can't calculate distances longer than {maxDistance} as the crow flies.</span>}
-        {this.state.message === messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION &&
+        {this.state.infoMessage === messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION &&
           <span>Press <a onClick={()=>{ actions.calculateRoute({force: true}); }}>Find route</a> button to calculate route.</span>}
+      </div>
+    );
+  }
+
+  renderErrorMessagePanel() {
+    if (this.state.errorMessage === null)
+      return null;
+
+    return (
+      <div className="error">
+        <div className="actions">
+          <a onClick={()=>{ actions.clearErrorMessage(); }}><SVGImport src={require('x.svg')}/></a>
+        </div>
+        <div><strong>Error while calculating route</strong></div>
+        <div>{this.state.errorMessage}</div>
       </div>
     );
   }

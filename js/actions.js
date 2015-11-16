@@ -27,7 +27,7 @@ export function calculateRoute(options={}) {
     const routeIndex = store.routeIndex;
     const profileOptions = store.profileOptions;
 
-    routing.route(latLngs, profile.getSource(profileOptions), routeIndex, (geojson) => {
+    routing.route(latLngs, profile.getSource(profileOptions), routeIndex, (error, geojson) => {
       if (geojson) {
         const id = util.id();
         dispatch('CALCULATE_ROUTE_SUCCESS', {id, geojson, waypoints, profile, profileOptions, routeIndex});
@@ -35,12 +35,16 @@ export function calculateRoute(options={}) {
           fitRoute(store.routes::findById(id));
         }
       } else {
-        dispatch('CALCULATE_ROUTE_FAIL');
+        dispatch('CALCULATE_ROUTE_FAIL', {message: error});
       }
     });
   } else {
     dispatch('CALCULATE_ROUTE_ABORT', {message: canCalculate});
   }
+}
+
+export function clearErrorMessage() {
+  dispatch('CLEAR_ERROR_MESSAGE');
 }
 
 

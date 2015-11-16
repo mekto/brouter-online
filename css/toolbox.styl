@@ -209,7 +209,7 @@
 }
 
 
-.info {
+.info, .error {
   width: 100%;
   background-color: yellow;
   border-radius: 3px 0 0 3px;
@@ -217,4 +217,23 @@
   padding: 6px 12px 5px;
   box-shadow: 2px 2px 2px rgba($text-color, .2);
   margin-top: 11px;
+}
+
+.error {
+  background-color: red;
+  color: lighten(red, 90%);
+
+  .actions {
+    margin-top: 1px;
+    float: right;
+
+    a .iconic {
+      .fill { fill: lighten(red, 80%); }
+      .stroke { stroke: lighten(red, 80%); }
+    }
+    a:hover .iconic {
+      .fill { fill: lighten(white, 90%); }
+      .stroke { stroke: lighten(white, 90%); }
+    }
+  }
 }

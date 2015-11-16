@@ -14,7 +14,8 @@ let _routes = [];
 let _profile = profiles[0];
 let _routeIndex = 0;
 let _isPending = false;
-let _message = null;
+let _infoMessage = null;
+let _errorMessage = null;
 let _profileOptions = {...profileOptionValues};
 let _trailer = null;
 let _profiles = profiles;
@@ -120,7 +121,8 @@ class AppStore extends Store {
   get profile() { return _profile; }
   get profiles() { return _profiles; }
   get routeIndex() { return _routeIndex; }
-  get message() { return _message; }
+  get infoMessage() { return _infoMessage; }
+  get errorMessage() { return _errorMessage; }
   get isPending() { return _isPending; }
   get profileOptions() { return _profileOptions; }
 
@@ -148,7 +150,8 @@ export default new AppStore({
   CALCULATE_ROUTE() {
     MapUtils.removeLayer(_trailer);
     _trailer = MapUtils.createTrailer(MapUtils.getLatLngsFromWaypoints(_waypoints));
-    _message = null;
+    _infoMessage = null;
+    _errorMessage = null;
     _isPending = true;
     clearRoutes();
     this.emitChange();
@@ -162,20 +165,26 @@ export default new AppStore({
     this.emitChange();
   },
 
-  CALCULATE_ROUTE_FAIL() {
+  CALCULATE_ROUTE_FAIL({message}) {
     MapUtils.removeLayer(_trailer);
     _trailer = null;
     _isPending = false;
+    _errorMessage = message;
     this.emitChange();
   },
 
   CALCULATE_ROUTE_ABORT({message}) {
     if ([messages.DISTANCE_TOO_LONG, messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION].indexOf(message) === -1)
       message = null;
-    if (message !== _message) {
-      _message = message;
+    if (message !== _infoMessage) {
+      _infoMessage = message;
       this.emitChange();
     }
+  },
+
+  CLEAR_ERROR_MESSAGE() {
+    _errorMessage = null;
+    this.emitChange();
   },
 
   UPDATE_WAYPOINT({id, updates}) {
