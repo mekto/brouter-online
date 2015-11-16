@@ -22,7 +22,7 @@ var routing = {
       if (!err && response.ok && response.type === 'application/vnd.geo+json') {
         callback(null, JSON.parse(response.text));
       } else {
-        callback(response && respone.text ? response.text : '');
+        callback(response && response.text ? response.text : '');
       }
     });
   }
