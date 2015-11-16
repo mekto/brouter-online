@@ -34,11 +34,12 @@ export const profileOptionValues = toObject(profileOptions.map(option => ([optio
 
 
 export default [
-  new Profile('trekking', 'Trekking', require('./profiles/trekking.brf'),
+  new Profile('trekking', 'Trekking', require('./profiles/trekking.brfc'),
     ['consider_elevation', 'allow_steps', 'allow_ferries', 'ignore_cycleroutes', 'stick_to_cycleroutes', 'avoid_unsafe']
   ),
-  new Profile('fastbike', 'Fastbike', require('./profiles/fastbike.brf'),
+  new Profile('fastbike', 'Fastbike', require('./profiles/fastbike.brfc'),
     ['consider_elevation']
   ),
-  new Profile('shortest', 'Shortest', require('./profiles/shortest.brf')),
+  new Profile('shortest', 'Shortest', require('./profiles/shortest.brfc')),
+  new Profile('custom', 'Custom', require('./profiles/custom.brf')),
 ];

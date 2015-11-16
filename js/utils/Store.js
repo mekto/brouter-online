@@ -10,23 +10,12 @@ const requestAnimationFrame = window.requestAnimationFrame
 export default class Store extends EventEmitter {
   constructor(listeners) {
     super();
-    this._isPendingChangeEvent = false;
-    this.emitChangeImmediately = this.emitChangeImmediately.bind(this);
-
     if (listeners) {
       this.dispatchToken = registerListeners(listeners, this);
     }
   }
 
   emitChange() {
-    if (this._isPendingChangeEvent)
-      return;
-    this._isPendingChangeEvent = true;
-    requestAnimationFrame(this.emitChangeImmediately);
-  }
-
-  emitChangeImmediately() {
-    this._isPendingChangeEvent = false;
     this.emit(CHANGE_EVENT);
   }
 

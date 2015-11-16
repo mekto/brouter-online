@@ -1,4 +1,4 @@
-import React from 'react';
+import {merge} from '../immulib';
 
 
 export default class Record {

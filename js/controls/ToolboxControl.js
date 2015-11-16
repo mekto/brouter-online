@@ -1,7 +1,7 @@
 import React from 'react';
 import Control from './Control';
 import cx from 'classnames';
-import profiles, {profileOptions} from '../profiles';
+import {profileOptions} from '../profiles';
 import util from '../util';
 import f from '../filters';
 import config from '../../config';
@@ -18,6 +18,7 @@ function getStateFromStores() {
     waypoints: store.waypoints,
     routes: store.routes,
     profile: store.profile,
+    profiles: store.profiles,
     routeIndex: store.routeIndex,
     isPending: store.isPending,
     message: store.message,
@@ -45,7 +46,7 @@ class ToolboxComponent extends PureComponent {
     return (
       <div className="toolbox">
         <WaypointsSection waypoints={this.state.waypoints} isPending={this.state.isPending}/>
-        <ProfileSection profile={this.state.profile} profileOptions={this.state.profileOptions}
+        <ProfileSection profile={this.state.profile} profiles={this.state.profiles} profileOptions={this.state.profileOptions}
           routeIndex={this.state.routeIndex}/>
         {this.renderMessagePanel()}
         <RouteCardsSection routes={this.state.routes}/>
@@ -111,11 +112,25 @@ class ProfileSection extends PureComponent {
 
     this.state = {
       showProfileDropdown: false,
-      showProfileOptions: false,
+      showProfileOptions: true,
     };
   }
 
+  setProfile(profile) {
+    actions.setProfile(profile);
+
+    this.setState({showProfileDropdown: false});
+    if (profile.id === 'custom') {
+      this.setState({showProfileOptions: true});
+    }
+  }
+
+  onCustomProfileSourceChange(e) {
+    actions.setCustomProfileSource(e.target.value);
+  }
+
   render() {
+    const profile = this.props.profile;
     return (
       <section className="profile">
         <div className="flex v-center">
@@ -128,8 +143,8 @@ class ProfileSection extends PureComponent {
               </button>
               {this.state.showProfileDropdown &&
               <div className="dropdown-menu">
-                {profiles.map((profile, i) =>
-                  <span key={i} className="item" onClick={()=>{ actions.setProfile(profile); this.setState({showProfileDropdown: false}); }}>{profile.name}</span>
+                {this.props.profiles.map((profile, i) =>
+                  <span key={i} className="item" onClick={() => this.setProfile(profile)}>{profile.name}</span>
                 )}
               </div>}
             </div>
@@ -142,13 +157,13 @@ class ProfileSection extends PureComponent {
           </div>
           <div className="auto"></div>
 
-          {this.props.profile.options &&
+          {(profile.options || profile.id === 'custom') &&
           <button className={cx({active: this.state.showProfileOptions})} onClick={() => this.setState({showProfileOptions: !this.state.showProfileOptions})}>
             <SVGImport src={require('settings.svg')}/>
           </button>}
         </div>
 
-        {this.props.profile.options && this.state.showProfileOptions &&
+        {profile.options && this.state.showProfileOptions &&
         <div className="profile-options">
           {profileOptions.map((option, i) =>
             this.props.profile.options.indexOf(option.id) > -1 &&
@@ -160,6 +175,14 @@ class ProfileSection extends PureComponent {
                   {option.desc}
               </label>
           )}
+        </div>}
+        {profile.id === 'custom' && this.state.showProfileOptions &&
+        <div className="custom-profile-options">
+          <div><label>Profile source</label></div>
+          <div>
+            <textarea wrap="off" spellCheck={false} value={profile.source} onChange={::this.onCustomProfileSourceChange}>
+            </textarea>
+          </div>
         </div>}
       </section>
     );

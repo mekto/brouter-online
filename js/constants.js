@@ -5,6 +5,7 @@ export const messages = keyMirror({
   MISSING_WAYPOINTS: null,
   DISTANCE_TOO_LONG: null,
   DISTANCE_TOO_LONG_FOR_AUTOCALCULATION: null,
+  EMPTY_PROFILE_SOURCE: null,
 });
 
 export const routeColors = {

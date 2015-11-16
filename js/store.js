@@ -2,7 +2,7 @@ import Store from './utils/Store';
 import Waypoint from './utils/Waypoint';
 import Route from './utils/Route';
 import util from './util';
-import { findById, findIndexById, set, remove } from './immulib';
+import { findById, findIndexById, merge, set, remove } from './immulib';
 import profiles, { profileOptionValues } from './profiles';
 import MapUtils from './utils/MapUtils';
 import { messages } from './constants';
@@ -17,6 +17,7 @@ let _isPending = false;
 let _message = null;
 let _profileOptions = {...profileOptionValues};
 let _trailer = null;
+let _profiles = profiles;
 
 
 function addWaypoint(props={}, insertIndex) {
@@ -117,6 +118,7 @@ class AppStore extends Store {
   get waypoints() { return _waypoints; }
   get routes() { return _routes; }
   get profile() { return _profile; }
+  get profiles() { return _profiles; }
   get routeIndex() { return _routeIndex; }
   get message() { return _message; }
   get isPending() { return _isPending; }
@@ -128,6 +130,8 @@ class AppStore extends Store {
     const waypoints = this.validWaypoints;
     if (waypoints.length < 2)
       return messages.MISSING_WAYPOINTS;
+    if (!this.profile.source)
+      return messages.EMPTY_PROFILE_SOURCE;
 
     const distance = MapUtils.calculateDistance(waypoints);
     if (distance > config.maxBrouterCalculationDistance) {
@@ -166,7 +170,7 @@ export default new AppStore({
   },
 
   CALCULATE_ROUTE_ABORT({message}) {
-    if (message === messages.MISSING_WAYPOINTS)
+    if ([messages.DISTANCE_TOO_LONG, messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION].indexOf(message) === -1)
       message = null;
     if (message !== _message) {
       _message = message;
@@ -257,5 +261,12 @@ export default new AppStore({
     else if (optionId === 'stick_to_cycleroutes' && value)
       _profileOptions['ignore_cycleroutes'] = false;
     this.emitChange();
-  }
+  },
+
+  SET_CUSTOM_PROFILE_SOURCE({source}) {
+    const index = _profiles::findIndexById('custom');
+    _profiles = _profiles::set(index, _profiles[index]::merge({source}));
+    _profile = _profiles[index];
+    this.emitChange();
+  },
 });

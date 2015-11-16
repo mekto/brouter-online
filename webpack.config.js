@@ -19,7 +19,8 @@ var webpackConfig = {
     loaders: [
       { test: /\.js$/, exclude: [/node_modules/, /vendors/], loaders: ['babel-loader?optional=runtime'] },
       { test: /\.svg$/, loaders: ['raw'] },
-      { test: /\.brf$/, loaders: ['profile'] },
+      { test: /\.brf$/, loaders: ['raw'] },
+      { test: /\.brfc$/, loaders: ['profile'] },
     ]
   }
 };

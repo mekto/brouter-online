@@ -189,3 +189,7 @@ export function setProfileOption(optionId, value) {
   dispatch('SET_PROFILE_OPTION', {optionId, value});
   calculateRoute();
 }
+
+export function setCustomProfileSource(source) {
+  dispatch('SET_CUSTOM_PROFILE_SOURCE', {source});
+}

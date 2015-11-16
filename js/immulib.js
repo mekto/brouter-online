@@ -1,3 +1,6 @@
+import React from 'react';
+
+
 export function findById(id) {
   return this.find(function(element) {
     return element.id === id;
@@ -9,6 +12,11 @@ export function findIndexById(id) {
   return this.findIndex(function(element) {
     return element.id === id;
   });
+}
+
+
+export function merge(props) {
+  return React.addons.update(this, {$merge: props});
 }
 
 
@@ -30,5 +38,5 @@ export function remove(index) {
 
 
 export default {
-  findById, findIndexById, set, remove,
+  findById, findIndexById, merge, set, remove,
 };
