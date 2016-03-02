@@ -5,7 +5,7 @@ var config = require('../config');
 var routing = {
   route(latLngs, profile, idx, callback) {
     var lonLats = latLngs.map(function(latLng) {
-      return latLng.lng + ',' + latLng.lat;
+      return latLng[1] + ',' + latLng[0];
     });
 
     var req = request.post(config.brouterHost + '/brouter');

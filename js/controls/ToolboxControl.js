@@ -6,73 +6,71 @@ import util from '../util';
 import f from '../filters';
 import config from '../../config';
 import store from '../store';
-import {PureComponent, Sortable, SVGImport, RouteCard} from '../components';
+import {Sortable, SVGImport, RouteCard} from '../components';
 import {messages} from '../constants';
+import {findById} from '../immulib';
 import * as actions from '../actions';
 
 const CSSTransitionSpan = React.addons.CSSTransitionGroup;
 
 
-function getStateFromStores() {
+function getStateFromStore() {
+  const { waypoints, routes, profiles, options, messages, isPending } = store.getState();
   return {
-    waypoints: store.waypoints,
-    routes: store.routes,
-    profile: store.profile,
-    profiles: store.profiles,
-    routeIndex: store.routeIndex,
-    isPending: store.isPending,
-    infoMessage: store.infoMessage,
-    errorMessage: store.errorMessage,
-    profileOptions: store.profileOptions,
+    waypoints,
+    routes,
+    profiles,
+    options,
+    messages,
+    isPending,
   };
 }
 
 
-class ToolboxComponent extends PureComponent {
+class ToolboxComponent extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = getStateFromStores();
+    this.state = getStateFromStore();
   }
 
   componentDidMount() {
-    store.addChangeListener(this.onChange);
+    store.subscribe(this.onChange);
   }
 
   onChange = () => {
-    this.setState(getStateFromStores());
+    this.setState(getStateFromStore());
   }
 
   render() {
+    const { waypoints, routes, profiles, options, isPending } = this.state;
     return (
       <div className="toolbox">
-        <WaypointsSection waypoints={this.state.waypoints} isPending={this.state.isPending}/>
-        <ProfileSection profile={this.state.profile} profiles={this.state.profiles} profileOptions={this.state.profileOptions}
-          routeIndex={this.state.routeIndex}/>
-        {this.renderInfoMessagePanel()}
+        <WaypointsSection waypoints={waypoints} isPending={isPending}/>
+        <ProfileSection profiles={profiles} options={options}/>
         {this.renderErrorMessagePanel()}
-        <RouteCardsSection routes={this.state.routes}/>
+        {this.renderInfoMessagePanel()}
+        <RouteCardsSection routes={routes}/>
       </div>
     );
   }
 
   renderInfoMessagePanel() {
-    if (!this.state.infoMessage)
+    if (!this.state.messages.info)
       return null;
 
     const maxDistance = f.km(config.maxBrouterCalculationDistance);
     return (
       <div className="info">
-        {this.state.infoMessage === messages.DISTANCE_TOO_LONG &&
+        {this.state.messages.info === messages.DISTANCE_TOO_LONG &&
           <span>Can't calculate distances longer than {maxDistance} as the crow flies.</span>}
-        {this.state.infoMessage === messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION &&
+        {this.state.messages.info === messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION &&
           <span>Press <a onClick={()=>{ actions.calculateRoute({force: true}); }}>Find route</a> button to calculate route.</span>}
       </div>
     );
   }
 
   renderErrorMessagePanel() {
-    if (this.state.errorMessage === null)
+    if (this.state.messages.error === null)
       return null;
 
     return (
@@ -81,14 +79,14 @@ class ToolboxComponent extends PureComponent {
           <a onClick={()=>{ actions.clearErrorMessage(); }}><SVGImport src={require('x.svg')}/></a>
         </div>
         <div><strong>Error while calculating route</strong></div>
-        <div>{this.state.errorMessage}</div>
+        <div>{this.state.messages.error}</div>
       </div>
     );
   }
 }
 
 
-class WaypointsSection extends PureComponent {
+class WaypointsSection extends React.Component {
   render() {
     return (
       <section className="waypoints">
@@ -110,7 +108,7 @@ class WaypointsSection extends PureComponent {
 }
 
 
-class RouteCardsSection extends PureComponent {
+class RouteCardsSection extends React.Component {
   render() {
     return (
       <div>
@@ -123,7 +121,7 @@ class RouteCardsSection extends PureComponent {
 }
 
 
-class ProfileSection extends PureComponent {
+class ProfileSection extends React.Component {
   constructor(props) {
     super(props);
 
@@ -147,7 +145,8 @@ class ProfileSection extends PureComponent {
   }
 
   render() {
-    const profile = this.props.profile;
+    const { profiles, options } = this.props;
+    const profile = profiles::findById(options.profileId);
     return (
       <section className="profile">
         <div className="flex v-center">
@@ -156,12 +155,12 @@ class ProfileSection extends PureComponent {
             <label>Profile:</label>
             <div className="dropdown">
               <button className={cx({active: this.state.showProfileDropdown})} onClick={()=>{ this.setState({showProfileDropdown: !this.state.showProfileDropdown}); }}>
-                {this.props.profile.name} <i className="caret"/>
+                {profile.name} <i className="caret"/>
               </button>
               {this.state.showProfileDropdown &&
               <div className="dropdown-menu">
-                {this.props.profiles.map((profile, i) =>
-                  <span key={i} className="item" onClick={() => this.setProfile(profile)}>{profile.name}</span>
+                {profiles.map(profile =>
+                  <span key={profile.id} className="item" onClick={() => this.setProfile(profile.id)}>{profile.name}</span>
                 )}
               </div>}
             </div>
@@ -169,7 +168,7 @@ class ProfileSection extends PureComponent {
           <div className="field">
             <label>Route index:</label>
             {[0, 1, 2, 3].map((idx) =>
-              <span key={idx} className={cx('badge', {active: this.props.routeIndex === idx})} onClick={()=>{ actions.setRouteIndex(idx); }}>{idx + 1}</span>
+              <span key={idx} className={cx('badge', {active: options.routeIndex === idx})} onClick={()=>{ actions.setRouteIndex(idx); }}>{idx + 1}</span>
             )}
           </div>
           <div className="auto"></div>
@@ -183,13 +182,13 @@ class ProfileSection extends PureComponent {
         {profile.options && this.state.showProfileOptions &&
         <div className="profile-options">
           {profileOptions.map((option, i) =>
-            this.props.profile.options.indexOf(option.id) > -1 &&
+            profile.options.includes(option.id) &&
               <label key={i}>
                 <input
                   type="checkbox"
                   onChange={(e) => actions.setProfileOption(option.id, e.target.checked)}
-                  checked={!!this.props.profileOptions[option.id]}/>
-                  {option.desc}
+                  checked={!!options.profileOptions[option.id]}/>
+                {option.name}
               </label>
           )}
         </div>}
@@ -207,23 +206,23 @@ class ProfileSection extends PureComponent {
 }
 
 
-class WaypointList extends PureComponent {
+class WaypointList extends React.Component {
   render() {
     return (
-      <Sortable className="inner" handle=".label" swapItems={actions.swapWaypoints} onSort={actions.calculateRoute}>
+      <Sortable className="inner" handle=".label" swapItems={(wpA, wpB) => actions.reorderWaypoints(wpA.id, wpB.id)} onSort={actions.calculateRoute}>
         {this.props.waypoints.map((waypoint, i) =>
           <Sortable.Item className="waypoint" item={waypoint} key={waypoint.id}>
             <span className="label">
               <SVGImport src={require('grip.svg')}/>
               <span className="icon">{f.indexToLetter(i)}</span>
             </span>
-            <WaypointInput value={waypoint.address} onEnter={(e)=> actions.onWaypointInputEnter(waypoint, e.target.value)}/>
+            <WaypointInput value={waypoint.address} onEnter={(e)=> actions.geocodeWaypoint(waypoint.id, e.target.value)}/>
             <CSSTransitionSpan transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
               {waypoint.loading &&
                 <span className="loading-indicator"><SVGImport key="indicator" src={require('loading-spokes.svg')}/></span>}
             </CSSTransitionSpan>
-            {waypoint.marker && !waypoint.loading &&
-              <span className="clear-button" onClick={() => { this.props.waypoints.length > 2 ? actions.deleteWaypoint(waypoint) : actions.clearWaypoint(waypoint); }}><SVGImport src={require('x.svg')}/></span>
+            {waypoint.latLng && !waypoint.loading &&
+              <span className="clear-button" onClick={() => { this.props.waypoints.length > 2 ? actions.deleteWaypoint(waypoint.id) : actions.clearWaypoint(waypoint.id); }}><SVGImport src={require('x.svg')}/></span>
             }
           </Sortable.Item>
         )}
@@ -233,7 +232,7 @@ class WaypointList extends PureComponent {
 }
 
 
-class WaypointInput extends PureComponent {
+class WaypointInput extends React.Component {
   constructor(props) {
     super(props);
     this.state = {value: props.value};

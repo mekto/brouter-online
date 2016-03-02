@@ -1,4 +1,3 @@
-import Leaflet from 'leaflet';
 import superagent from 'superagent';
 import google from 'google';
 
@@ -37,7 +36,7 @@ const geocoder = {
       let items = null;
       if (status === 'OK') {
         items = results.map((item) => {
-          item.latLng = new Leaflet.LatLng(item.geometry.location.lat(), item.geometry.location.lng());
+          item.latLng = [item.geometry.location.lat(), item.geometry.location.lng()];
           item.formatted = compactAddress_Google(item.formatted_address);
           item.id = item.place_id;
           return item;
@@ -70,7 +69,7 @@ const geocoder = {
         items = response.body.features.map(item => {
           let result = item.properties;
           let coords = item.geometry.coordinates;
-          result.latLng = Leaflet.latLng(coords[1], coords[0]);
+          result.latLng = [coords[1], coords[0]];
           result.formatted = `${result.name}, ${result.country} (${result.osm_key}.${result.osm_value})`;
           result.id = item.osm_id;
           return result;
@@ -108,7 +107,7 @@ const geocoder = {
   getPlace(placeId, callback) {
     placesService.getDetails({placeId}, (result, status) => {
       if (status === 'OK') {
-        result.latLng = new Leaflet.LatLng(result.geometry.location.lat(), result.geometry.location.lng());
+        result.latLng = [result.geometry.location.lat(), result.geometry.location.lng()];
         result.formatted = compactAddress_Google(result.formatted_address);
         callback(result);
       } else {
@@ -122,7 +121,7 @@ const geocoder = {
   },
 
   reverse_Google(latlng, callback) {
-    let latLng = new google.maps.LatLng(latlng.lat, latlng.lng);
+    let latLng = new google.maps.LatLng(latlng[0], latlng[1]);
     geocoderService.geocode({latLng}, (results, status) => {
       let result = null;
       if (status === 'OK') {
@@ -136,8 +135,8 @@ const geocoder = {
   reverse_Nominatim(latlng, callback) {
     let req = superagent.get('//nominatim.openstreetmap.org/reverse');
     req.query({
-      lat: latlng.lat,
-      lon: latlng.lng,
+      lat: latlng[0],
+      lon: latlng[1],
       zoom: 18,
       format: 'json',
       addressdetails: 1

@@ -1,45 +1,16 @@
-import {toObject} from './util';
-
-
-class Profile {
-  constructor(id, name, source, options=null) {
-    this.id = id;
-    this.name = name;
-    this.source = source;
-    this.options = options;
-  }
-
-  getSource(options) {
-    var source = this.source;
-    if (!Array.isArray(this.options))
-      return source;
-
-    this.options.forEach(function(key) {
-      source = source.replace(new RegExp('{' + key + '[^}]*}'), options[key] ? '1' : '0');
-    });
-    return source;
-  }
-}
-
 export const profileOptions = [
-  ['consider_elevation', 'Consider elevation', true],
-  ['allow_steps', 'Allow steps', true],
-  ['allow_ferries', 'Allow ferries', true],
-  ['ignore_cycleroutes', 'Ignore cycleroutes', false],
-  ['stick_to_cycleroutes', 'Stick to cycleroutes', false],
-  ['avoid_unsafe', 'Avoid unsafe', false],
-].map((item) => Object({'id': item[0], 'desc': item[1], 'defaultValue': item[2]}));
-
-export const profileOptionValues = toObject(profileOptions.map(option => ([option.id, option.defaultValue])));
+  {id: 'consider_elevation', name: 'Consider elevation', defaultValue: true},
+  {id: 'allow_steps', name: 'Allow steps', defaultValue: true},
+  {id: 'allow_ferries', name: 'Allow ferries', deafultValue: true},
+  {id: 'ignore_cycleroutes', name: 'Ignore cycleroutes', deafultValue: false},
+  {id: 'stick_to_cycleroutes', name: 'Stick to cycleroutes', defaultValue: false},
+  {id: 'avoid_unsafe', name: 'Avoid unsafe', defaultValue: false},
+];
 
 
 export default [
-  new Profile('trekking', 'Trekking', require('./profiles/trekking.brfc'),
-    ['consider_elevation', 'allow_steps', 'allow_ferries', 'ignore_cycleroutes', 'stick_to_cycleroutes', 'avoid_unsafe']
-  ),
-  new Profile('fastbike', 'Fastbike', require('./profiles/fastbike.brfc'),
-    ['consider_elevation']
-  ),
-  new Profile('shortest', 'Shortest', require('./profiles/shortest.brfc')),
-  new Profile('custom', 'Custom', require('./profiles/custom.brf')),
+  {id: 'trekking', name: 'Trekking', source: require('./profiles/trekking.brfc'), options: ['consider_elevation', 'allow_steps', 'allow_ferries', 'ignore_cycleroutes', 'stick_to_cycleroutes', 'avoid_unsafe']},
+  {id: 'fastbike', name: 'Fastbike', source: require('./profiles/fastbike.brfc'), options: ['consider_elevation']},
+  {id: 'shortest', name: 'Shortest', source: require('./profiles/shortest.brfc'), options: []},
+  {id: 'custom', name: 'Custom', source: require('./profiles/custom.brf'), options: []},
 ];

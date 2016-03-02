@@ -3,6 +3,7 @@ import React from 'react';
 import ReactDOM, {findDOMNode} from 'react-dom';
 import cx from 'classnames';
 import * as actions from '../actions';
+import MapUtils from '../utils/MapUtils';
 
 
 class ContextMenu extends React.Component {
@@ -20,7 +21,7 @@ class ContextMenu extends React.Component {
   }
 
   setWaypoint(type) {
-    actions.putWaypointAtLatLng(type, this.state.latLng);
+    actions.putWaypointAtLatLng(type, MapUtils.latLngToArray(this.state.latLng));
     this.hide();
   }
 

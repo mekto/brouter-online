@@ -15,6 +15,9 @@ export default class Sortable extends React.Component {
     if (!this.dragged || this.dragged === item)
       return;
     event.preventDefault();
+
+    if (this.dragged.props.item === item.props.item)
+      return;
     this.props.swapItems(
       this.dragged.props.item,
       item.props.item

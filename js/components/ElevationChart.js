@@ -3,13 +3,13 @@ import ReactDOM, {findDOMNode, unmountComponentAtNode} from 'react-dom';
 import Leaflet from 'leaflet';
 import f from '../filters';
 import map from '../map';
-import PureComponent from './PureComponent';
+import { getRouteCoordinates } from '../reducers/routes';
 
 
 const MIN_ALTITUDE_SPAN = 160;
 
 
-export default class ElevationChart extends PureComponent {
+export default class ElevationChart extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +42,7 @@ export default class ElevationChart extends PureComponent {
     const guide = this.state.guide;
 
     if (this.coords === undefined) {
-      const coords = this.props.route.coordinates.map(([lng, lat, alt]) => ({lat, lng, alt}));
+      const coords = getRouteCoordinates(this.props.route).map(([lng, lat, alt]) => ({lat, lng, alt}));
       coords[0].dist = 0;
       if (coords[0].alt === undefined)
         coords[0].alt = coords[1].alt;
