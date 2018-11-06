@@ -161,8 +161,10 @@ function getBounds_Google() {
   var southWest = bounds.getSouthWest();
   var northEast = bounds.getNorthEast();
 
-  return new google.maps.LatLngBounds(new google.maps.LatLng(southWest.lat, southWest.lng),
-                                      new google.maps.LatLng(northEast.lat, northEast.lng));
+  return new google.maps.LatLngBounds(
+    new google.maps.LatLng(southWest.lat, southWest.lng),
+    new google.maps.LatLng(northEast.lat, northEast.lng)
+  );
 }
 
 
@@ -171,9 +173,9 @@ function matchedHTML_Google(text, matchedSubstrings) {
   var offset = 0;
   matchedSubstrings.forEach(function(match) {
     var pos = match.offset + offset;
-    var term = text.substr(pos, match.length),
-        begin = text.substr(0, pos),
-        end = text.substr(pos + match.length);
+    var term = text.substr(pos, match.length);
+    var begin = text.substr(0, pos);
+    var end = text.substr(pos + match.length);
     text = ''.concat(begin, '<strong>', term, '</strong>', end);
     offset += '<strong></strong>'.length;
   });
