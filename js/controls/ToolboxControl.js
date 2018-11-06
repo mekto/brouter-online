@@ -1,4 +1,5 @@
 import React from 'react';
+import { CSSTransitionGroup } from 'react-transition-group'
 import Control from './Control';
 import cx from 'classnames';
 import {profileOptions} from '../profiles';
@@ -10,8 +11,6 @@ import {Sortable, SVGImport, RouteCard} from '../components';
 import {messages} from '../constants';
 import {findById} from '../immulib';
 import * as actions from '../actions';
-
-const CSSTransitionSpan = React.addons.CSSTransitionGroup;
 
 
 function getStateFromStore() {
@@ -217,10 +216,10 @@ class WaypointList extends React.Component {
               <span className="icon">{f.indexToLetter(i)}</span>
             </span>
             <WaypointInput value={waypoint.address} onEnter={(e)=> actions.geocodeWaypoint(waypoint.id, e.target.value)}/>
-            <CSSTransitionSpan transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
+            <CSSTransitionGroup transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
               {waypoint.loading &&
                 <span className="loading-indicator"><SVGImport key="indicator" src={require('../../svg/loading-spokes.svg')}/></span>}
-            </CSSTransitionSpan>
+            </CSSTransitionGroup>
             {waypoint.latLng && !waypoint.loading &&
                 <span className="clear-button" onClick={() => { this.props.waypoints.length > 2 ? actions.deleteWaypoint(waypoint.id) : actions.clearWaypoint(waypoint.id); }}><SVGImport src={require('../../svg/x.svg')}/></span>
             }

@@ -5,7 +5,7 @@ var OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 var webpackConfig = {
     entry: path.join(__dirname, 'js/init.js'),
     output: { path: path.join(__dirname, 'public'), filename: 'app.js' },
-    externals: { 'react': 'React', 'react-dom': 'ReactDOM', 'google': 'google' },
+    externals: { 'google': 'google' },
     module: {
         rules: [
             {

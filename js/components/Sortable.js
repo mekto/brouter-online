@@ -1,13 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import util from '../util';
 
 
 export default class Sortable extends React.Component {
 
   static propTypes = {
-    handle: React.PropTypes.string,
-    swapItems: React.PropTypes.func.isRequired,
-    onSort: React.PropTypes.func,
+    handle: PropTypes.string,
+    swapItems: PropTypes.func.isRequired,
+    onSort: PropTypes.func,
   }
   static defaultProps = { onSort: () => {} }
 
