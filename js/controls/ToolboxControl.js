@@ -57,6 +57,11 @@ class ToolboxComponent extends React.Component {
     if (!this.state.messages.info)
       return null;
 
+    const displayMessages = [messages.DISTANCE_TOO_LONG, messages.DISTANCE_TOO_LONG_FOR_AUTOCALCULATION];
+    if (displayMessages.indexOf(this.state.messages.info) == -1) {
+      return null;
+    }
+
     const maxDistance = f.km(config.maxBrouterCalculationDistance);
     return (
       <div className="info">

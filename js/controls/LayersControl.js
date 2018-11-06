@@ -2,7 +2,6 @@ import Leaflet from 'leaflet';
 import React from 'react';
 import cs from 'classnames';
 import Control from './Control';
-import Google from '../utils/Google.js';
 import config from '../../config.js';
 
 
@@ -13,7 +12,6 @@ var copyrights = {
   Heidelberg: '© <a href="http://openmapsurfer.uni-hd.de/" target="_blank">GIScience Research Group @ University of Heidelberg</a>',
   WaymarkedTrails: '© <a href="http://cycling.waymarkedtrails.org" target="_blank">Waymarked Trails</a>',
   OpenMapLT: '© <a href="http://openmap.lt" target="_blank">OpenMap.lt</a>',
-  Google: '© <a href="http://www.google.com" target="_blank">Google</a>',
 };
 
 
@@ -36,15 +34,6 @@ var mapboxLayer = function(name, type, attribution) {
   };
 };
 
-var googleLayer = function(name, style, attribution) {
-  return {
-    name: name,
-    create: function(variant) {
-      return new Google.TileLayer(style, {layer: variant, attribution: attribution});
-    }
-  };
-};
-
 
 var baseLayers = [
   leafletLayer('OSM Standard', 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', copyrights.OSM),
@@ -53,10 +42,6 @@ var baseLayers = [
   mapboxLayer('MapBox Street', 'mekto.hj5462ii', copyrights.MapBox),
   mapboxLayer('MapBox Terrain', 'mekto.hgp09m7l', copyrights.MapBox),
   leafletLayer('OSM Transport', 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', copyrights.Thunderforest),
-  // mapboxLayer('MapBox Outdoors', 'mekto.l8gcl6k6', copyrights.MapBox),
-  googleLayer('Google Road', 'ROADMAP', copyrights.Google),
-  googleLayer('Google Terrain', 'TERRAIN', copyrights.Google),
-  googleLayer('Google Satellite', 'HYBRID', copyrights.Google),
 ];
 
 var overlays = [
