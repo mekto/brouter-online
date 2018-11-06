@@ -8,6 +8,8 @@ import LayersControl from './controls/LayersControl';
 import ToolboxControl from './controls/ToolboxControl';
 import ContextMenu from './controls/ContextMenu';
 
+import { setLocate } from './actions';
+
 import '../css/app.styl';
 
 new ZoomControl().addTo(map);
@@ -20,15 +22,9 @@ new ContextMenu().addTo(map);
 
 const DEFAULT_POSITION = [49, 18];
 const DEFAULT_ZOOM = 4;
+map.setView(DEFAULT_POSITION, DEFAULT_ZOOM);
+
 if ("geolocation" in navigator) {
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      map.setView([position.coords.latitude, position.coords.longitude], 15);
-    },
-    () => {
-      map.setView(DEFAULT_POSITION, DEFAULT_ZOOM);
-    },
-  );
-} else {
-  map.setView(DEFAULT_POSITION, DEFAULT_ZOOM);
+  map.locate({setView: true, maxZoom: 15});
+  setLocate('searching');
 }

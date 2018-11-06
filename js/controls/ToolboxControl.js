@@ -11,19 +11,8 @@ import {Sortable, SVGImport, RouteCard} from '../components';
 import {messages} from '../constants';
 import {findById} from '../immulib';
 import * as actions from '../actions';
+import { getStateFromStore } from '../utils/store';
 
-
-function getStateFromStore() {
-  const { waypoints, routes, profiles, options, messages, isPending } = store.getState();
-  return {
-    waypoints,
-    routes,
-    profiles,
-    options,
-    messages,
-    isPending,
-  };
-}
 
 
 class ToolboxComponent extends React.Component {
