@@ -23,7 +23,7 @@ const DEFAULT_ZOOM = 4;
 if ("geolocation" in navigator) {
   navigator.geolocation.getCurrentPosition(
     (position) => {
-      map.setView([position.coords.latitude, position.coords.longitude], 11);
+      map.setView([position.coords.latitude, position.coords.longitude], 15);
     },
     () => {
       map.setView(DEFAULT_POSITION, DEFAULT_ZOOM);

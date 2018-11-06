@@ -63,8 +63,11 @@ const geocoder = {
       format: 'json',
       addressdetails: 1
     };
+    let headers = new Headers({
+      "User-Agent": "Brouter-Online"
+    });
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-    fetch(url).then(response => response.json()).then(
+    fetch(url, { headers }).then(response => response.json()).then(
       response => {
         let result = null;
         result = response.address;
