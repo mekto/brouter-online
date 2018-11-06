@@ -76,7 +76,7 @@ class ToolboxComponent extends React.Component {
     return (
       <div className="error">
         <div className="actions">
-          <a onClick={()=>{ actions.clearErrorMessage(); }}><SVGImport src={require('x.svg')}/></a>
+          <a onClick={()=>{ actions.clearErrorMessage(); }}><SVGImport src={require('../../svg/x.svg')}/></a>
         </div>
         <div><strong>Error while calculating route</strong></div>
         <div>{this.state.messages.error}</div>
@@ -94,13 +94,13 @@ class WaypointsSection extends React.Component {
 
         <button className="search-button" onClick={()=>{ actions.calculateRoute({force: true}); }}>
           {!this.props.isPending
-            ? <SVGImport src={require('directions.svg')}/>
-            : <SVGImport src={require('tail-spin.svg')}/>}
+            ? <SVGImport src={require('../../svg/directions.svg')}/>
+            : <SVGImport src={require('../../svg/tail-spin.svg')}/>}
         </button>
 
         {this.props.waypoints.length === 2 &&
         <div className="swap" onClick={()=>{ actions.swapWaypoints(); }}>
-          <SVGImport src={require('swap.svg')}/>
+          <SVGImport src={require('../../svg/swap.svg')}/>
         </div>}
       </section>
     );
@@ -150,7 +150,7 @@ class ProfileSection extends React.Component {
     return (
       <section className="profile">
         <div className="flex v-center">
-          <SVGImport src={require('bike.svg')}/>
+          <SVGImport src={require('../../svg/bike.svg')}/>
           <div className="field" style={{width: '120px'}}>
             <label>Profile:</label>
             <div className="dropdown">
@@ -175,7 +175,7 @@ class ProfileSection extends React.Component {
 
           {(profile.options || profile.id === 'custom') &&
           <button className={cx({active: this.state.showProfileOptions})} onClick={() => this.setState({showProfileOptions: !this.state.showProfileOptions})}>
-            <SVGImport src={require('settings.svg')}/>
+            <SVGImport src={require('../../svg/settings.svg')}/>
           </button>}
         </div>
 
@@ -213,16 +213,16 @@ class WaypointList extends React.Component {
         {this.props.waypoints.map((waypoint, i) =>
           <Sortable.Item className="waypoint" item={waypoint} key={waypoint.id}>
             <span className="label">
-              <SVGImport src={require('grip.svg')}/>
+              <SVGImport src={require('../../svg/grip.svg')}/>
               <span className="icon">{f.indexToLetter(i)}</span>
             </span>
             <WaypointInput value={waypoint.address} onEnter={(e)=> actions.geocodeWaypoint(waypoint.id, e.target.value)}/>
             <CSSTransitionSpan transitionName="fade" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
               {waypoint.loading &&
-                <span className="loading-indicator"><SVGImport key="indicator" src={require('loading-spokes.svg')}/></span>}
+                <span className="loading-indicator"><SVGImport key="indicator" src={require('../../svg/loading-spokes.svg')}/></span>}
             </CSSTransitionSpan>
             {waypoint.latLng && !waypoint.loading &&
-              <span className="clear-button" onClick={() => { this.props.waypoints.length > 2 ? actions.deleteWaypoint(waypoint.id) : actions.clearWaypoint(waypoint.id); }}><SVGImport src={require('x.svg')}/></span>
+                <span className="clear-button" onClick={() => { this.props.waypoints.length > 2 ? actions.deleteWaypoint(waypoint.id) : actions.clearWaypoint(waypoint.id); }}><SVGImport src={require('../../svg/x.svg')}/></span>
             }
           </Sortable.Item>
         )}

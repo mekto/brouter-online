@@ -2,7 +2,7 @@ var request = require('superagent');
 var config = require('../config');
 
 
-var routing = {
+export default {
   route(latLngs, profile, idx, callback) {
     var lonLats = latLngs.map(function(latLng) {
       return latLng[1] + ',' + latLng[0];
@@ -27,6 +27,3 @@ var routing = {
     });
   }
 };
-
-
-module.exports = routing;

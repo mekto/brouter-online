@@ -1,5 +1,5 @@
 * { box-sizing: border-box; }
-body, html, #map { size: 100%; margin: 0; padding: 0; line-height: 1.4em; }
+body, html, #map { height: 100%; width: 100%; margin: 0; padding: 0; line-height: 1.4em; }
 body { font-size: 13px; font-family: Arial, sans-serif; color: $text-color; }
 input { font-size: inherit; }
 small { font-size: 11px; }
@@ -44,7 +44,9 @@ svg { outline: 0 none; }
   position: relative;
 
   .layers-menu {
-    absolute: top 0 right 40px;
+    position: absolute;
+    top: 0;
+    right: 40px;
     width: 494px;
     background-color: white;
     border: 1px solid #bbb;
@@ -60,12 +62,13 @@ svg { outline: 0 none; }
     position: relative;
     margin: 0 10px 10px 0;
     border: 1px solid #aaa;
-    size: 150px 70px;
+    height: 150px;
+    width: 70px;
     float: left;
 
-    .name { absolute: left 0 top 0; display: inline-block; padding: 1px 5px; background-color: rgba(black, .7); color: white; z-index: 10; font-size: 12px; }
-    .minimap-container { size: 100%; background-color: white; }
-    .minimap { size: 100%; background-color: white; }
+    .name { position: absolute; left: 0; top: 0; display: inline-block; padding: 1px 5px; background-color: rgba(black, .7); color: white; z-index: 10; font-size: 12px; }
+    .minimap-container { height: 100%; width: 100%; background-color: white; }
+    .minimap { height: 100%; width: 100%; background-color: white; }
     &.active .minimap-container { outline: 4px solid aqua; }
   }
 }
@@ -76,7 +79,8 @@ svg { outline: 0 none; }
   border-top: 4px solid #555;
   vertical-align: middle;
   display: inline-block;
-  size: 0;
+  height: 0;
+  width: 0;
   margin-top: -2px;
   margin-left: 2px;
 }
@@ -90,7 +94,9 @@ button:active, button.active { border: 1px solid silver; box-shadow: inset 1px 1
   width: 100%;
 
   .dropdown-menu {
-    absolute: top 100% left 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
     background-color: white;
     box-shadow: 1px 1px 1px rgba(black, .1);
     border: 1px solid silver;
@@ -105,7 +111,7 @@ button:active, button.active { border: 1px solid silver; box-shadow: inset 1px 1
   }
 }
 
-.badge { display: inline-block; size: 14px; line-height: @height; font-size: 11px; text-align: center; border-radius: 50%; background-color: transparent; cursor: pointer; }
+.badge { display: inline-block; height: 14px; width: 14px; line-height: 13px; font-size: 11px; text-align: center; border-radius: 50%; background-color: transparent; cursor: pointer; }
 .badge:hover { background-color: silver; }
 .badge.active { background-color: $secondary-color; color: white; }
 .badge.muted { background-color: #eee; }
@@ -129,7 +135,7 @@ button:active, button.active { border: 1px solid silver; box-shadow: inset 1px 1
 .marker-body { fill: $secondary-color; stroke: rgba(#333, .6); }
 .marker-letter { fill: white; }
 .end-marker .marker-body { fill: $primary-color; }
-.via-marker .marker { size: 32px 26px; }
+.via-marker .marker { height: 32px; width: 26px; }
 .via-marker .marker-body { fill: yellow; }
 
 .contextmenu {

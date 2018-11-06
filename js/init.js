@@ -9,6 +9,7 @@ import LayersControl from './controls/LayersControl';
 import ToolboxControl from './controls/ToolboxControl';
 import ContextMenu from './controls/ContextMenu';
 
+import '../css/app.styl';
 
 new ZoomControl().addTo(map);
 new LocateControl().addTo(map);

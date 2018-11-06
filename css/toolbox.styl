@@ -13,15 +13,15 @@
   .waypoint {
     position: relative;
     input { border: 0; width: 100%; font-size: 14px; padding-left 25px; line-height: 34px; outline: 0; border-bottom: 1px solid $border-color; }
-    .label { absolute: left -4px top 9px; cursor: move; cursor: -webkit-grab; cursor: -moz-grab; }
+    .label { position: absolute; left: -4px; top: 9px; cursor: move; cursor: -webkit-grab; cursor: -moz-grab; }
     .label .grip { vertical-align: middle; visibility: hidden; }
-    .label .icon { display: inline-block; size: 17px; line-height: @height - 1; background-color: yellow; font-size: 11px; text-align: center; border-radius: 50%; color: white; }
+    .label .icon { display: inline-block; height: 17px; width: 17px; line-height: 16px; background-color: yellow; font-size: 11px; text-align: center; border-radius: 50%; color: white; }
     .label:hover .grip { visibility: visible; }
 
-    .loading-indicator { absolute: right 2px top 8px; background-color: rgba(white, .1); display: inline-block; padding: 1px; }
+    .loading-indicator { position: absolute; right: 2px; top: 8px; background-color: rgba(white, .1); display: inline-block; padding: 1px; }
     .loading-indicator svg { vertical-align: top; }
 
-    .clear-button { absolute: right 2px top 10px; background-color: rgba(white, .1); display: inline-block; padding: 1px; opacity: 0; transition: opacity .2s ease-in-out; cursor: pointer; }
+    .clear-button { position: absolute; right: 2px; top: 10px; background-color: rgba(white, .1); display: inline-block; padding: 1px; opacity: 0; transition: opacity .2s ease-in-out; cursor: pointer; }
     .clear-button svg { vertical-align: top; }
     .clear-button svg .fill { fill: #d1d0d0; }
     &:hover .clear-button { opacity: 1; }
@@ -38,7 +38,10 @@
   }
 
   .search-button {
-    absolute: right -55px top 2px bottom 0;
+    position: absolute;
+    right: -55px;
+    top: 2px;
+    bottom: 0;
     width: 55px;
     background-color: $primary-color;
     border: 0;
@@ -50,7 +53,7 @@
     &:hover { background-color: darken(@background-color, 8%); }
   }
 
-  .swap { absolute: right 10px top 50%; margin-top: -11px; cursor: pointer; }
+  .swap { position: absolute; right: 10px; top: 50%; margin-top: -11px; cursor: pointer; }
   .swap:hover svg * { fill: gray; }
 
   .profile {
@@ -149,7 +152,8 @@
 }
 
 .elevation-chart {
-  size: 100% 80px;
+  height: 100%;
+  width: 80px;
   margin: 0;
   padding: 0;
   vertical-align: top;
