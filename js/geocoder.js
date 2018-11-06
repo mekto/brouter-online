@@ -1,4 +1,3 @@
-import superagent from 'superagent';
 import google from 'google';
 
 const geocoderService = new google.maps.Geocoder();
@@ -57,26 +56,27 @@ const geocoder = {
       return;
     }
 
-    let req = superagent.get('//photon.komoot.de/api/');
-    req.query({
+    const url = new URL('//photon.komoot.de/api/');
+    const params = {
       q: address,
       lat: center.lat,
       lon: center.lng,
-    });
-    req.end(response => {
+    };
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    fetch(url).then(
+      response => response.json(),
+    ).then((features) => {
       let items = null;
-      if (response.ok) {
-        items = response.body.features.map(item => {
-          let result = item.properties;
-          let coords = item.geometry.coordinates;
-          result.latLng = [coords[1], coords[0]];
-          result.formatted = `${result.name}, ${result.country} (${result.osm_key}.${result.osm_value})`;
-          result.id = item.osm_id;
-          return result;
-        });
-      }
+      items = features.map((item) => {
+        let result = item.properties;
+        let coords = item.geometry.coordinates;
+        result.latLng = [coords[1], coords[0]];
+        result.formatted = `${result.name}, ${result.country} (${result.osm_key}.${result.osm_value})`;
+        result.id = item.osm_id;
+        return result;
+      });
       cache[cacheKey] = items;
-      callback(items);
+      return callback(items);
     });
   },
 
@@ -133,21 +133,21 @@ const geocoder = {
   },
 
   reverse_Nominatim(latlng, callback) {
-    let req = superagent.get('//nominatim.openstreetmap.org/reverse');
-    req.query({
+    const url = '//nominatim.openstreetmap.org/reverse';
+    const params = {
       lat: latlng[0],
       lon: latlng[1],
       zoom: 18,
       format: 'json',
       addressdetails: 1
-    });
-    req.end(response => {
-      let result = null;
-      if (response.ok) {
-        result = response.body.address;
-        result.formatted = compactAddress_Nominatim(response.body.address);
-      }
-      callback(null);
+    };
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    fetch(url).then(response => response.json()).then(
+      response => {
+        let result = null;
+        result = response.address;
+        result.formatted = compactAddress_Nominatim(response.address);
+        callback(null);
     });
   },
 };

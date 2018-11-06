@@ -1,4 +1,4 @@
-var request = require('superagent');
+import 'whatwg-fetch';
 var config = require('../config');
 
 
@@ -8,22 +8,20 @@ export default {
       return latLng[1] + ',' + latLng[0];
     });
 
-    var req = request.post(config.brouterHost + '/brouter');
-    req.query({
+    const url = new URL(config.brouterHost + '/brouter');
+    const params = {
       nogos: '',
       alternativeidx: idx,
-      format: 'geojson'
-    });
-    req._query.push('lonlats=' + lonLats.join('|'));
-    req.type('text/plain');
-    req.send(profile);
-
-    req.end((err, response) => {
-      if (!err && response.ok && response.type === 'application/vnd.geo+json') {
-        callback(null, JSON.parse(response.text));
-      } else {
-        callback(response && response.text ? response.text : '');
-      }
-    });
+      format: 'geojson',
+      lonlats: lonLats.join('|'),
+    };
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    fetch(url, { method: 'post', body: profile }).then(
+      response => response.json()
+    ).then(
+      response => callback(null, response)
+    ).catch(
+      error => callback(error)
+    )
   }
 };
