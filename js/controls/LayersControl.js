@@ -46,8 +46,6 @@ var baseLayers = [
 
 var overlays = [
   leafletLayer('Cycling Routes', 'http://tile.waymarkedtrails.org/cycling/{z}/{x}/{y}.png', copyrights.WaymarkedTrails),
-  leafletLayer('Public Transport', 'http://pt.openmap.lt/{z}/{x}/{y}.png', copyrights.OpenMapLT),
-  leafletLayer('Hillshade', 'http://korona.geog.uni-heidelberg.de/tiles/asterh/x={x}&y={y}&z={z}', copyrights.Heidelberg),
 ];
 
 
