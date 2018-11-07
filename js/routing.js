@@ -1,32 +1,39 @@
-var request = require('superagent');
+import 'whatwg-fetch';
 var config = require('../config');
 
 
-var routing = {
+export default {
   route(latLngs, profile, idx, callback) {
     var lonLats = latLngs.map(function(latLng) {
       return latLng[1] + ',' + latLng[0];
     });
 
-    var req = request.post(config.brouterHost + '/brouter');
-    req.query({
-      nogos: '',
-      alternativeidx: idx,
-      format: 'geojson'
-    });
-    req._query.push('lonlats=' + lonLats.join('|'));
-    req.type('text/plain');
-    req.send(profile);
-
-    req.end((err, response) => {
-      if (!err && response.ok && response.type === 'application/vnd.geo+json') {
-        callback(null, JSON.parse(response.text));
-      } else {
-        callback(response && response.text ? response.text : '');
+    // TODO: Only reupload profile if needed
+    fetch(config.brouterHost + '/brouter/profile', {
+      method: 'post',
+      body: profile,
+    }).then(
+      response => response.json()
+    ).then(
+      (response) => {
+        const profileId = response.profileid;
+        const url = new URL(config.brouterHost + '/brouter');
+        const params = {
+          nogos: '',
+          alternativeidx: idx,
+          format: 'geojson',
+          lonlats: lonLats.join('|'),
+          profile: profileId,
+        };
+        Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+        fetch(url, { method: 'post' }).then(
+          response => response.json()
+        ).then(
+          response => callback(null, response)
+        ).catch(
+          error => callback(error)
+        )
       }
-    });
+    );
   }
 };
-
-
-module.exports = routing;

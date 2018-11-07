@@ -1,4 +1,3 @@
-import request from 'superagent';
 import map from './map';
 import geocoder from './geocoder';
 
@@ -9,6 +8,9 @@ import LayersControl from './controls/LayersControl';
 import ToolboxControl from './controls/ToolboxControl';
 import ContextMenu from './controls/ContextMenu';
 
+import { setLocate } from './actions';
+
+import '../css/app.styl';
 
 new ZoomControl().addTo(map);
 new LocateControl().addTo(map);
@@ -18,11 +20,11 @@ new ToolboxControl().addTo(map);
 new ContextMenu().addTo(map);
 
 
-request.get('http://freegeoip.net/json/').timeout(1999).end((err, res) => {
-  if (!err && res.ok) {
-    map.setView([res.body.latitude, res.body.longitude], 8);
-    geocoder.config = res.body;
-  } else {
-    map.setView([49, 18], 4);
-  }
-});
+const DEFAULT_POSITION = [49, 18];
+const DEFAULT_ZOOM = 4;
+map.setView(DEFAULT_POSITION, DEFAULT_ZOOM);
+
+if ("geolocation" in navigator) {
+  map.locate({setView: true, maxZoom: 15});
+  setLocate('searching');
+}

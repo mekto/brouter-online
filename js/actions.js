@@ -231,6 +231,10 @@ export function setCustomProfileSource(source) {
   dispatch({type: 'SET_CUSTOM_PROFILE_SOURCE', source});
 }
 
+export function setLocate(status) {
+  dispatch({type: 'SET_LOCATE', status});
+}
+
 
 /*
  * Helper functions

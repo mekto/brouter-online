@@ -2,7 +2,6 @@ import Leaflet from 'leaflet';
 import React from 'react';
 import cs from 'classnames';
 import Control from './Control';
-import Google from '../utils/Google.js';
 import config from '../../config.js';
 
 
@@ -12,8 +11,6 @@ var copyrights = {
   Thunderforest: '© <a href="http://www.thunderforest.com" target="_blank">Thunderforest</a>',
   Heidelberg: '© <a href="http://openmapsurfer.uni-hd.de/" target="_blank">GIScience Research Group @ University of Heidelberg</a>',
   WaymarkedTrails: '© <a href="http://cycling.waymarkedtrails.org" target="_blank">Waymarked Trails</a>',
-  OpenMapLT: '© <a href="http://openmap.lt" target="_blank">OpenMap.lt</a>',
-  Google: '© <a href="http://www.google.com" target="_blank">Google</a>',
 };
 
 
@@ -36,33 +33,25 @@ var mapboxLayer = function(name, type, attribution) {
   };
 };
 
-var googleLayer = function(name, style, attribution) {
-  return {
-    name: name,
-    create: function(variant) {
-      return new Google.TileLayer(style, {layer: variant, attribution: attribution});
-    }
-  };
-};
-
+var cycleMapURL = 'http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png';
+if (config.thunderforestAccessToken && config.thunderforestAccessToken !== 'ACCESS_TOKEN') {
+    cycleMapURL += '?apikey=' + config.thunderforestAccessToken;
+}
 
 var baseLayers = [
+  leafletLayer('Cartodb Voyager', 'http://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', copyrights.OSM),
   leafletLayer('OSM Standard', 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', copyrights.OSM),
   leafletLayer('OpenMapSurfer', 'http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', copyrights.Heidelberg),
-  leafletLayer('OSM Cycle', 'http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png', copyrights.Thunderforest),
-  mapboxLayer('MapBox Street', 'mekto.hj5462ii', copyrights.MapBox),
-  mapboxLayer('MapBox Terrain', 'mekto.hgp09m7l', copyrights.MapBox),
-  leafletLayer('OSM Transport', 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', copyrights.Thunderforest),
-  // mapboxLayer('MapBox Outdoors', 'mekto.l8gcl6k6', copyrights.MapBox),
-  googleLayer('Google Road', 'ROADMAP', copyrights.Google),
-  googleLayer('Google Terrain', 'TERRAIN', copyrights.Google),
-  googleLayer('Google Satellite', 'HYBRID', copyrights.Google),
+  leafletLayer('OSM Cycle', cycleMapURL, copyrights.Thunderforest),
+ leafletLayer('OSM Transport', 'http://{s}.tile.thunderforest.com/transport/{z}/{x}/{y}.png', copyrights.Thunderforest),
 ];
+if (config.mapboxAccessToken && config.mapboxAccessToken !== 'ACCESS_TOKEN') {
+  baseLayers.push(mapboxLayer('MapBox Street', 'mekto.hj5462ii', copyrights.MapBox));
+  baseLayers.push(mapboxLayer('MapBox Terrain', 'mekto.hgp09m7l', copyrights.MapBox));
+}
 
 var overlays = [
   leafletLayer('Cycling Routes', 'http://tile.waymarkedtrails.org/cycling/{z}/{x}/{y}.png', copyrights.WaymarkedTrails),
-  leafletLayer('Public Transport', 'http://pt.openmap.lt/{z}/{x}/{y}.png', copyrights.OpenMapLT),
-  leafletLayer('Hillshade', 'http://korona.geog.uni-heidelberg.de/tiles/asterh/x={x}&y={y}&z={z}', copyrights.Heidelberg),
 ];
 
 

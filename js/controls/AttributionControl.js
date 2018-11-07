@@ -23,8 +23,8 @@ class AttributionComponent extends React.Component {
           <span key={i}>tiles <span dangerouslySetInnerHTML={{__html: attribution}}></span> | </span>
         )}
         <span>routing © <a href="http://brouter.de/brouter/" title="BRouter: Let's get serious about bike routing" target="_blank">BRouter</a> | </span>
-        <span>search © <a href="https://www.google.com/maps" target="_blank">Google</a> | </span>
-        <span>code on <a href="https://github.com/mekto/brouter-online" target="_blank">GitHub</a></span>
+        <span>search © <a href="http://photon.komoot.de/" target="_blank">Photon</a> | </span>
+        <span>code on <a href="https://github.com/phyks/brouter-online" target="_blank">GitHub</a></span>
       </div>
     );
   }

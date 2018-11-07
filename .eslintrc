@@ -19,5 +19,4 @@
         "node": true,
         "browser": true
     },
-    "ecmaFeatures": { "modules": true, "jsx": true }
 }

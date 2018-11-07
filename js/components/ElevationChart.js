@@ -6,7 +6,7 @@ import map from '../map';
 import { getRouteCoordinates } from '../reducers/routes';
 
 
-const MIN_ALTITUDE_SPAN = 160;
+const MIN_ALTITUDE_SPAN = 30;
 
 
 export default class ElevationChart extends React.Component {

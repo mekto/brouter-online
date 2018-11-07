@@ -6,6 +6,19 @@ BRouter (which is not part of this project) is configurable OSM bike router with
 designed for an offline use on Android devices.
 For more information see http://brouter.de/brouter/
 
+### Getting started
+
+```
+git clone …
+yarn install
+cp config.js.tmpl config.js
+$EDITOR config.js
+yarn build
+```
+
+Serve the `index.html` and `public/` folder (for instance with `python3 -m
+http.server`) and open your browser :)
+
 ### Screenshot
 
 ![alt tag](screenshot.png?raw=true)

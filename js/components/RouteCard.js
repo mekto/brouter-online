@@ -21,9 +21,9 @@ export default class RouteCard extends React.Component {
               </small>
             </div>
             <div className="actions">
-             <a onClick={()=>{ actions.fitRoute(route.id); }}><SVGImport src={require('expand.svg')}/></a>
-             <a onClick={()=>{ actions.toggleRouteLock(route.id); }} className={route.locked && 'active'}><SVGImport src={require('thumb-tack.svg')}/></a>
-             <a onClick={()=>{ actions.deleteRoute(route.id); }}><SVGImport src={require('x.svg')}/></a>
+              <a onClick={()=>{ actions.fitRoute(route.id); }}><SVGImport src={require('../../svg/zoom.svg')}/></a>
+              <a onClick={()=>{ actions.toggleRouteLock(route.id); }} className={route.locked ? 'active' : null}><SVGImport src={require('../../svg/thumb-tack.svg')}/></a>
+              <a onClick={()=>{ actions.deleteRoute(route.id); }}><SVGImport src={require('../../svg/x.svg')}/></a>
             </div>
           </div>
         </div>

@@ -40,6 +40,12 @@ export default function options(state = initialState, action = {}) {
         profileOptions
       };
 
+    case 'SET_LOCATE':
+      return {
+        ...state,
+        locateStatus: action.status
+      };
+
     default:
       return state;
   }
